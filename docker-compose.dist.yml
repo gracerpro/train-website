@@ -1,0 +1,11 @@
+services:
+  train-website__node:
+    build: ./docker/images/node
+    container_name: train-website__node
+    image: train-website__node
+    tty: true
+    ports:
+      - 8101:8101
+    working_dir: /app
+    volumes:
+      - .:/app
