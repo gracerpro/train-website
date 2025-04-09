@@ -1,15 +1,11 @@
 <script setup>
 import { RouterView } from "vue-router"
 import TheNav from "./views/TheNav.vue"
-
-const currentYear = new Date().getFullYear()
+import TheFooter from "./views/TheFooter.vue"
 </script>
 
 <template>
   <the-nav />
-  <RouterView />
-
-  <footer class="my-4 text-center">
-    <div class="container">Copyright &copy; Vyacheslav 2024-{{ currentYear }}</div>
-  </footer>
+  <router-view />
+  <the-footer />
 </template>

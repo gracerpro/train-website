@@ -3,7 +3,7 @@ import PlanBlock from "@/views/PlanBlock.vue"
 </script>
 
 <template>
-  <main class="container">
+  <main class="content container container-text">
     <h1>О проекте</h1>
     <div class="fw-bold">Зачем?</div>
     <blockquote class="blockquote">

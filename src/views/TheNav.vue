@@ -1,3 +1,14 @@
+<script setup>
+import { Collapse } from "bootstrap"
+import { onMounted, ref } from "vue"
+
+const togglerButton = ref(null)
+
+onMounted(() => {
+  new Collapse(togglerButton.value)
+})
+</script>
+
 <template>
   <header>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -10,14 +21,15 @@
           aria-controls="navbarNav"
           aria-expanded="false"
           aria-label="Toggle navigation"
+          ref="togglerButton"
         >
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
+          <router-link :to="{ name: 'home' }" class="navbar-brand">
+            <img src="/favicon.svg" alt="Главная" width="24" height="24" />
+          </router-link>
           <ul class="navbar-nav">
-            <li class="nav-item">
-              <router-link :to="{ name: 'home' }" class="nav-link">Главная</router-link>
-            </li>
             <li class="nav-item">
               <router-link :to="{ name: 'download' }" class="nav-link">Скачать</router-link>
             </li>
@@ -41,3 +53,12 @@
     </nav>
   </header>
 </template>
+
+<style scoped>
+@media (max-width: 991px) {
+  .navbar-brand img {
+    margin-top: 16px;
+    margin-bottom: 8px;
+  }
+}
+</style>

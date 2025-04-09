@@ -30,7 +30,7 @@ function load() {
 </script>
 
 <template>
-  <main class="container">
+  <main class="content container container-text">
     <h1>Скачать</h1>
     <p>
       На этой странице можно скачать последнюю версию приложения. Другие версии можно найти на

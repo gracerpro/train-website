@@ -1,7 +1,7 @@
 <script setup></script>
 
 <template>
-  <main class="container">
+  <main class="content container container-text">
     <h1>Документация</h1>
 
     <p>...</p>

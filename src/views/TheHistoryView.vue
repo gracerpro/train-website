@@ -30,7 +30,7 @@ function load() {
 </script>
 
 <template>
-  <main class="container">
+  <main class="content container container-text">
     <h1>История</h1>
 
     <div v-if="releasesErrorMessage.length" class="alert alert-danger">

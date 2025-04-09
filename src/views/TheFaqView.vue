@@ -5,7 +5,7 @@ const questions = ref([])
 </script>
 
 <template>
-  <main class="container">
+  <main class="content container">
     <h1>Часто задаваемые вопросы</h1>
     <div v-if="questions.length === 0" class="alert alert-info">Список пуст.</div>
     <div v-else>

@@ -3,7 +3,7 @@ const adminEmail = import.meta.env.VITE_ADMIN_EMAIL
 </script>
 
 <template>
-  <main class="container">
+  <main class="content container container-text">
     <h1>Контакты</h1>
 
     <p>
