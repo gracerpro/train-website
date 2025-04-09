@@ -39,7 +39,12 @@ function load() {
     <div v-else-if="releases.length === 0" class="alert alert-info">Список пуст.</div>
     <div v-for="release in releases" :key="release.versionCode">
       <h2>{{ release.versionLabel }}</h2>
-      <p class="fst-italic">{{ formatDate(release.date) }}</p>
+      <p>
+        <span class="fst-italic">{{ formatDate(release.date) }}</span>
+        <span v-if="release.downloadUrl" class="d-inline-block ms-3">
+          <a :href="release.downloadUrl">Скачать</a>
+        </span>
+      </p>
       <div v-html="release.description"></div>
     </div>
   </main>

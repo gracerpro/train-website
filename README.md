@@ -1,25 +1,39 @@
 # Train website
 
-## Как запускать
+This is website to `TrainClient` mobile application,
+[visit it](https://train.vyacheslaff.ru/)
 
-Для поднятия контейнеров
+## Quick hints
+
+Up the containers
 
 ```bash
 docker compose up --detach
 docker compose up --detach --build --force-recreate
 ```
 
-Для захода в **node** контейнер
+Log in to **node** container
 
 ```bash
 docker exec -it train-website__node bash
 ```
 
-Для выполнения команды, без захода в контейнер
+## Project Setup
 
+Download the source code to local computer by `git`
+
+```bash
+git clone git@github.com:gracerpro/train-website.git
 ```
-docker exec [контейнер] [команда]
-docker exec train-website__node npm run lint
+
+Install `docker` and run the containers.
+
+Install the dependencies
+
+```bash
+npm install
+# or
+docker exec train-website__node npm install
 ```
 
 ## Recommended IDE Setup
@@ -30,12 +44,6 @@ docker exec train-website__node npm run lint
 
 See [Vite Configuration Reference](https://vite.dev/config/).
 
-## Project Setup
-
-```sh
-npm install
-```
-
 ### Compile and Hot-Reload for Development
 
 ```sh
@@ -45,29 +53,19 @@ npm run dev
 ### Compile and Minify for Production
 
 ```sh
-npm run build
+npm run build-prod
 ```
 
 ### Run Unit Tests with [Vitest](https://vitest.dev/)
 
 ```sh
-npm run test:unit
+npm run test
 ```
 
 ### Lint with [ESLint](https://eslint.org/)
 
 ```sh
 npm run lint
-```
-
-## Setup a project
-
-Скачать проект на компьютер.
-
-Установить зависимости
-
-```bash
-docker exec train-website__node npm install
 ```
 
 ## Cloc, code lines

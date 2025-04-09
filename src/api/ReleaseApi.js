@@ -38,7 +38,7 @@ const releaseList = [
     versionLabel: "1.4.1",
     date: "2025-04-09",
     versionCode: 27,
-    downloadUrl: "https://vyacheslaff.ru/",
+    downloadUrl: "",
     description: `
     <ul>
       <li>Добавлен экран с деталями тренировки.</li>
