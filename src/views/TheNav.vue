@@ -18,6 +18,9 @@
             <router-link :to="{ name: 'home' }" class="nav-link">Главная</router-link>
           </li>
           <li class="nav-item">
+            <router-link :to="{ name: 'download' }" class="nav-link">Скачать</router-link>
+          </li>
+          <li class="nav-item">
             <router-link :to="{ name: 'history' }" class="nav-link">История</router-link>
           </li>
           <li class="nav-item">

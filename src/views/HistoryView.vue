@@ -1,23 +1,30 @@
 <script setup>
 import { ReleaseApi } from "@/api/ReleaseApi"
 import { ref } from "vue"
+import { formatDate } from "@/utils/DateTime"
 
 const client = new ReleaseApi()
 
-const errorMessage = ref("")
+const releasesErrorMessage = ref("")
 const releases = ref([])
 
 load()
 
 function load() {
-  errorMessage.value = ""
+  releasesErrorMessage.value = ""
+
   client
     .getList()
     .then((response) => {
-      releases.value = response.items
+      const list = response.items
+      list.sort((a, b) => {
+        return a.date < b.date
+      })
+      releases.value = list
     })
     .catch((e) => {
-      errorMessage.value = e.message
+      console.error(e)
+      releasesErrorMessage.value = "Произошла внутренняя ошибка."
     })
 }
 </script>
@@ -26,15 +33,14 @@ function load() {
   <main class="container">
     <h1>История</h1>
 
-    <div v-if="releases.length === 0" class="">Список пуст.</div>
+    <div v-if="releasesErrorMessage.length" class="alert alert-danger">
+      {{ releasesErrorMessage }}
+    </div>
+    <div v-else-if="releases.length === 0" class="alert alert-info">Список пуст.</div>
     <div v-for="release in releases" :key="release.versionCode">
-      <h2>, versionCode =</h2>
+      <h2>{{ release.versionLabel }}</h2>
+      <p class="fst-italic">{{ formatDate(release.date) }}</p>
       <div v-html="release.description"></div>
     </div>
   </main>
 </template>
-
-<style scoped>
-.release-list {
-}
-</style>

@@ -9,19 +9,18 @@ docker compose up --detach
 docker compose up --detach --build --force-recreate
 ```
 
-Для выполнения команды, без захода в контейнер
-
-```
-docker exec [контейнер] [команда]
-docker exec train-website__node npm run lint
-```
-
 Для захода в **node** контейнер
 
 ```bash
 docker exec -it train-website__node bash
 ```
 
+Для выполнения команды, без захода в контейнер
+
+```
+docker exec [контейнер] [команда]
+docker exec train-website__node npm run lint
+```
 
 ## Recommended IDE Setup
 
@@ -61,12 +60,7 @@ npm run test:unit
 npm run lint
 ```
 
-
 ## Setup a project
-
-Добавить в `/etc/hosts` на хостовом компьютере.
-
-127.0.0.1 train.local
 
 Скачать проект на компьютер.
 
@@ -75,7 +69,6 @@ npm run lint
 ```bash
 docker exec train-website__node npm install
 ```
-
 
 ## Cloc, code lines
 
