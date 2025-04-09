@@ -29,6 +29,9 @@
           <li class="nav-item">
             <router-link :to="{ name: 'faq' }" class="nav-link">ЧаВо</router-link>
           </li>
+          <li class="nav-item">
+            <router-link :to="{ name: 'about' }" class="nav-link">О проекте</router-link>
+          </li>
         </ul>
       </div>
     </div>

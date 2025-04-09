@@ -78,11 +78,11 @@ export class ReleaseApi {
    * @returns Promise<Object>
    */
   async getList() {
-    const list = releaseList
+    const list = new Array(releaseList.length)
 
-    list.forEach((item) => {
-      this.modifyRelease(item)
-    })
+    for (let i = 0; i < releaseList.length; ++i) {
+      list[i] = this.modifyRelease(releaseList[i])
+    }
 
     return {
       items: list,
@@ -94,11 +94,9 @@ export class ReleaseApi {
    * @returns Promise<Object>
    */
   async getLatest() {
-    const release = releaseList[releaseList.length - 1]
+    let release = releaseList[releaseList.length - 1]
 
-    this.modifyRelease(release)
-
-    return release
+    return this.modifyRelease(release)
   }
 
   /**
@@ -107,9 +105,12 @@ export class ReleaseApi {
    * @returns {Object}
    */
   modifyRelease(release) {
-    if (release.date && typeof release.date === "string") {
-      release.date = new Date(release.date)
+    let copyRelease = { ...release }
+
+    if (copyRelease.date && typeof copyRelease.date === "string") {
+      copyRelease.date = new Date(copyRelease.date)
     }
-    return release
+
+    return copyRelease
   }
 }
