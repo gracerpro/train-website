@@ -34,14 +34,14 @@ function renderPreloadLinks(modules, manifest) {
   let links = ""
   const set = new Set()
 
-  //console.log("modules", modules, "manifest", manifest)
-
   modules.forEach((id) => {
     const files = manifest[id]
+
     if (files) {
       files.forEach((file) => {
         if (!set.has(file)) {
           set.add(file)
+
           const fileName = basename(file)
           if (manifest[fileName]) {
             for (const manifestFile of manifest[fileName]) {
@@ -49,7 +49,6 @@ function renderPreloadLinks(modules, manifest) {
               set.add(manifestFile)
             }
           }
-          console.log(file)
           links += renderPreloadLink(file)
         }
       })
@@ -59,26 +58,29 @@ function renderPreloadLinks(modules, manifest) {
   return links
 }
 
+const linkActions = {
+  js: (file) => `<link rel="modulepreload" crossorigin href="${file}">`,
+  css: (file) => `<link rel="stylesheet" href="${file}">`,
+  woff: (file) => `<link rel="preload" href="${file}" as="font" type="font/woff" crossorigin>`,
+  woff2: (file) => `<link rel="preload" href="${file}" as="font" type="font/woff2" crossorigin>`,
+  gif: (file) => `<link rel="preload" href="${file}" as="image" type="image/gif">`,
+  jpeg: (file) => `<link rel="preload" href="${file}" as="image" type="image/jpeg">`,
+  jpg: (file) => `<link rel="preload" href="${file}" as="image" type="image/jpeg">`,
+  png: (file) => `<link rel="preload" href="${file}" as="image" type="image/png">`,
+}
+
 /**
  * @param {String} file
  * @returns {String}
  */
 function renderPreloadLink(file) {
-  if (file.endsWith(".js")) {
-    return `<link rel="modulepreload" crossorigin href="${file}">`
-  } else if (file.endsWith(".css")) {
-    return `<link rel="stylesheet" href="${file}">`
-  } else if (file.endsWith(".woff")) {
-    return ` <link rel="preload" href="${file}" as="font" type="font/woff" crossorigin>`
-  } else if (file.endsWith(".woff2")) {
-    return ` <link rel="preload" href="${file}" as="font" type="font/woff2" crossorigin>`
-  } else if (file.endsWith(".gif")) {
-    return ` <link rel="preload" href="${file}" as="image" type="image/gif">`
-  } else if (file.endsWith(".jpg") || file.endsWith(".jpeg")) {
-    return ` <link rel="preload" href="${file}" as="image" type="image/jpeg">`
-  } else if (file.endsWith(".png")) {
-    return ` <link rel="preload" href="${file}" as="image" type="image/png">`
+  const dotPos = file.lastIndexOf(".")
+
+  if (dotPos < 0) {
+    return ""
   }
 
-  return ""
+  const extension = file.substring(dotPos + 1)
+
+  return linkActions[extension] ? linkActions[extension](file) : ""
 }

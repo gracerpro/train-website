@@ -8,6 +8,8 @@
     "build": "npm run build:client && npm run build:server",
     "build:client": "vite build --outDir dist/client --ssrManifest",
     "build:server": "vite build --outDir dist/server --ssr src/entry-server.js",
+    "generate": "vite build --outDir dist/static --ssrManifest .vite/ssr-manifest.json && npm run build:server && NODE_ENV=production node prerender",
+    "generate-only": "NODE_ENV=production node prerender",
     "preview": "vite preview",
     "test": "vitest",
     "lint": "eslint . --fix",
