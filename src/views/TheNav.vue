@@ -12,7 +12,7 @@ onMounted(() => {
 <template>
   <header>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
-      <div class="container">
+      <div class="container container-text">
         <button
           class="navbar-toggler"
           type="button"

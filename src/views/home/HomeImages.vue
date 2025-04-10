@@ -48,7 +48,7 @@ const images = [
 </script>
 
 <template>
-  <div class="container">
+  <div>
     <h2>Скриншоты</h2>
     <div class="image-row">
       <div v-for="image in images" :key="image.url" class="image-item">
@@ -68,8 +68,8 @@ const images = [
   width: 250px;
   height: 510px;
   padding: 5px;
+  margin: 10px;
   text-align: center;
-  margin: 20px;
   outline: 1px solid #ddd;
   border-radius: 5px;
 }
@@ -79,10 +79,5 @@ const images = [
 .image-item img {
   width: 234px;
   height: 500px;
-}
-
-@media (max-width: 480px) {
-  .image-item {
-  }
 }
 </style>

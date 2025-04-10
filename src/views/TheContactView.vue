@@ -1,5 +1,6 @@
 <script setup>
 const adminEmail = import.meta.env.VITE_ADMIN_EMAIL
+const projectWebsiteUrl = import.meta.env.VITE_PROJECT_WEBSITE_URL
 </script>
 
 <template>
@@ -13,5 +14,11 @@ const adminEmail = import.meta.env.VITE_ADMIN_EMAIL
     <div class="text-center">
       <a :href="'mailto:' + adminEmail" class="link-primary">{{ adminEmail }}</a>
     </div>
+
+    <p class="mt-4">
+      Так же, в основном для разработчиков, если вы имеете интересные идеи или вопросы, то на
+      <a :href="projectWebsiteUrl" target="_blank">GitHub</a>
+      можно открыть <i>Issue</i>. Спасибо!
+    </p>
   </main>
 </template>

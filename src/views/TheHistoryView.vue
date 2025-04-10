@@ -32,6 +32,7 @@ function load() {
 <template>
   <main class="content container container-text">
     <h1>История</h1>
+    <p>На странице выводится список релизов. Каждый релиз имеет версию, дату и описание.</p>
 
     <div v-if="releasesErrorMessage.length" class="alert alert-danger">
       {{ releasesErrorMessage }}
