@@ -14,11 +14,8 @@ export default defineConfig({
   plugins: [vue(), vueDevTools()],
   css: {
     preprocessorOptions: {
-      scss: {
-        api: "modern", // or "modern", "legacy"
-        importers: [
-          // ...
-        ],
+      sass: {
+        api: "modern-compiler", // or "modern", "legacy"
       },
     },
   },
