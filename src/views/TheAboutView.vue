@@ -10,7 +10,7 @@ const projectWebsiteUrl = import.meta.env.VITE_PROJECT_WEBSITE_URL
     <div class="fw-bold">Зачем?</div>
     <blockquote class="blockquote">
       <p>
-        Все основные приложения для учета тренировок ушли из России, аналоги не понравились. Решил
+        Все основные приложения для учёта тренировок ушли из России, аналоги не понравились. Решил
         сделать новое мобильное приложение, было интересно изучить платформу Android и язык Kotlin.
       </p>
     </blockquote>

@@ -12,6 +12,16 @@ export default defineConfig({
     strictPort: true,
   },
   plugins: [vue(), vueDevTools()],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: "modern", // or "modern", "legacy"
+        importers: [
+          // ...
+        ],
+      },
+    },
+  },
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),

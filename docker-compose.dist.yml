@@ -6,6 +6,7 @@ services:
     tty: true
     ports:
       - 8101:8101
+      - 24678:24678
     working_dir: /app
     volumes:
       - .:/app
