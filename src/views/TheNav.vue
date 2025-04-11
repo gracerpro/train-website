@@ -1,18 +1,21 @@
 <script setup>
-import { Collapse } from "bootstrap"
 import { onMounted, ref } from "vue"
 
 const togglerButton = ref(null)
 
 onMounted(() => {
-  new Collapse(togglerButton.value)
+  if (!import.meta.env.SSR) {
+    import("bootstrap").then(({ Collapse }) => {
+      new Collapse(togglerButton.value)
+    })
+  }
 })
 </script>
 
 <template>
   <header>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
-      <div class="container">
+      <div class="container container-text">
         <button
           class="navbar-toggler"
           type="button"

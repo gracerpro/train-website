@@ -71,3 +71,11 @@ npm run lint
 ## Cloc, code lines
 
 cloc . --exclude-dir=.git,.vscode,.idea,.settings,package-lock.json,dist,vendor,node_modules
+
+## Warning
+
+Downgrade sass version to `1.64.2` because latest sass version displays 180 warnings like this
+
+```
+Deprecation Warning [color-functions]: green() is deprecated.
+```

@@ -1,54 +1,68 @@
 <script setup>
+import {
+  V_1_0_17_ACTIVITY_1,
+  V_1_0_17_ACTIVITY_2,
+  V_1_0_17_ACTIVITY_3,
+  V_1_0_17_ACTIVITY_LIST,
+  V_1_0_17_PROFILE,
+  V_1_0_17_SETTINGS,
+  V_1_0_17_START_ACTIVITY,
+  V_1_2_9_EXPORT,
+  V_1_2_9_MONTH_STATISTICS,
+  V_1_2_9_MONTH_STATISTICS_FILTER,
+  V_1_2_9_STATISTICS,
+} from "@/api/ScreenshotApi"
+
 const images = [
   {
-    url: "https://i.postimg.cc/44LFFDtZ/image.png",
+    url: V_1_0_17_START_ACTIVITY,
     name: "Выбор тренировки",
   },
   {
-    url: "https://i.postimg.cc/QCy497sV/1.png",
+    url: V_1_0_17_ACTIVITY_1,
     name: "Тренировка 1",
   },
   {
-    url: "https://i.postimg.cc/8c5XzH2q/2.png",
+    url: V_1_0_17_ACTIVITY_2,
     name: "Тренировка 2",
   },
   {
-    url: "https://i.postimg.cc/50pkJGRB/3.png",
+    url: V_1_0_17_ACTIVITY_3,
     name: "Тренировка 3",
   },
   {
-    url: "https://i.postimg.cc/NMQPWYpG/image.png",
+    url: V_1_0_17_SETTINGS,
     name: "Настройки",
   },
   {
-    url: "https://i.postimg.cc/8CR0Ksdn/image.png",
+    url: V_1_0_17_PROFILE,
     name: "Профиль",
   },
   {
-    url: "https://i.postimg.cc/VNQhWXtC/image.png",
+    url: V_1_0_17_ACTIVITY_LIST,
     name: "Список тренировок",
   },
   {
-    url: "https://i.postimg.cc/rwtb4fDT/image.png",
+    url: V_1_2_9_STATISTICS,
     name: "Статистика",
   },
   {
-    url: "https://i.postimg.cc/Fs681MsG/image.png",
+    url: V_1_2_9_MONTH_STATISTICS,
     name: "Статистика за месяц",
   },
   {
-    url: "https://i.postimg.cc/KvjCGGFR/image.png",
+    url: V_1_2_9_MONTH_STATISTICS_FILTER,
     name: "Статистика за месяц с фильтром",
   },
   {
-    url: "https://i.postimg.cc/jqZGYWpp/image.png",
+    url: V_1_2_9_EXPORT,
     name: "Экспорт",
   },
 ]
 </script>
 
 <template>
-  <div class="container">
+  <div>
     <h2>Скриншоты</h2>
     <div class="image-row">
       <div v-for="image in images" :key="image.url" class="image-item">
@@ -68,8 +82,8 @@ const images = [
   width: 250px;
   height: 510px;
   padding: 5px;
+  margin: 10px;
   text-align: center;
-  margin: 20px;
   outline: 1px solid #ddd;
   border-radius: 5px;
 }
@@ -79,10 +93,5 @@ const images = [
 .image-item img {
   width: 234px;
   height: 500px;
-}
-
-@media (max-width: 480px) {
-  .image-item {
-  }
 }
 </style>

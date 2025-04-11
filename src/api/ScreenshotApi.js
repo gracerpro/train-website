@@ -1,0 +1,12 @@
+export const V_1_0_17_START_ACTIVITY = "https://i.postimg.cc/44LFFDtZ/image.png"
+export const V_1_0_17_ACTIVITY_1 = "https://i.postimg.cc/QCy497sV/1.png"
+export const V_1_0_17_ACTIVITY_2 = "https://i.postimg.cc/8c5XzH2q/2.png"
+export const V_1_0_17_ACTIVITY_3 = "https://i.postimg.cc/50pkJGRB/3.png"
+export const V_1_0_17_SETTINGS = "https://i.postimg.cc/NMQPWYpG/image.png"
+export const V_1_0_17_PROFILE = "https://i.postimg.cc/8CR0Ksdn/image.png"
+export const V_1_0_17_ACTIVITY_LIST = "https://i.postimg.cc/VNQhWXtC/image.png"
+
+export const V_1_2_9_STATISTICS = "https://i.postimg.cc/rwtb4fDT/image.png"
+export const V_1_2_9_MONTH_STATISTICS = "https://i.postimg.cc/Fs681MsG/image.png"
+export const V_1_2_9_MONTH_STATISTICS_FILTER = "https://i.postimg.cc/KvjCGGFR/image.png"
+export const V_1_2_9_EXPORT = "https://i.postimg.cc/jqZGYWpp/image.png"

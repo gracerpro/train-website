@@ -1,8 +1,12 @@
-import { createRouter, createWebHistory } from "vue-router"
+import { createRouter, createWebHistory, createMemoryHistory } from "vue-router"
 import TheHomeView from "../views/TheHomeView.vue"
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: import.meta.env.SSR
+    ? createMemoryHistory(import.meta.env.VITE_BASE_URL)
+    : createWebHistory(import.meta.env.VITE_BASE_URL),
+  linkActiveClass: "active",
+  linkExactActiveClass: "",
   routes: [
     {
       path: "/",
@@ -45,4 +49,4 @@ const router = createRouter({
   ],
 })
 
-export default router
+export { router }
