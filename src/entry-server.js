@@ -3,7 +3,8 @@ import { renderToString } from "vue/server-renderer"
 import { createApp } from "./main"
 
 /**
- * @param {string} _url
+ * @param {string} url
+ * @param {Object} ssrManifest
  */
 export async function render(url, ssrManifest) {
   const { app } = createApp()
@@ -28,7 +29,7 @@ export async function render(url, ssrManifest) {
  *
  * @param {Array} modules
  * @param {Object} manifest
- * @returns
+ * @returns {String}
  */
 function renderPreloadLinks(modules, manifest) {
   let links = ""

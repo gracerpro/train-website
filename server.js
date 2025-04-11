@@ -1,6 +1,4 @@
 import fs from "node:fs/promises"
-//import path from "node:path"
-//import { fileURLToPath } from "node:url"
 import express from "express"
 
 // Constants
@@ -12,7 +10,7 @@ const base = process.env.BASE_URL || "/"
 const templateHtml = isProduction ? await fs.readFile("./dist/client/index.html", "utf-8") : ""
 const ssrManifest = isProduction
   ? await fs.readFile("./dist/client/.vite/ssr-manifest.json", "utf-8")
-  : await fs.readFile("./dist/client/.vite/ssr-manifest.json", "utf-8") //undefined
+  : undefined
 
 createServer()
 
@@ -49,8 +47,7 @@ async function createServer() {
     app.use(base, sirv("./dist/client", { extensions: [] }))
   }
 
-  app.get("/{*splat}", async (request, response /*, next */) => {
-    console.log(`orig url "${request.originalUrl}"`)
+  app.get("/{*splat}", async (request, response) => {
     const url = request.originalUrl.replace(base, "")
     console.log(`url "${url}"`)
 
@@ -64,8 +61,6 @@ async function createServer() {
       // to your actual source code.
       vite?.ssrFixStacktrace(e)
       console.log(e.stack)
-
-      //next(e)
 
       response.status(500).end(e.stack)
     }
@@ -103,7 +98,7 @@ async function getAppHtml(vite, url) {
   }
 
   // 4. render the app HTML. This assumes entry-server.js's exported
-  //     `render` function calls appropriate framework SSR APIs,
+  //    `render` function calls appropriate framework SSR APIs,
   //    e.g. ReactDOMServer.renderToString()
   const appHtml = await render(url, ssrManifest)
 

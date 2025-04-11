@@ -1,4 +1,3 @@
-// Import our custom CSS
 import "./scss/styles.scss"
 
 import { createApp } from "./main"
