@@ -42,9 +42,19 @@ function load() {
       <h2>{{ release.versionLabel }}</h2>
       <p>
         <span class="fst-italic">{{ formatDate(release.date) }}</span>
-        <span v-if="release.downloadUrl" class="d-inline-block ms-3">
-          <a :href="release.downloadUrl">Скачать</a>
+        <span v-if="!release.downloadUrl">
+          <span v-if="!release.downloadPageUrl" class="d-inline-block ms-3 text-secondary">
+            Не удалось найти ссылку
+          </span>
+          <a
+            v-else
+            :href="release.downloadUrl"
+            target="_blank"
+            class="d-inline-block ms-3 link-primary"
+            >Перейти к скачиванию</a
+          >
         </span>
+        <a v-else :href="release.downloadUrl" class="d-inline-block ms-3 link-primary">Скачать</a>
       </p>
       <div v-html="release.description"></div>
     </div>

@@ -4,6 +4,7 @@
 import fs from "node:fs"
 import path from "node:path"
 import url from "node:url"
+import { gzip } from "node-gzip"
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url))
 
@@ -15,35 +16,40 @@ const manifest = JSON.parse(
 const template = fs.readFileSync(toAbsolute("dist/static/index.html"), "utf-8")
 const { render } = await import("./dist/server/entry-server.js")
 
-const prerenderUrls = await readUrlsFromViews()
+const urls = await readUrlsFromViews()
+await createFiles(urls)
 
-clearTargetDirectory()
-;(async () => {
-  for (const url of prerenderUrls) {
+// done, delete .vite directory including ssr manifest
+fs.rmSync(toAbsolute("dist/static/.vite"), { recursive: true })
+
+/////////////////////////////////////////////////////
+
+async function createFiles(urls) {
+  const basePath = "./dist/static"
+  console.log("base path", basePath)
+
+  for (const url of urls) {
     const { html: appHtml, preloadLinks } = await render(url, manifest)
 
     const html = template
       .replace("<!--app-head-->", preloadLinks)
       .replace("<!--app-html-->", appHtml)
 
-    const filePath = `dist/static${url == "/" ? "/index" : url}.html`
-    fs.writeFileSync(toAbsolute(filePath), html)
-    console.log("pre-rendered:", filePath)
+    const resultUrl = (url == "/" ? "/index" : url) + ".html"
+    const filePath = basePath + resultUrl
+    fs.writeFileSync(filePath, html)
+    const compressedHtml = await gzip(html)
+    fs.writeFileSync(filePath + ".gz", compressedHtml)
+
+    console.log("pre-rendered:", resultUrl, "size", html.length, "zip size", compressedHtml.length)
   }
-
-  // done, delete .vite directory including ssr manifest
-  //fs.rmSync(toAbsolute("dist/static/.vite"), { recursive: true })
-})()
-
-function clearTargetDirectory() {
-  // todo: do it
 }
 
 /**
  * @returns {Promise<String[]>}
  */
 async function readUrlsFromViews() {
-  console.log("Read urls from view...")
+  console.log("Read urls from views...")
 
   const urls = []
   const files = fs.readdirSync("./src/views", { withFileTypes: true, recursive: false })
@@ -62,6 +68,7 @@ async function readUrlsFromViews() {
     }
 
     console.log("-", name)
+
     if (name === "home") {
       urls.push("/")
     } else {

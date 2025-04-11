@@ -41,15 +41,19 @@ function load() {
     <div v-if="errorMessage.length" class="alert alert-danger">{{ errorMessage }}</div>
     <loading-row v-else-if="latestReleaseLoading" />
     <div v-else-if="!latestRelease" class="alert alert-warning">Не найден последний релиз.</div>
-    <div v-else-if="!latestRelease.downloadUrl" class="alert alert-warning">
-      Не удалось найти ссылку на последний релиз.
-    </div>
     <div v-else>
       <h4>{{ latestRelease.versionLabel }}</h4>
       <div class="fst-italic mb-3">{{ formatDate(latestRelease.date) }}</div>
-      <div>
-        <a :href="latestRelease.downloadUrl" class="btn btn-primary">Скачать</a>
+      <div v-if="!latestRelease.downloadUrl">
+        <div v-if="!latestRelease.downloadPageUrl" class="alert alert-warning">
+          Не удалось найти ссылку.
+        </div>
+        <a v-else :href="latestRelease.downloadUrl" target="_blank" class="btn btn-primary"
+          >Перейти к скачиванию</a
+        >
       </div>
+      <a v-else :href="latestRelease.downloadUrl" class="btn btn-primary">Скачать</a>
+      <div class="mt-3" v-html="latestRelease.description"></div>
     </div>
   </main>
 </template>
