@@ -2,6 +2,7 @@
 import { ReleaseApi } from "@/api/ReleaseApi"
 import { ref } from "vue"
 import { formatDate } from "@/utils/DateTime"
+import { getHumanSize } from "@/utils/Formatter"
 
 const client = new ReleaseApi()
 
@@ -44,7 +45,7 @@ function load() {
         <span class="fst-italic">{{ formatDate(release.date) }}</span>
         <span v-if="!release.downloadUrl">
           <span v-if="!release.downloadPageUrl" class="d-inline-block ms-3 text-secondary">
-            Не удалось найти ссылку
+            Релиз в процессе сборки. Ссылка появится позже.
           </span>
           <a
             v-else
@@ -55,6 +56,10 @@ function load() {
           >
         </span>
         <a v-else :href="release.downloadUrl" class="d-inline-block ms-3 link-primary">Скачать</a>
+
+        <span v-if="release.fileSize > 0" class="d-inline-block ms-3">{{
+          getHumanSize(release.fileSize)
+        }}</span>
       </p>
       <div v-html="release.description"></div>
     </div>

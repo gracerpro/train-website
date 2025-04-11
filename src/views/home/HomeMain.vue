@@ -1,4 +1,6 @@
 <script setup>
+import { V_1_4_2_START } from "@/api/ScreenshotApi"
+
 const screens = [
   { name: "Главный, начало тренировки" },
   { name: "Тренировка, запись маршрута" },
@@ -20,14 +22,29 @@ const screens = [
   <div>
     <h1>Мобильное приложение для учёта тренировок</h1>
 
-    <p>
-      Приложение представляет собой <b>GPS трекер</b>, поэтому может использоваться для различных
-      тренировок: бег, ходьба, езда на велосипеде и т. д. Хранит все тренирови на мобильном
-      устройстве. Не требует интернет.
-    </p>
-    <p>Приложение разделено на экраны, всего {{ screens.length }} шт.</p>
-    <ol>
-      <li v-for="(screen, i) in screens" :key="i">{{ screen.name }}</li>
-    </ol>
+    <div class="row">
+      <div class="col-sm-7">
+        <p>
+          Приложение представляет собой <b>GPS трекер</b>, поэтому может использоваться для
+          различных тренировок: бег, ходьба, езда на велосипеде и т. д. Хранит все тренирови на
+          мобильном устройстве. Не требует интернет.
+        </p>
+        <p>Приложение разделено на экраны, всего {{ screens.length }} шт.</p>
+        <ol>
+          <li v-for="(screen, i) in screens" :key="i">{{ screen.name }}</li>
+        </ol>
+      </div>
+      <div class="col-sm-5">
+        <div class="text-center">
+          <img :src="V_1_4_2_START" class="main-image" />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
+
+<style>
+.main-image {
+  max-width: 240px;
+}
+</style>

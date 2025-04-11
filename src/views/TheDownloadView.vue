@@ -23,7 +23,7 @@ function load() {
     })
     .catch((e) => {
       console.error(e)
-      errorMessage.value = "Не удалось найти ссылку на последний релиз."
+      errorMessage.value = "Не удалось найти последний релиз."
     })
     .finally(() => (latestReleaseLoading.value = false))
 }
@@ -46,7 +46,7 @@ function load() {
       <div class="fst-italic mb-3">{{ formatDate(latestRelease.date) }}</div>
       <div v-if="!latestRelease.downloadUrl">
         <div v-if="!latestRelease.downloadPageUrl" class="alert alert-warning">
-          Не удалось найти ссылку.
+          Релиз в процессе сборки. Ссылка появится позже.
         </div>
         <a v-else :href="latestRelease.downloadUrl" target="_blank" class="btn btn-primary"
           >Перейти к скачиванию</a

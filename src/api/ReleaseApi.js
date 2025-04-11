@@ -4,7 +4,9 @@ const releaseList = [
     date: "2024-05-31",
     versionCode: 17,
     fileName: "train-client_1.0.17-alpha.apk",
-    downloadUrl: "",
+    fileSize: 2700046,
+    downloadUrl:
+      "https://github.com/gracerpro/train-website/releases/download/v1.0.17-alpha/train-client_v1.0.17-alpha.apk",
     downloadPageUrl: "",
     description: `
     <ul>
@@ -27,7 +29,9 @@ const releaseList = [
     date: "2024-11-30",
     versionCode: 25,
     fileName: "train-client_1.2.9-alpha.apk",
-    downloadUrl: "",
+    fileSize: 3440603,
+    downloadUrl:
+      "https://github.com/gracerpro/train-website/releases/download/v1.2.9-alpha/train-client_v1.2.9-alpha.apk",
     downloadPageUrl: "",
     description: `
     <ul>
@@ -43,6 +47,7 @@ const releaseList = [
     date: "2025-04-09",
     versionCode: 27,
     fileName: "train-client_1.4.1.apk",
+    fileSize: 0,
     downloadUrl: "",
     downloadPageUrl: "",
     description: `

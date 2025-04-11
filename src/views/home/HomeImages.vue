@@ -1,62 +1,92 @@
 <script setup>
 import {
-  V_1_0_17_ACTIVITY_1,
-  V_1_0_17_ACTIVITY_2,
-  V_1_0_17_ACTIVITY_3,
-  V_1_0_17_ACTIVITY_LIST,
-  V_1_0_17_PROFILE,
-  V_1_0_17_SETTINGS,
-  V_1_0_17_START_ACTIVITY,
-  V_1_2_9_EXPORT,
-  V_1_2_9_MONTH_STATISTICS,
-  V_1_2_9_MONTH_STATISTICS_FILTER,
-  V_1_2_9_STATISTICS,
+  URL_1_4_2_ACTIVITING,
+  V_1_4_2_ABOUT,
+  V_1_4_2_ACTIVITING_BEFORE,
+  V_1_4_2_ACTIVITY_CARD,
+  V_1_4_2_ACTIVITY_GRAPHIC,
+  V_1_4_2_ACTIVITY_LIST,
+  V_1_4_2_ACTIVITY_TABLE,
+  V_1_4_2_ACTIVITY_TYPES,
+  V_1_4_2_ADD_ACTIVITY,
+  V_1_4_2_EDIT_ACTIVITY_DIALOG,
+  V_1_4_2_EDIT_ROUTE,
+  V_1_4_2_EXPORT,
+  V_1_4_2_IMPORT,
+  V_1_4_2_MONTH_STATISTICS,
+  V_1_4_2_PROFILE,
+  V_1_4_2_SETTINGS,
+  V_1_4_2_STATISTICS,
 } from "@/api/ScreenshotApi"
 
 const images = [
   {
-    url: V_1_0_17_START_ACTIVITY,
-    name: "Выбор тренировки",
+    url: V_1_4_2_ACTIVITING_BEFORE,
+    name: "Начало тренировки",
   },
   {
-    url: V_1_0_17_ACTIVITY_1,
-    name: "Тренировка 1",
+    url: URL_1_4_2_ACTIVITING,
+    name: "Запись тренировки",
   },
   {
-    url: V_1_0_17_ACTIVITY_2,
-    name: "Тренировка 2",
-  },
-  {
-    url: V_1_0_17_ACTIVITY_3,
-    name: "Тренировка 3",
-  },
-  {
-    url: V_1_0_17_SETTINGS,
-    name: "Настройки",
-  },
-  {
-    url: V_1_0_17_PROFILE,
-    name: "Профиль",
-  },
-  {
-    url: V_1_0_17_ACTIVITY_LIST,
+    url: V_1_4_2_ACTIVITY_LIST,
     name: "Список тренировок",
   },
   {
-    url: V_1_2_9_STATISTICS,
+    url: V_1_4_2_ACTIVITY_CARD,
+    name: "Карточка тренировки",
+  },
+  {
+    url: V_1_4_2_EDIT_ACTIVITY_DIALOG,
+    name: "Редактирование тренировки",
+  },
+  {
+    url: V_1_4_2_ACTIVITY_GRAPHIC,
+    name: "График скорости",
+  },
+  {
+    url: V_1_4_2_ACTIVITY_TABLE,
+    name: "Таблица координат маршрута",
+  },
+  {
+    url: V_1_4_2_EDIT_ROUTE,
+    name: "Редактирование маршрута",
+  },
+  {
+    url: V_1_4_2_ACTIVITY_TYPES,
+    name: "Типы тренировок",
+  },
+  {
+    url: V_1_4_2_ADD_ACTIVITY,
+    name: "Добавление тренировки",
+  },
+  {
+    url: V_1_4_2_SETTINGS,
+    name: "Настройки",
+  },
+  {
+    url: V_1_4_2_PROFILE,
+    name: "Профиль",
+  },
+  {
+    url: V_1_4_2_STATISTICS,
     name: "Статистика",
   },
   {
-    url: V_1_2_9_MONTH_STATISTICS,
+    url: V_1_4_2_MONTH_STATISTICS,
     name: "Статистика за месяц",
   },
   {
-    url: V_1_2_9_MONTH_STATISTICS_FILTER,
-    name: "Статистика за месяц с фильтром",
+    url: V_1_4_2_IMPORT,
+    name: "Импорт",
   },
   {
-    url: V_1_2_9_EXPORT,
+    url: V_1_4_2_EXPORT,
     name: "Экспорт",
+  },
+  {
+    url: V_1_4_2_ABOUT,
+    name: "О программе",
   },
 ]
 </script>
@@ -66,7 +96,7 @@ const images = [
     <h2>Скриншоты</h2>
     <div class="image-row">
       <div v-for="image in images" :key="image.url" class="image-item">
-        <img :src="image.url" :alt="image.name" />
+        <img :src="image.url" :alt="image.name" :title="image.name" />
       </div>
     </div>
   </div>
