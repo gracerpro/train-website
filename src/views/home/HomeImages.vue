@@ -1,6 +1,7 @@
 <script setup>
 import {
   URL_1_4_2_ACTIVITING,
+  URL_1_4_2_STATISTICS_SHORT,
   V_1_4_2_ABOUT,
   V_1_4_2_ACTIVITING_BEFORE,
   V_1_4_2_ACTIVITY_CARD,
@@ -71,6 +72,10 @@ const images = [
   {
     url: V_1_4_2_STATISTICS,
     name: "Статистика",
+  },
+  {
+    url: URL_1_4_2_STATISTICS_SHORT,
+    name: "Статистика по годам",
   },
   {
     url: V_1_4_2_MONTH_STATISTICS,

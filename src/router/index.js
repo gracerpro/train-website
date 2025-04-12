@@ -46,6 +46,11 @@ const router = createRouter({
       name: "faq",
       component: () => import("../views/TheFaqView.vue"),
     },
+    {
+      path: "/user-agreement",
+      name: "user-agreement",
+      component: () => import("../views/TheUserAgreementView.vue"),
+    },
   ],
 })
 

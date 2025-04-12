@@ -50,6 +50,11 @@ onMounted(() => {
             <li class="nav-item">
               <router-link :to="{ name: 'about' }" class="nav-link">О проекте</router-link>
             </li>
+            <li class="nav-item">
+              <router-link :to="{ name: 'user-agreement' }" class="nav-link"
+                >Пользовательское соглашение</router-link
+              >
+            </li>
           </ul>
         </div>
       </div>
