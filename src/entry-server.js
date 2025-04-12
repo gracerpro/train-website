@@ -7,7 +7,11 @@ import { createApp } from "./main"
  * @param {Object} ssrManifest
  */
 export async function render(url, ssrManifest) {
-  const { app } = createApp()
+  const { app, router } = createApp()
+
+  // set the router to the desired URL before rendering
+  await router.push(url)
+  await router.isReady()
 
   // passing SSR context object which will be available via useSSRContext()
   // @vitejs/plugin-vue injects code into a component's setup() that registers
