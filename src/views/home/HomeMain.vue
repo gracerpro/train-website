@@ -1,5 +1,5 @@
 <script setup>
-import { V_1_4_2_START } from "@/api/ScreenshotApi"
+import { URL_1_4_2_START } from "@/api/ScreenshotApi"
 
 const screens = [
   { name: "Главный, начало тренировки" },
@@ -23,7 +23,7 @@ const screens = [
     <h1>Мобильное приложение для учёта тренировок</h1>
 
     <div class="row">
-      <div class="col-sm-7">
+      <div class="col-sm-6">
         <p>
           Приложение представляет собой <b>GPS трекер</b>, поэтому может использоваться для
           различных тренировок: бег, ходьба, езда на велосипеде и т. д. Хранит все тренирови на
@@ -34,9 +34,9 @@ const screens = [
           <li v-for="(screen, i) in screens" :key="i">{{ screen.name }}</li>
         </ol>
       </div>
-      <div class="col-sm-5">
-        <div class="text-center">
-          <img :src="V_1_4_2_START" class="main-image" />
+      <div class="col-sm-6">
+        <div class="image-item mx-auto">
+          <img :src="URL_1_4_2_START" class="main-image" />
         </div>
       </div>
     </div>

@@ -21,6 +21,9 @@ setMetaInfo(
 
     <ul class="mb-3">
       <li>
+        <a href="#how-to-update">Как обновить приложение?</a>
+      </li>
+      <li>
         <a href="#how-to-import-from-strava">Как импортировать тренировки из <b>Strava?</b></a>
       </li>
       <li>
@@ -30,8 +33,13 @@ setMetaInfo(
       </li>
     </ul>
 
-    <h3>Как обновить приложение?</h3>
-    <p>...</p>
+    <h3 id="how-to-update">Как обновить приложение?</h3>
+    <p>
+      Пока только вручную. Нужно
+      <router-link :to="{ name: 'download' }">скачать apk-файл</router-link>
+      себе на устройство. Запустить его, выполнится проверка и установка приложения. В будущем
+      приложение появится в магазинах.
+    </p>
 
     <h3 id="how-to-import-from-strava">Как импортировать тренировки из Strava?</h3>
     <div class="mb-3"><span class="badge text-bg-warning">путь не для ленивых</span></div>

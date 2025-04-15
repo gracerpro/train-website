@@ -109,3 +109,20 @@ body {
 .container-text {
   max-width: 860px;
 }
+
+.image-item {
+  width: 250px;
+  height: 510px;
+  padding: 5px;
+  margin: 10px;
+  text-align: center;
+  outline: 1px solid #ddd;
+  border-radius: 5px;
+}
+.image-item:hover {
+  outline: 3px solid #ddd;
+}
+.image-item img {
+  width: 234px;
+  height: 500px;
+}
