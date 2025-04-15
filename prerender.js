@@ -1,3 +1,6 @@
+/* jslint browser: false, devel: true */
+/* global console */
+
 // Pre-render the app into static HTML.
 // run `npm run generate` and then `dist/static` can be served as a static site.
 

@@ -1,3 +1,6 @@
+/* jshint browser: true */
+/* global setTimeout */
+
 /**
  * @param {Number} millis
  * @returns Promise

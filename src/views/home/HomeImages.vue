@@ -18,6 +18,7 @@ import {
   URL_1_4_2_PROFILE,
   URL_1_4_2_SETTINGS,
   URL_1_4_2_STATISTICS,
+  URL_1_4_2_RESTORE,
 } from "@/api/ScreenshotApi"
 
 const images = [
@@ -28,6 +29,10 @@ const images = [
   {
     url: URL_1_4_2_ACTIVITING,
     name: "Запись тренировки",
+  },
+  {
+    url: URL_1_4_2_RESTORE,
+    name: "Восстановлена тренировка",
   },
   {
     url: URL_1_4_2_ACTIVITY_LIST,

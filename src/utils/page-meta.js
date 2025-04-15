@@ -1,3 +1,5 @@
+/* global document */
+
 export const DEFAULT_KEYWORDS = "gps-трекинг, маршрут, тренировки, спорт, велосипед, бег, ходьба"
 
 /**

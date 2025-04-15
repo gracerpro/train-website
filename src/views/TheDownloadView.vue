@@ -1,4 +1,7 @@
 <script setup>
+/* jslint browser: true, devel: true */
+/* global console */
+
 import { ReleaseApi } from "@/api/ReleaseApi"
 import { ref, useSSRContext } from "vue"
 import LoadingRow from "@/components/LoadingRow.vue"

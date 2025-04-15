@@ -1,4 +1,7 @@
 <script setup>
+/* jslint browser: true, devel: true */
+/* global console */
+
 import { ReleaseApi } from "@/api/ReleaseApi"
 import { ref, useSSRContext } from "vue"
 import { formatDate } from "@/utils/DateTime"
@@ -55,7 +58,7 @@ function load() {
       <p>
         <span class="fst-italic">{{ formatDate(release.date) }}</span>
         <span v-if="!release.downloadUrl">
-          <span v-if="!release.downloadPageUrl" class="d-inline-block ms-3 text-info">
+          <span v-if="!release.downloadPageUrl" class="d-inline-block ms-3 text-warning-emphasis">
             <span v-if="index === 0">Релиз в процессе сборки. Ссылка появится позже.</span>
           </span>
           <a

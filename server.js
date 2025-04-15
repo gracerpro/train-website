@@ -1,3 +1,6 @@
+/* jslint browser: false, devel: true */
+/* global console, process */
+
 import fs from "node:fs/promises"
 import express from "express"
 
