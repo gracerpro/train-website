@@ -1,3 +1,18 @@
+<script setup>
+import { DEFAULT_KEYWORDS, setMetaInfo } from "@/utils/page-meta"
+import { useSSRContext } from "vue"
+
+const ssrContext = import.meta.env.SSR ? useSSRContext() : null
+setMetaInfo(
+  {
+    title: "Пользовательское соглашение",
+    description: "Пользовательское соглашение",
+    keywords: "пользовательское соглашение, " + DEFAULT_KEYWORDS,
+  },
+  ssrContext,
+)
+</script>
+
 <template>
   <main class="content container container-text">
     <h1>Пользовательское соглашение</h1>

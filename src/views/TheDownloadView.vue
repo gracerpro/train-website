@@ -1,14 +1,25 @@
 <script setup>
 import { ReleaseApi } from "@/api/ReleaseApi"
-import { ref } from "vue"
+import { ref, useSSRContext } from "vue"
 import LoadingRow from "@/components/LoadingRow.vue"
 import { formatDate } from "@/utils/DateTime"
+import { DEFAULT_KEYWORDS, setMetaInfo } from "@/utils/page-meta"
 
 const client = new ReleaseApi()
 
 const errorMessage = ref("")
 const latestReleaseLoading = ref(true)
 const latestRelease = ref(null)
+
+const ssrContext = import.meta.env.SSR ? useSSRContext() : null
+setMetaInfo(
+  {
+    title: "Скачать",
+    description: "Скачать",
+    keywords: "скачать, " + DEFAULT_KEYWORDS,
+  },
+  ssrContext,
+)
 
 load()
 

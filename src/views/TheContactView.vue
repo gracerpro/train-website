@@ -1,6 +1,19 @@
 <script setup>
+import { DEFAULT_KEYWORDS, setMetaInfo } from "@/utils/page-meta"
+import { useSSRContext } from "vue"
+
 const adminEmail = import.meta.env.VITE_ADMIN_EMAIL
 const projectWebsiteUrl = import.meta.env.VITE_PROJECT_WEBSITE_URL
+
+const ssrContext = import.meta.env.SSR ? useSSRContext() : null
+setMetaInfo(
+  {
+    title: "Контакты",
+    description: "Контакты",
+    keywords: "контакты, " + DEFAULT_KEYWORDS,
+  },
+  ssrContext,
+)
 </script>
 
 <template>

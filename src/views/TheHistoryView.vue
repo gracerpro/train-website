@@ -1,13 +1,24 @@
 <script setup>
 import { ReleaseApi } from "@/api/ReleaseApi"
-import { ref } from "vue"
+import { ref, useSSRContext } from "vue"
 import { formatDate } from "@/utils/DateTime"
 import { getHumanSize } from "@/utils/Formatter"
+import { DEFAULT_KEYWORDS, setMetaInfo } from "@/utils/page-meta"
 
 const client = new ReleaseApi()
 
 const releasesErrorMessage = ref("")
 const releases = ref([])
+
+const ssrContext = import.meta.env.SSR ? useSSRContext() : null
+setMetaInfo(
+  {
+    title: "История изменений",
+    description: "История изменений",
+    keywords: "история изменений, " + DEFAULT_KEYWORDS,
+  },
+  ssrContext,
+)
 
 load()
 
@@ -39,13 +50,13 @@ function load() {
       {{ releasesErrorMessage }}
     </div>
     <div v-else-if="releases.length === 0" class="alert alert-info">Список пуст.</div>
-    <div v-for="release in releases" :key="release.versionCode">
+    <div v-for="(release, index) in releases" :key="release.versionCode">
       <h2>{{ release.versionLabel }}</h2>
       <p>
         <span class="fst-italic">{{ formatDate(release.date) }}</span>
         <span v-if="!release.downloadUrl">
-          <span v-if="!release.downloadPageUrl" class="d-inline-block ms-3 text-secondary">
-            Релиз в процессе сборки. Ссылка появится позже.
+          <span v-if="!release.downloadPageUrl" class="d-inline-block ms-3 text-info">
+            <span v-if="index === 0">Релиз в процессе сборки. Ссылка появится позже.</span>
           </span>
           <a
             v-else

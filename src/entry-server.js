@@ -23,8 +23,19 @@ export async function render(url, ssrManifest) {
 
   const html = await renderToString(app, context)
 
+  let page = null
+
+  if (context.page) {
+    page = {
+      title: context.page.title,
+      description: context.page.description,
+      keywords: context.page.keywords,
+    }
+  }
+
   return {
     html,
+    page,
     preloadLinks: ssrManifest ? renderPreloadLinks(context.modules, ssrManifest) : "",
   }
 }

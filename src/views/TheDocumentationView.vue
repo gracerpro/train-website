@@ -1,3 +1,18 @@
+<script setup>
+import { DEFAULT_KEYWORDS, setMetaInfo } from "@/utils/page-meta"
+import { useSSRContext } from "vue"
+
+const ssrContext = import.meta.env.SSR ? useSSRContext() : null
+setMetaInfo(
+  {
+    title: "Документация",
+    description: "Документация",
+    keywords: "документация, " + DEFAULT_KEYWORDS,
+  },
+  ssrContext,
+)
+</script>
+
 <template>
   <main class="content container container-text">
     <h1>Документация</h1>
@@ -14,6 +29,9 @@
         >
       </li>
     </ul>
+
+    <h3>Как обновить приложение?</h3>
+    <p>...</p>
 
     <h3 id="how-to-import-from-strava">Как импортировать тренировки из Strava?</h3>
     <div class="mb-3"><span class="badge text-bg-warning">путь не для ленивых</span></div>

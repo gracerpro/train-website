@@ -1,7 +1,18 @@
 <script setup>
-import { ref } from "vue"
+import { DEFAULT_KEYWORDS, setMetaInfo } from "@/utils/page-meta"
+import { ref, useSSRContext } from "vue"
 
 const questions = ref([])
+
+const ssrContext = import.meta.env.SSR ? useSSRContext() : null
+setMetaInfo(
+  {
+    title: "Часто задаваемые вопросы",
+    description: "Часто задаваемые вопросы",
+    keywords: "часто задаваемые вопросы, " + DEFAULT_KEYWORDS,
+  },
+  ssrContext,
+)
 </script>
 
 <template>

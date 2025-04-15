@@ -51,6 +51,26 @@ const router = createRouter({
       name: "user-agreement",
       component: () => import("../views/TheUserAgreementView.vue"),
     },
+    {
+      path: "/page-not-found",
+      name: "page-not-found",
+      component: () => import("../views/status-pages/ThePageNotFound.vue"),
+    },
+    {
+      path: "/internal-server-error",
+      name: "internal-server-error",
+      component: () => import("../views/status-pages/TheInternalServerError.vue"),
+    },
+    {
+      // [Vue Router warn]: Discarded invalid param(s) "catchAll" when navigating. See https://github.com/vuejs/router/blob/main/packages/router/CHANGELOG.md#414-2022-08-22 for more details
+      path: "/:catchAll(.*)",
+      redirect: (to) => {
+        return {
+          name: "page-not-found",
+          query: { returnUrl: to.path },
+        }
+      },
+    },
   ],
 })
 

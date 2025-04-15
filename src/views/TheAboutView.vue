@@ -1,7 +1,19 @@
 <script setup>
+import { DEFAULT_KEYWORDS, setMetaInfo } from "@/utils/page-meta"
 import PlanBlock from "@/views/PlanBlock.vue"
+import { useSSRContext } from "vue"
 
 const projectWebsiteUrl = import.meta.env.VITE_PROJECT_WEBSITE_URL
+
+const ssrContext = import.meta.env.SSR ? useSSRContext() : null
+setMetaInfo(
+  {
+    title: "О проекте",
+    description: "О проекте",
+    keywords: "о проекте, " + DEFAULT_KEYWORDS,
+  },
+  ssrContext,
+)
 </script>
 
 <template>
@@ -18,6 +30,15 @@ const projectWebsiteUrl = import.meta.env.VITE_PROJECT_WEBSITE_URL
       Мобильное приложение создано для учёта тренировок. Главный функционал GPS трекинга добавлен.
       Далее нужно расширять приложение.
     </p>
+
+    <p>
+      Есть еще требования, которые не связаны с функциональностью, но которые не менее важны:
+      отсутствие необходимости регистрации, и привязки аккаунтов бесплатность отсутствие рекламы
+      отсутствие ненужных функций, которые уже есть или в телефоне, или в других приложениях, типа
+      обмена сообщениями, тревожных кнопок, уведомлений, стираний данных, блокировок телефона, чата,
+      и т.п.
+    </p>
+
     <plan-block />
 
     <p class="mt-4">

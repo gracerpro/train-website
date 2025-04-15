@@ -3,10 +3,9 @@ const releaseList = [
     versionLabel: "1.0.17-alpha",
     date: "2024-05-31",
     versionCode: 17,
-    fileName: "train-client_1.0.17-alpha.apk",
-    fileSize: 2700046,
-    downloadUrl:
-      "https://github.com/gracerpro/train-website/releases/download/v1.0.17-alpha/train-client_v1.0.17-alpha.apk",
+    fileName: "",
+    fileSize: 0,
+    downloadUrl: "",
     downloadPageUrl: "",
     description: `
     <ul>
@@ -28,10 +27,9 @@ const releaseList = [
     versionLabel: "1.2.9-alpha",
     date: "2024-11-30",
     versionCode: 25,
-    fileName: "train-client_1.2.9-alpha.apk",
-    fileSize: 3440603,
-    downloadUrl:
-      "https://github.com/gracerpro/train-website/releases/download/v1.2.9-alpha/train-client_v1.2.9-alpha.apk",
+    fileName: "",
+    fileSize: 0,
+    downloadUrl: "",
     downloadPageUrl: "",
     description: `
     <ul>
