@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, ref } from "vue"
+import { LATEST_VERSION } from "@/api/ReleaseApi"
 
 const togglerButton = ref(null)
 
@@ -29,8 +30,9 @@ onMounted(() => {
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-          <router-link :to="{ name: 'home' }" class="navbar-brand">
+          <router-link :to="{ name: 'home' }" class="navbar-brand d-block">
             <img src="/favicon.svg" alt="Главная" width="24" height="24" />
+            <span class="align-middle ms-2">{{ LATEST_VERSION }}</span>
           </router-link>
           <ul class="navbar-nav">
             <li class="nav-item">
@@ -48,12 +50,12 @@ onMounted(() => {
               <router-link :to="{ name: 'contact' }" class="nav-link">Контакты</router-link>
             </li>
             <li class="nav-item">
-              <router-link :to="{ name: 'about' }" class="nav-link">О проекте</router-link>
-            </li>
-            <li class="nav-item">
               <router-link :to="{ name: 'user-agreement' }" class="nav-link"
                 >Пользовательское соглашение</router-link
               >
+            </li>
+            <li class="nav-item">
+              <router-link :to="{ name: 'about' }" class="nav-link">О проекте</router-link>
             </li>
           </ul>
         </div>
@@ -64,7 +66,7 @@ onMounted(() => {
 
 <style scoped>
 @media (max-width: 991px) {
-  .navbar-brand img {
+  .navbar-brand {
     margin-top: 16px;
     margin-bottom: 8px;
   }

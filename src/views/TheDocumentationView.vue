@@ -42,7 +42,10 @@ setMetaInfo(
     </p>
 
     <h3 id="how-to-import-from-strava">Как импортировать тренировки из Strava?</h3>
-    <div class="mb-3"><span class="badge text-bg-warning">путь не для ленивых</span></div>
+    <div class="mb-3">
+      <span class="badge text-bg-warning">путь не для ленивых</span>
+      <span class="badge text-bg-danger ms-2">разработка</span>
+    </div>
     <ol>
       <li>
         В web версии <a href="https://www.strava.com" target="_blank">Strava</a> нужно запустить
@@ -62,7 +65,10 @@ setMetaInfo(
     </ol>
 
     <h3 id="how-to-import-from-adidas-runing">Как импортировать тренировки из Adidas running?</h3>
-    <div class="mb-3"><span class="badge text-bg-warning">путь не для ленивых</span></div>
+    <div class="mb-3">
+      <span class="badge text-bg-warning">путь не для ленивых</span>
+      <span class="badge text-bg-danger ms-2">разработка</span>
+    </div>
     <ol>
       <li>
         В web версии <a href="https://www.runtastic.com/" target="_blank">Adidas running</a> нужно

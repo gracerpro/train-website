@@ -1,3 +1,5 @@
+export const LATEST_VERSION = "1.4.1"
+
 const releaseList = [
   {
     versionLabel: "1.0.17-alpha",
@@ -41,7 +43,7 @@ const releaseList = [
     </ul>`,
   },
   {
-    versionLabel: "1.4.1",
+    versionLabel: LATEST_VERSION,
     date: "2025-04-09",
     versionCode: 27,
     fileName: "train-client_1.4.1.apk",
