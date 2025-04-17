@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref } from "vue"
 import { LATEST_VERSION } from "@/api/ReleaseApi"
+import SwitchTheme from "@/components/SwitchTheme.vue"
 
 const togglerButton = ref(null)
 
@@ -16,7 +17,7 @@ onMounted(() => {
 <template>
   <header>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
-      <div class="container container-text">
+      <div class="container">
         <button
           class="navbar-toggler"
           type="button"
@@ -58,6 +59,7 @@ onMounted(() => {
               <router-link :to="{ name: 'about' }" class="nav-link">О проекте</router-link>
             </li>
           </ul>
+          <switch-theme class="swith-theme" />
         </div>
       </div>
     </nav>
@@ -65,10 +67,16 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.swith-theme {
+  margin-left: 16px;
+}
 @media (max-width: 991px) {
   .navbar-brand {
-    margin-top: 16px;
-    margin-bottom: 8px;
+    margin-top: 8px;
+  }
+  .swith-theme {
+    margin-left: 0;
+    margin-top: 8px;
   }
 }
 </style>
