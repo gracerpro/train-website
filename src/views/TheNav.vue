@@ -31,8 +31,8 @@ onMounted(() => {
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-          <router-link :to="{ name: 'home' }" class="navbar-brand d-block">
-            <img src="/favicon.svg" alt="Главная" width="24" height="24" />
+          <router-link :to="{ name: 'home' }" class="navbar-brand d-block" title="Главная">
+            <img src="/favicon.svg" width="24px" height="24px" class="app-icon" />
             <span class="align-middle ms-2">{{ LATEST_VERSION }}</span>
           </router-link>
           <ul class="navbar-nav">
@@ -67,6 +67,20 @@ onMounted(() => {
 </template>
 
 <style scoped>
+/* TODO: change color by theme
+
+.app-icon {
+  display: inline-block;
+  vertical-align: middle;
+  background-color: red;
+  mask-image: url(/favicon.svg);
+  mask-size: 100%;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  width: 24px;
+  height: 24px;
+}*/
+
 .swith-theme {
   margin-left: 16px;
 }
