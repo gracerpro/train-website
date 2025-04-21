@@ -1,4 +1,4 @@
-export const LATEST_VERSION = "1.4.1"
+export const LATEST_VERSION = "1.4.2"
 
 const releaseList = [
   {
@@ -44,11 +44,11 @@ const releaseList = [
   },
   {
     versionLabel: LATEST_VERSION,
-    date: "2025-04-09",
-    versionCode: 27,
-    fileName: "train-client_1.4.1.apk",
+    date: "2025-04-20",
+    versionCode: 28,
+    fileName: "train-client_1.4.2.apk",
     fileSize: 0,
-    downloadUrl: "",
+    downloadUrl: "/releases/train-client_1.4.2.apk",
     downloadPageUrl: "",
     description: `
     <ul>
@@ -71,6 +71,7 @@ const releaseList = [
       <li>Добавлена настройка отображения координат на экране записи тренировки.</li>
       <li>Добавлено масштабирование маршрута в карточке тренировки.</li>
       <li>Добавлена отмена подготовки перед записью тренировки.</li>
+      <li>Добавлены значения спуска и подъёма в карточку тренировки.</li>
       <li>Добавлена фильтрация по названию, по типу, по источнику в списке тренировок.</li>
       <li>Добавлен режим точек и линий в компоненте маршрута.</li>
       <li>Добавлено переключение по свайпу статистики по месяцу.</li>

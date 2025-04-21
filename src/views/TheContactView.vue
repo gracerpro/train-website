@@ -27,8 +27,11 @@ setMetaInfo(
     <div class="text-center">
       <a :href="'mailto:' + adminEmail" class="link-primary">{{ adminEmail }}</a>
     </div>
-
     <p class="mt-4">
+      Так же в будущем можно оставить отзыв в магазине
+      <a href="https://www.rustore.ru/">RuStore</a>.
+    </p>
+    <p>
       Так же, в основном для разработчиков, если вы имеете интересные идеи или вопросы, то на
       <a :href="projectWebsiteUrl" target="_blank">GitHub</a>
       можно открыть <i>Issue</i>. Спасибо!

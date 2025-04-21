@@ -30,7 +30,7 @@ onMounted(() => {
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
           <router-link :to="{ name: 'home' }" class="navbar-brand d-block" title="Главная">
             <img src="/favicon.svg" width="24px" height="24px" class="app-icon" />
             <span class="align-middle ms-2">{{ LATEST_VERSION }}</span>
