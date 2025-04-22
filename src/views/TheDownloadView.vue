@@ -13,6 +13,7 @@ const client = new ReleaseApi()
 const errorMessage = ref("")
 const latestReleaseLoading = ref(true)
 const latestRelease = ref(null)
+const rustoreUrl = import.meta.env.VITE_RUSTORE_URL
 
 const ssrContext = import.meta.env.SSR ? useSSRContext() : null
 setMetaInfo(
@@ -52,9 +53,8 @@ function load() {
       <router-link :to="{ name: 'history' }">историей</router-link>.
     </p>
     <p>
-      <span class="badge text-bg-warning">Временно недоступно</span>
-      Так же последнюю версию можно загрузить с помощью магазина
-      <a href="https://www.rustore.ru/" target="_blank">RuStore</a>
+      Так же последнюю версию можно загрузить в магазине
+      <a :href="rustoreUrl" target="_blank">RuStore</a>
     </p>
 
     <div v-if="errorMessage.length" class="alert alert-danger">{{ errorMessage }}</div>

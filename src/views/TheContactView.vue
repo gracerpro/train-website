@@ -4,6 +4,7 @@ import { useSSRContext } from "vue"
 
 const adminEmail = import.meta.env.VITE_ADMIN_EMAIL
 const projectWebsiteUrl = import.meta.env.VITE_PROJECT_WEBSITE_URL
+const rustoreUrl = import.meta.env.VITE_RUSTORE_URL
 
 const ssrContext = import.meta.env.SSR ? useSSRContext() : null
 setMetaInfo(
@@ -28,8 +29,8 @@ setMetaInfo(
       <a :href="'mailto:' + adminEmail" class="link-primary">{{ adminEmail }}</a>
     </div>
     <p class="mt-4">
-      Так же в будущем можно оставить отзыв в магазине
-      <a href="https://www.rustore.ru/">RuStore</a>.
+      Так же можно оставить отзыв в магазине
+      <a :href="rustoreUrl">RuStore</a>.
     </p>
     <p>
       Так же, в основном для разработчиков, если вы имеете интересные идеи или вопросы, то на

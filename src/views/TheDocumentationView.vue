@@ -2,6 +2,7 @@
 import { DEFAULT_KEYWORDS, setMetaInfo } from "@/utils/page-meta"
 import { useSSRContext } from "vue"
 
+const rustoreUrl = import.meta.env.VITE_RUSTORE_URL
 const ssrContext = import.meta.env.SSR ? useSSRContext() : null
 setMetaInfo(
   {
@@ -35,8 +36,8 @@ setMetaInfo(
 
     <h3 id="how-to-update">Как обновить приложение?</h3>
     <p>
-      <span class="badge text-bg-warning">Временно недоступно</span> С помощью магазина
-      <a href="https://www.rustore.ru/" target="_blank">RuStore</a>
+      С помощью магазина
+      <a :href="rustoreUrl" target="_blank">RuStore</a>
     </p>
     <p>
       Или вручную. Нужно
