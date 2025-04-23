@@ -36,7 +36,7 @@ export const URL_1_4_2_RESTORE = "https://i.postimg.cc/TY43pWG6/restore-start.pn
 
 export const URL_SET_PERMISSIONS_ABOUT = "https://i.postimg.cc/bJgN1sY7/set-permissions-about.png"
 export const URL_SET_PERMISSIONS_ALLOW_GPS =
-  "https://i.postimg.cc/1zpz5vk5/set-permissions-allow-gps.jpg"
+  "https://i.postimg.cc/zfxRrJ4F/set-permissions-allow-gps.jpg"
 export const URL_SET_PERMISSIONS_APPLICATIONS =
   "https://i.postimg.cc/LX28qzSk/set-permissions-applications.jpg"
 export const URL_SET_PERMISSIONS_APPLICATIONS_APPLICATIONS =

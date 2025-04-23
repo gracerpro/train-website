@@ -84,13 +84,15 @@ setMetaInfo(
         </ul>
       </div>
       <div class="col-lg-7">
-        <img :src="URL_SET_PERMISSIONS_SETTINGS" />
-        <img :src="URL_SET_PERMISSIONS_APPLICATIONS" />
-        <img :src="URL_SET_PERMISSIONS_APPLICATIONS_APPLICATIONS" />
-        <img :src="URL_SET_PERMISSIONS_ABOUT" />
-        <img :src="URL_SET_PERMISSIONS_GPS" />
-        <img :src="URL_SET_PERMISSIONS_ALLOW_GPS" />
-        <img :src="URL_SET_PERMISSIONS_NOTIFICATIONS" />
+        <div class="row-images">
+          <img :src="URL_SET_PERMISSIONS_SETTINGS" />
+          <img :src="URL_SET_PERMISSIONS_APPLICATIONS" />
+          <img :src="URL_SET_PERMISSIONS_APPLICATIONS_APPLICATIONS" />
+          <img :src="URL_SET_PERMISSIONS_ABOUT" />
+          <img :src="URL_SET_PERMISSIONS_GPS" />
+          <img :src="URL_SET_PERMISSIONS_ALLOW_GPS" />
+          <img :src="URL_SET_PERMISSIONS_NOTIFICATIONS" />
+        </div>
       </div>
     </div>
 
@@ -153,3 +155,17 @@ setMetaInfo(
     </ol>
   </main>
 </template>
+
+<style scoped>
+.row-images {
+  height: 520px;
+  overflow-x: auto;
+  display: flex;
+  flex-flow: row nowrap;
+}
+.row-images img {
+  width: 234px;
+  height: 500px;
+  margin: 4px;
+}
+</style>
