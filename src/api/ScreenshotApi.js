@@ -33,3 +33,16 @@ export const URL_1_4_2_STATISTICS = "https://i.postimg.cc/25nGP4W0/statistics.pn
 export const URL_1_4_2_MONTH_STATISTICS = "https://i.postimg.cc/prcJDkNL/month-statistics.png"
 export const URL_1_4_2_STATISTICS_SHORT = "https://i.postimg.cc/fRmnKWZm/statistics-short.png"
 export const URL_1_4_2_RESTORE = "https://i.postimg.cc/TY43pWG6/restore-start.png"
+
+export const URL_SET_PERMISSIONS_ABOUT = "https://i.postimg.cc/bJgN1sY7/set-permissions-about.png"
+export const URL_SET_PERMISSIONS_ALLOW_GPS =
+  "https://i.postimg.cc/1zpz5vk5/set-permissions-allow-gps.jpg"
+export const URL_SET_PERMISSIONS_APPLICATIONS =
+  "https://i.postimg.cc/LX28qzSk/set-permissions-applications.jpg"
+export const URL_SET_PERMISSIONS_APPLICATIONS_APPLICATIONS =
+  "https://i.postimg.cc/7Y6bMM2m/set-permissions-applications-applications.jpg"
+export const URL_SET_PERMISSIONS_GPS = "https://i.postimg.cc/15jXWn0P/set-permissions-gps.jpg"
+export const URL_SET_PERMISSIONS_NOTIFICATIONS =
+  "https://i.postimg.cc/htQjNDMm/set-permissions-notifications.jpg"
+export const URL_SET_PERMISSIONS_SETTINGS =
+  "https://i.postimg.cc/s2FXrk0N/set-permissions-settings.jpg"
