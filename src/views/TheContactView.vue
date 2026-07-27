@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { DEFAULT_KEYWORDS, setMetaInfo } from "@/utils/page-meta"
 import { useSSRContext } from "vue"
 

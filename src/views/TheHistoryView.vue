@@ -1,17 +1,15 @@
-<script setup>
-/* jslint browser: true, devel: true */
-/* global console */
-
-import { ReleaseApi } from "@/api/ReleaseApi"
+<script setup lang="ts">
+import { ReleaseApi, type Release } from "@/api/ReleaseApi"
 import { ref, useSSRContext } from "vue"
-import { formatDate } from "@/utils/DateTime"
-import { getHumanSize } from "@/utils/Formatter"
+import { formatDate } from "@/utils/date-time"
+import { getHumanSize } from "@/utils/formatter"
 import { DEFAULT_KEYWORDS, setMetaInfo } from "@/utils/page-meta"
+import { marked } from "marked"
 
-const client = new ReleaseApi()
+const releaseApi = new ReleaseApi()
 
 const releasesErrorMessage = ref("")
-const releases = ref([])
+const releases = ref<Release[]>([])
 
 const ssrContext = import.meta.env.SSR ? useSSRContext() : null
 setMetaInfo(
@@ -28,12 +26,15 @@ load()
 function load() {
   releasesErrorMessage.value = ""
 
-  client
+  releaseApi
     .getList()
     .then((response) => {
       const list = response.items
       list.sort((a, b) => {
-        return a.date < b.date
+        if (a.date === b.date || a.date === null || b.date === null) {
+          return 0
+        }
+        return a.date < b.date ? -1 : 1
       })
       releases.value = list
     })
@@ -56,14 +57,14 @@ function load() {
     <div v-for="(release, index) in releases" :key="release.versionCode">
       <h2>{{ release.versionLabel }}</h2>
       <p>
-        <span class="fst-italic">{{ formatDate(release.date) }}</span>
+        <span class="fst-italic">{{ release.date ? formatDate(release.date) : "&mdash;" }}</span>
         <span v-if="!release.downloadUrl">
           <span v-if="!release.downloadPageUrl" class="d-inline-block ms-3 text-warning-emphasis">
             <span v-if="index === 0">Релиз в процессе сборки. Ссылка появится позже.</span>
           </span>
           <a
             v-else
-            :href="release.downloadUrl"
+            :href="release.downloadPageUrl"
             target="_blank"
             class="d-inline-block ms-3 link-primary"
             >Перейти к скачиванию</a
@@ -75,7 +76,7 @@ function load() {
           getHumanSize(release.fileSize)
         }}</span>
       </p>
-      <div v-html="release.description"></div>
+      <div v-html="marked.parse(release.descriptionMarkdown)"></div>
     </div>
   </main>
 </template>

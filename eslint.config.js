@@ -1,12 +1,58 @@
 import js from "@eslint/js"
-import pluginVue from "eslint-plugin-vue"
+import eslintPluginVue from "eslint-plugin-vue"
+import vueParser from "vue-eslint-parser"
 import pluginVitest from "@vitest/eslint-plugin"
-import skipFormatting from "@vue/eslint-config-prettier/skip-formatting"
+import skipFormattingConfig from "@vue/eslint-config-prettier/skip-formatting"
+import tsEslint from "typescript-eslint"
+import globals from "globals"
+import { fileURLToPath } from "url"
+import { dirname } from "path"
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 export default [
+  js.configs.recommended,
+  ...tsEslint.configs.recommended,
+  ...eslintPluginVue.configs["flat/recommended"],
+
   {
-    name: "app/files-to-lint",
-    files: ["**/*.{js,mjs,jsx,vue}"],
+    files: ["src/**/*.ts", "server.ts", "prerender.ts"],
+    languageOptions: {
+      parser: tsEslint.parser,
+      globals: {
+        ...globals.browser,
+      },
+    },
+    plugins: {
+      "@typescript-eslint": tsEslint.plugin,
+    },
+  },
+
+  {
+    files: ["src/**/*.vue"],
+    languageOptions: {
+      ecmaVersion: "latest",
+      parser: vueParser,
+      parserOptions: {
+        parser: tsEslint.parser,
+        tsconfigRootDir: __dirname, // Adjust if tsconfig.json is not in the root
+        extraFileExtensions: [".vue"],
+      },
+      globals: {
+        ...globals.browser,
+      },
+    },
+    rules: {
+      "vue/component-name-in-template-casing": [
+        "error",
+        "kebab-case",
+        {
+          registeredComponentsOnly: true,
+        },
+      ],
+      "vue/no-v-html": "off",
+    },
   },
 
   {
@@ -14,12 +60,10 @@ export default [
     ignores: ["**/dist/**", "**/dist-ssr/**", "**/coverage/**"],
   },
 
-  js.configs.recommended,
-  ...pluginVue.configs["flat/essential"],
-
   {
     ...pluginVitest.configs.recommended,
-    files: ["src/**/__tests__/*"],
+    files: ["src/**/*__tests__/*"],
   },
-  skipFormatting,
+
+  skipFormattingConfig,
 ]

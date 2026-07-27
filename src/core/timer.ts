@@ -1,10 +1,6 @@
 /* jshint browser: true */
 /* global setTimeout */
 
-/**
- * @param {Number} millis
- * @returns Promise
- */
-export async function sleep(millis) {
+export async function sleep(millis: number): Promise<number> {
   return new Promise((resolve) => setTimeout(resolve, millis))
 }

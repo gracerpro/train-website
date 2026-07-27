@@ -13,9 +13,6 @@ const SHORT_MONTH_NAMES = [
   "дек",
 ]
 
-/**
- * @param {Date} date
- */
-export function formatDate(date) {
+export function formatDate(date: Date) {
   return date.getDate() + " " + SHORT_MONTH_NAMES[date.getMonth()] + " " + date.getFullYear()
 }

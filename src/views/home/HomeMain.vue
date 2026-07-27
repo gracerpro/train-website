@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { URL_1_4_2_START } from "@/api/ScreenshotApi"
 
 const screens = [

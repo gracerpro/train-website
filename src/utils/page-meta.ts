@@ -1,12 +1,16 @@
 /* global document */
 
+import type { SSRContext } from "vue/server-renderer"
+
 export const DEFAULT_KEYWORDS = "gps-трекинг, маршрут, тренировки, спорт, велосипед, бег, ходьба"
 
-/**
- * @param {Object} info
- * @param {Object|null} ssrContext
- */
-export function setMetaInfo(info, ssrContext) {
+interface PageInfo {
+  title?: string
+  description?: string
+  keywords?: string
+}
+
+export function setMetaInfo(info: PageInfo, ssrContext?: SSRContext | null) {
   if (ssrContext) {
     ssrContext.page = {
       title: info.title !== undefined ? info.title : null,
@@ -38,8 +42,8 @@ export function setMetaInfo(info, ssrContext) {
   }
 }
 
-function createMeta(name, content) {
-  var meta = document.createElement("meta")
+function createMeta(name: string, content: string) {
+  const meta = document.createElement("meta")
   meta.name = name
   meta.content = content
   document.getElementsByTagName("head")[0].appendChild(meta)

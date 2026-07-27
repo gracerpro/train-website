@@ -1,14 +1,16 @@
-<script setup>
-import { onMounted, ref } from "vue"
+<script setup lang="ts">
+import { onMounted, useTemplateRef } from "vue"
 import { LATEST_VERSION } from "@/api/ReleaseApi"
 import SwitchTheme from "@/components/SwitchTheme.vue"
 
-const togglerButton = ref(null)
+const togglerButtonRef = useTemplateRef<HTMLElement>("togglerButtonRef")
 
 onMounted(() => {
   if (!import.meta.env.SSR) {
     import("bootstrap").then(({ Collapse }) => {
-      new Collapse(togglerButton.value)
+      if (togglerButtonRef.value) {
+        new Collapse(togglerButtonRef.value)
+      }
     })
   }
 })
@@ -19,6 +21,7 @@ onMounted(() => {
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container">
         <button
+          ref="togglerButtonRef"
           class="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
@@ -26,11 +29,10 @@ onMounted(() => {
           aria-controls="navbarNav"
           aria-expanded="false"
           aria-label="Toggle navigation"
-          ref="togglerButton"
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <div id="navbarNav" class="collapse navbar-collapse justify-content-center">
           <router-link :to="{ name: 'home' }" class="navbar-brand d-block" title="Главная">
             <img src="/favicon.svg" width="24px" height="24px" class="app-icon" />
             <span class="align-middle ms-2">{{ LATEST_VERSION }}</span>

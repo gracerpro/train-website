@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import {
   URL_SET_PERMISSIONS_ABOUT,
   URL_SET_PERMISSIONS_ALLOW_GPS,

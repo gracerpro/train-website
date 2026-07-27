@@ -1,3 +1,5 @@
+import { ApiList } from "./common"
+
 export const LATEST_VERSION = "1.4.2"
 
 const releaseList = [
@@ -88,44 +90,50 @@ const releaseList = [
   },
 ]
 
+export type Release = {
+  fileSize: number
+  versionCode: string
+  versionLabel: string
+  date: Date | null
+  downloadUrl: string | null
+  downloadPageUrl: string | null
+  descriptionMarkdown: string
+}
+
 export class ReleaseApi {
-  /**
-   * @returns Promise<Object>
-   */
-  async getList() {
-    const list = new Array(releaseList.length)
+  async getList(): Promise<ApiList<Release>> {
+    const items = new Array(releaseList.length)
 
     for (let i = 0; i < releaseList.length; ++i) {
-      list[i] = this.modifyRelease(releaseList[i])
+      items[i] = this.modifyRelease(releaseList[i])
     }
 
-    return {
-      items: list,
-      totalCount: list.length,
-    }
+    return new ApiList(items, items.length)
   }
 
-  /**
-   * @returns Promise<Object>
-   */
   async getLatest() {
-    let release = releaseList[releaseList.length - 1]
+    const release = releaseList[releaseList.length - 1]
 
     return this.modifyRelease(release)
   }
 
-  /**
-   * @private
-   * @param {Object} release
-   * @returns {Object}
-   */
-  modifyRelease(release) {
-    let copyRelease = { ...release }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private modifyRelease(data: any): Release {
+    const release = { ...data }
 
-    if (copyRelease.date && typeof copyRelease.date === "string") {
-      copyRelease.date = new Date(copyRelease.date)
+    if (release.date && typeof release.date === "string") {
+      release.date = new Date(release.date)
+    }
+    if (release.downloadUrl === "") {
+      release.downloadUrl = null
+    }
+    if (release.downloadPageUrl === "") {
+      release.downloadPageUrl = null
+    }
+    if (!release.descriptionMarkdown) {
+      release.descriptionMarkdown = ""
     }
 
-    return copyRelease
+    return release
   }
 }

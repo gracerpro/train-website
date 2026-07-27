@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { DEFAULT_KEYWORDS, setMetaInfo } from "@/utils/page-meta"
 import PlanBlock from "@/views/PlanBlock.vue"
 import { useSSRContext } from "vue"

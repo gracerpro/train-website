@@ -1,8 +1,14 @@
-<script setup>
+<script setup lang="ts">
 import { DEFAULT_KEYWORDS, setMetaInfo } from "@/utils/page-meta"
 import { ref, useSSRContext } from "vue"
 
-const questions = ref([])
+type Question = {
+  id: number
+  name: string
+  answer: string
+}
+
+const questions = ref<Question[]>([])
 
 const ssrContext = import.meta.env.SSR ? useSSRContext() : null
 setMetaInfo(

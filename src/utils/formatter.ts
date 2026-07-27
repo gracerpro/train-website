@@ -1,9 +1,4 @@
-/**
- * @param {Number} sizeInBytes
- * @param {Number} precision
- * @return {string}
- */
-export function getHumanSize(sizeInBytes, precision = 2) {
+export function getHumanSize(sizeInBytes: number, precision: number = 2): string {
   if (sizeInBytes < 1024) {
     return sizeInBytes + " b"
   }

@@ -1,19 +1,25 @@
-<script setup>
-/* jslint browser: true, devel: true */
-/* global console */
+<script setup lang="ts">
+import { marked } from "marked"
 
-import { ReleaseApi } from "@/api/ReleaseApi"
-import { ref, useSSRContext } from "vue"
+import { ReleaseApi, type Release } from "@/api/ReleaseApi"
+import { computed, ref, useSSRContext } from "vue"
 import LoadingRow from "@/components/LoadingRow.vue"
-import { formatDate } from "@/utils/DateTime"
+import { formatDate } from "@/utils/date-time"
 import { DEFAULT_KEYWORDS, setMetaInfo } from "@/utils/page-meta"
 
 const client = new ReleaseApi()
 
 const errorMessage = ref("")
 const latestReleaseLoading = ref(true)
-const latestRelease = ref(null)
+const latestRelease = ref<Release | null>(null)
 const rustoreUrl = import.meta.env.VITE_RUSTORE_URL
+
+const descriptionHtml = computed(() => {
+  if (!latestRelease.value?.descriptionMarkdown) {
+    return ""
+  }
+  return marked.parse(latestRelease.value.descriptionMarkdown)
+})
 
 const ssrContext = import.meta.env.SSR ? useSSRContext() : null
 setMetaInfo(
@@ -62,17 +68,19 @@ function load() {
     <div v-else-if="!latestRelease" class="alert alert-warning">Не найден последний релиз.</div>
     <div v-else>
       <h4>{{ latestRelease.versionLabel }}</h4>
-      <div class="fst-italic mb-3">{{ formatDate(latestRelease.date) }}</div>
+      <div class="fst-italic mb-3">
+        {{ latestRelease.date ? formatDate(latestRelease.date) : "&mdash;" }}
+      </div>
       <div v-if="!latestRelease.downloadUrl">
         <div v-if="!latestRelease.downloadPageUrl" class="alert alert-warning">
           Релиз в процессе сборки. Ссылка появится позже.
         </div>
-        <a v-else :href="latestRelease.downloadUrl" target="_blank" class="btn btn-primary"
+        <a v-else :href="latestRelease.downloadPageUrl" target="_blank" class="btn btn-primary"
           >Перейти к скачиванию</a
         >
       </div>
       <a v-else :href="latestRelease.downloadUrl" class="btn btn-primary">Скачать</a>
-      <div class="mt-3" v-html="latestRelease.description"></div>
+      <div class="mt-3" v-html="descriptionHtml"></div>
     </div>
   </main>
 </template>

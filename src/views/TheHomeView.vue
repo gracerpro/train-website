@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import HomeMain from "./home/HomeMain.vue"
 import HomeImages from "./home/HomeImages.vue"
 import PlanBlock from "./PlanBlock.vue"

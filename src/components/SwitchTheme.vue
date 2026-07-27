@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { setTheme } from "@/core/theme"
 import { useThemeStore } from "@/store/theme"
 import { computed } from "vue"
@@ -14,8 +14,9 @@ function onChange() {
   setTheme(isDark.value)
 }
 </script>
+
 <template>
   <div class="form-check form-switch">
-    <input class="form-check-input" type="checkbox" v-model="isDark" @change="onChange" />
+    <input v-model="isDark" class="form-check-input" type="checkbox" @change="onChange" />
   </div>
 </template>

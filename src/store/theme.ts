@@ -12,9 +12,9 @@ if (!import.meta.env.SSR) {
 }
 
 export const useThemeStore = defineStore("theme", () => {
-  const isDark = ref(initIsDark)
+  const isDark = ref<boolean>(initIsDark)
 
-  function setIsDark(value) {
+  function setIsDark(value: boolean) {
     isDark.value = value
     localStorage.setItem(NAME_IS_DARK, isDark.value ? "1" : "0")
   }

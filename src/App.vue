@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { RouterView } from "vue-router"
 import TheNav from "./views/TheNav.vue"
 import TheFooter from "./views/TheFooter.vue"
