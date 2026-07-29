@@ -2,6 +2,7 @@
 import { onMounted, useTemplateRef } from "vue"
 import { LATEST_VERSION } from "@/api/ReleaseApi"
 import SwitchTheme from "@/components/SwitchTheme.vue"
+import { NAME_FEEDBACK } from "@/router"
 
 const togglerButtonRef = useTemplateRef<HTMLElement>("togglerButtonRef")
 
@@ -51,6 +52,11 @@ onMounted(() => {
             </li>
             <li class="nav-item">
               <router-link :to="{ name: 'contact' }" class="nav-link">Контакты</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link :to="{ name: NAME_FEEDBACK }" class="nav-link"
+                >Обратная связь</router-link
+              >
             </li>
             <li class="nav-item">
               <router-link :to="{ name: 'user-agreement' }" class="nav-link"

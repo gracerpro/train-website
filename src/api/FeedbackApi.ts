@@ -16,8 +16,8 @@ export interface Feedback {
   moderatedAt: Date | null
   status: Status
   subject: string
-  message: string
-  answer: string
+  messageMarkdown: string
+  answerMarkdown: string
   username: string
   email: string
 }
@@ -37,7 +37,7 @@ export class FeedbackApi {
       params.append("pageNumber", pageNumber.toString())
     }
 
-    const response = await this.apiRequest.get("/feedback-items", params)
+    const response = await this.apiRequest.get("/feedback", params)
 
     let items: Array<Feedback> = []
     let totalCount = 0
@@ -59,8 +59,8 @@ export class FeedbackApi {
       moderatedAt: data.moderatedAt ? new Date(data.moderatedAt) : null,
       status: data.status,
       subject: data.subject,
-      message: data.message,
-      answer: data.answer ?? "",
+      messageMarkdown: data.message,
+      answerMarkdown: data.answer ?? "",
       username: data.username ?? "",
       email: data.email ?? "",
     }

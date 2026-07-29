@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory, createMemoryHistory } from "vue-router"
 import TheHomeView from "../views/TheHomeView.vue"
 
+export const NAME_FEEDBACK = "feedback"
+
 const router = createRouter({
   history: import.meta.env.SSR
     ? createMemoryHistory(import.meta.env.VITE_BASE_URL)
@@ -50,6 +52,11 @@ const router = createRouter({
       path: "/user-agreement",
       name: "user-agreement",
       component: () => import("../views/TheUserAgreementView.vue"),
+    },
+    {
+      path: "/feedback",
+      name: NAME_FEEDBACK,
+      component: () => import("../views/feedback/TheIndexView.vue"),
     },
     {
       path: "/page-not-found",

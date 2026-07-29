@@ -12,7 +12,7 @@ const { render } = await import("./dist/server/entry-server.js")
 
 const STATUS_PAGES_NAME = "status-pages"
 
-const enLocale = "en"
+const DIRECTORY_FEEDBACK = "feedback"
 
 const { isClean } = parseParameters(process.argv)
 
@@ -49,7 +49,6 @@ function parseParameters(argv: Array<string>) {
 async function createFiles(urls: Array<string>) {
   console.log("Create a files...")
 
-  const enUrl = `/${enLocale}`
   const basePath = "./dist/static"
   console.log("base path", basePath)
 
@@ -67,8 +66,6 @@ async function createFiles(urls: Array<string>) {
 
     if (url === "/") {
       path = "/index"
-    } else if (url === enUrl) {
-      path = `${enUrl}/index`
     } else {
       path = url
     }
@@ -109,16 +106,13 @@ async function readUrlsFromViews(): Promise<Array<string>> {
       names.forEach((dynamicName) => {
         console.log("--", dynamicName)
         urls.push(`/${dynamicName}`)
-        urls.push(`/${enLocale}/${dynamicName}`)
       })
     } else {
       console.log("-", name)
       if (name === "home") {
         urls.push("/")
-        urls.push(`/${enLocale}`)
       } else {
         urls.push(`/${name}`)
-        urls.push(`/${enLocale}/${name}`)
       }
     }
   }
@@ -137,6 +131,28 @@ async function readUrlsFromViews(): Promise<Array<string>> {
     urls.push(`/${name}`)
   })
 
+  readDirectoryUrls(DIRECTORY_FEEDBACK).forEach((a) => urls.push(a))
+
+  return urls
+}
+
+function readDirectoryUrls(directoryName: string): string[] {
+  const urls: string[] = []
+
+  fs.readdirSync("./src/views/" + directoryName, {
+    withFileTypes: true,
+    recursive: false,
+  }).forEach((file) => {
+    if (!file.isFile()) {
+      return
+    }
+
+    const name = getUrlName(file.name)
+    console.log(directoryName, "-", name)
+
+    urls.push(`/${directoryName}/${name}`)
+  })
+
   return urls
 }
 
@@ -144,7 +160,7 @@ function initDirectories() {
   console.log("Init directories...")
 
   const basePath = "./dist/static/"
-  const directories = [enLocale, "islands", enLocale + "/islands", "news", enLocale + "/news"]
+  const directories = [DIRECTORY_FEEDBACK]
 
   directories.forEach((path) => {
     console.log("- ", path)

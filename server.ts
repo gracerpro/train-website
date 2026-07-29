@@ -6,7 +6,7 @@ import { type AppSsrManifest, getHtml, type RenderFun } from "./src/server-commo
 
 // Constants
 const isProduction = process.env.NODE_ENV === "production"
-const port = 8082
+const port = 8101
 const base = "/"
 
 // Cached production assets

@@ -1,4 +1,5 @@
-import "./scss/styles.scss"
+import "./assets/styles.scss"
+import "./assets/bootstrap-icons.scss"
 
 import { createApp } from "./main"
 
