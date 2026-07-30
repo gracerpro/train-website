@@ -1,3 +1,4 @@
+import { ApiRequest } from "@/core/ApiRequest"
 import { ApiList } from "./common"
 
 export const LATEST_VERSION = "1.4.2"
@@ -101,14 +102,32 @@ export type Release = {
 }
 
 export class ReleaseApi {
-  async getList(): Promise<ApiList<Release>> {
-    const items = new Array(releaseList.length)
+  private apiRequest: ApiRequest
 
-    for (let i = 0; i < releaseList.length; ++i) {
-      items[i] = this.modifyRelease(releaseList[i])
+  constructor() {
+    this.apiRequest = new ApiRequest()
+  }
+
+  async getList(pageSize: number, pageNumber: number = 1): Promise<ApiList<Release>> {
+    const params = new URLSearchParams()
+    params.append("pageSize", pageSize.toString())
+
+    if (pageNumber > 1) {
+      params.append("pageNumber", pageNumber.toString())
     }
 
-    return new ApiList(items, items.length)
+    const response = await this.apiRequest.get("/releases", params)
+
+    let items: Array<Release> = []
+    let totalCount = 0
+
+    if (response.items) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      items = response.items.map((item: any) => this.modifyRelease(item))
+      totalCount = response.totalCount
+    }
+
+    return new ApiList<Release>(items, totalCount)
   }
 
   async getLatest() {

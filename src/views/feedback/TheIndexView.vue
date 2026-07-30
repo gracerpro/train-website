@@ -11,7 +11,7 @@ const feedbackApi = new FeedbackApi()
 const isLoading = ref(false)
 const errorMessage = ref("")
 const feedbackItems = ref<Feedback[]>([])
-const feedbackItemsTotalCount = ref(0)
+const totalCount = ref(0)
 const pagination = reactive({
   pageSize: 2,
   pageNumber: 1,
@@ -21,7 +21,7 @@ if (!import.meta.env.SSR) {
   load(false)
 }
 
-const isShowMoreVisible = computed(() => feedbackItems.value.length < feedbackItemsTotalCount.value)
+const isShowMoreVisible = computed(() => feedbackItems.value.length < totalCount.value)
 
 function showMore() {
   if (isLoading.value) {
@@ -50,7 +50,7 @@ function load(isFirst: boolean) {
         feedbackItems.value = []
       }
       list.items.forEach((a) => feedbackItems.value.push(a))
-      feedbackItemsTotalCount.value = list.totalCount
+      totalCount.value = list.totalCount
 
       if (list.items.length === 0 && pagination.pageNumber > 1) {
         return loadFirst()
@@ -79,8 +79,8 @@ function load(isFirst: boolean) {
         <i class="bi bi-arrow-clockwise"></i>
       </button>
       <loading-box :class="[isLoading ? 'visible' : 'invisible']" />
-      <span v-if="feedbackItems.length > 0 && feedbackItemsTotalCount > 0"
-        >{{ feedbackItems.length }} / {{ feedbackItemsTotalCount }}</span
+      <span v-if="feedbackItems.length > 0 && totalCount > 0"
+        >{{ feedbackItems.length }} / {{ totalCount }}</span
       >
     </div>
     <div v-if="errorMessage" class="alert alert-danger">
@@ -100,8 +100,8 @@ function load(isFirst: boolean) {
           <div v-html="marked.parse(item.answerMarkdown)" />
         </div>
       </div>
-      <div v-if="feedbackItems.length > 0 && feedbackItemsTotalCount > 0" class="text-end mb-3">
-        Показано <span>{{ feedbackItems.length }} / {{ feedbackItemsTotalCount }}</span>
+      <div v-if="feedbackItems.length > 0 && totalCount > 0" class="text-end mb-3">
+        Показано <span>{{ feedbackItems.length }} / {{ totalCount }}</span>
       </div>
       <div v-if="isShowMoreVisible" class="text-center">
         <button class="btn btn-link link-dark" :disabled="isLoading" @click="showMore">

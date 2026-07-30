@@ -5,11 +5,15 @@ import { formatDate } from "@/utils/date-time"
 import { getHumanSize } from "@/utils/formatter"
 import { DEFAULT_KEYWORDS, setMetaInfo } from "@/utils/page-meta"
 import { marked } from "marked"
+import LoadingBox from "@/components/LoadingBox.vue"
+import { UserError } from "@/exceptions/UserError"
 
 const releaseApi = new ReleaseApi()
 
-const releasesErrorMessage = ref("")
+const isLoading = ref(false)
+const errorMessage = ref("")
 const releases = ref<Release[]>([])
+const totalCount = ref(0)
 
 const ssrContext = import.meta.env.SSR ? useSSRContext() : null
 setMetaInfo(
@@ -24,24 +28,35 @@ setMetaInfo(
 load()
 
 function load() {
-  releasesErrorMessage.value = ""
+  isLoading.value = true
+  errorMessage.value = ""
 
   releaseApi
-    .getList()
-    .then((response) => {
-      const list = response.items
-      list.sort((a, b) => {
-        if (a.date === b.date || a.date === null || b.date === null) {
-          return 0
-        }
-        return a.date < b.date ? -1 : 1
-      })
-      releases.value = list
+    .getList(999)
+    .then((list) => {
+      releases.value = sortItems(list.items)
+      totalCount.value = list.totalCount
     })
-    .catch((e) => {
-      console.error(e)
-      releasesErrorMessage.value = "Произошла внутренняя ошибка."
+    .catch((error: Error) => {
+      if (error instanceof UserError) {
+        errorMessage.value = error.message
+      } else {
+        errorMessage.value = "Произошла внутренняя ошибка."
+        throw error
+      }
     })
+    .finally(() => (isLoading.value = false))
+}
+
+function sortItems(list: Release[]): Release[] {
+  list.sort((a, b) => {
+    if (a.date === b.date || a.date === null || b.date === null) {
+      return 0
+    }
+    return a.date < b.date ? -1 : 1
+  })
+
+  return list
 }
 </script>
 
@@ -50,10 +65,18 @@ function load() {
     <h1>История</h1>
     <p>На странице выводится список релизов. Каждый релиз имеет версию, дату и описание.</p>
 
-    <div v-if="releasesErrorMessage.length" class="alert alert-danger">
-      {{ releasesErrorMessage }}
+    <div class="d-flex align-items-center gap-3 mb-3">
+      <button class="btn btn-link" :disabled="isLoading" @click="load()">
+        <i class="bi bi-arrow-clockwise"></i>
+      </button>
+      <loading-box :class="[isLoading ? 'visible' : 'invisible']" />
     </div>
-    <div v-else-if="releases.length === 0" class="alert alert-info">Список пуст.</div>
+
+    <div v-if="errorMessage.length" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+    <div v-if="!isLoading && releases.length === 0" class="alert alert-info">Список пуст.</div>
+
     <div v-for="(release, index) in releases" :key="release.versionCode">
       <h2>{{ release.versionLabel }}</h2>
       <p>
