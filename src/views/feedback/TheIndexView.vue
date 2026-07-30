@@ -2,7 +2,7 @@
 import { FeedbackApi, type Feedback } from "@/api/FeedbackApi"
 import { UserError } from "@/exceptions/UserError"
 import { formatDate } from "@/utils/date-time"
-import { reactive, ref } from "vue"
+import { computed, reactive, ref } from "vue"
 import LoadingBox from "@/components/LoadingBox.vue"
 import { marked } from "marked"
 
@@ -13,28 +13,47 @@ const errorMessage = ref("")
 const feedbackItems = ref<Feedback[]>([])
 const feedbackItemsTotalCount = ref(0)
 const pagination = reactive({
-  pageSize: 10,
+  pageSize: 2,
   pageNumber: 1,
 })
 
 if (!import.meta.env.SSR) {
-  load()
+  load(false)
 }
 
-function load() {
+const isShowMoreVisible = computed(() => feedbackItems.value.length < feedbackItemsTotalCount.value)
+
+function showMore() {
+  if (isLoading.value) {
+    return
+  }
+  pagination.pageNumber++
+  load(false)
+}
+
+function loadFirst() {
+  pagination.pageNumber = 1
+  load(true)
+}
+
+function load(isFirst: boolean) {
+  if (isLoading.value) {
+    return
+  }
+
   isLoading.value = true
   errorMessage.value = ""
-
   feedbackApi
     .getList(pagination.pageSize, pagination.pageNumber)
     .then((list) => {
-      feedbackItems.value = list.items
+      if (isFirst) {
+        feedbackItems.value = []
+      }
+      list.items.forEach((a) => feedbackItems.value.push(a))
       feedbackItemsTotalCount.value = list.totalCount
 
-      if (feedbackItems.value.length === 0 && pagination.pageNumber > 1) {
-        pagination.pageNumber = 1
-
-        return load()
+      if (list.items.length === 0 && pagination.pageNumber > 1) {
+        return loadFirst()
       }
     })
     .catch((error: Error) => {
@@ -54,11 +73,15 @@ function load() {
 <template>
   <main class="content container container-text">
     <h1>Обратная связь</h1>
+
     <div class="d-flex align-items-center gap-3 mb-3">
-      <button class="btn btn-secondary" @click="load()">
+      <button class="btn btn-link" :disabled="isLoading" @click="loadFirst()">
         <i class="bi bi-arrow-clockwise"></i>
       </button>
       <loading-box :class="[isLoading ? 'visible' : 'invisible']" />
+      <span v-if="feedbackItems.length > 0 && feedbackItemsTotalCount > 0"
+        >{{ feedbackItems.length }} / {{ feedbackItemsTotalCount }}</span
+      >
     </div>
     <div v-if="errorMessage" class="alert alert-danger">
       {{ errorMessage }}
@@ -76,6 +99,15 @@ function load() {
           <i class="text-danger-emphasis">Ответ администратора</i>
           <div v-html="marked.parse(item.answerMarkdown)" />
         </div>
+      </div>
+      <div v-if="feedbackItems.length > 0 && feedbackItemsTotalCount > 0" class="text-end mb-3">
+        Показано <span>{{ feedbackItems.length }} / {{ feedbackItemsTotalCount }}</span>
+      </div>
+      <div v-if="isShowMoreVisible" class="text-center">
+        <button class="btn btn-link link-dark" :disabled="isLoading" @click="showMore">
+          Показать ещё
+        </button>
+        <loading-box :class="[isLoading ? 'visible' : 'invisible']" />
       </div>
     </div>
   </main>
