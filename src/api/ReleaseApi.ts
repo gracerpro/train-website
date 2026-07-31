@@ -92,12 +92,13 @@ const releaseList = [
 ]
 
 export type Release = {
+  version: string
+  versionName: string
   fileSize: number
-  versionCode: string
-  versionLabel: string
-  date: Date | null
+  releasedAt: Date | null
   downloadUrl: string | null
   downloadPageUrl: string | null
+  snippetMarkdown: string
   descriptionMarkdown: string
 }
 
@@ -140,8 +141,8 @@ export class ReleaseApi {
   private modifyRelease(data: any): Release {
     const release = { ...data }
 
-    if (release.date && typeof release.date === "string") {
-      release.date = new Date(release.date)
+    if (release.releasedAt && typeof release.releasedAt === "string") {
+      release.releasedAt = new Date(release.releasedAt)
     }
     if (release.downloadUrl === "") {
       release.downloadUrl = null
@@ -149,8 +150,15 @@ export class ReleaseApi {
     if (release.downloadPageUrl === "") {
       release.downloadPageUrl = null
     }
-    if (!release.descriptionMarkdown) {
+    if (!release.description) {
       release.descriptionMarkdown = ""
+    } else {
+      release.descriptionMarkdown = data.description
+    }
+    if (!release.snippet) {
+      release.snippetMarkdown = ""
+    } else {
+      release.snippetMarkdown = data.snippet
     }
 
     return release

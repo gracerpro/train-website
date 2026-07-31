@@ -25,7 +25,9 @@ setMetaInfo(
   ssrContext,
 )
 
-load()
+if (!import.meta.env.SSR) {
+  load()
+}
 
 function load() {
   isLoading.value = true
@@ -34,7 +36,7 @@ function load() {
   releaseApi
     .getList(999)
     .then((list) => {
-      releases.value = sortItems(list.items)
+      releases.value = list.items
       totalCount.value = list.totalCount
     })
     .catch((error: Error) => {
@@ -46,17 +48,6 @@ function load() {
       }
     })
     .finally(() => (isLoading.value = false))
-}
-
-function sortItems(list: Release[]): Release[] {
-  list.sort((a, b) => {
-    if (a.date === b.date || a.date === null || b.date === null) {
-      return 0
-    }
-    return a.date < b.date ? -1 : 1
-  })
-
-  return list
 }
 </script>
 
@@ -77,29 +68,51 @@ function sortItems(list: Release[]): Release[] {
     </div>
     <div v-if="!isLoading && releases.length === 0" class="alert alert-info">Список пуст.</div>
 
-    <div v-for="(release, index) in releases" :key="release.versionCode">
-      <h2>{{ release.versionLabel }}</h2>
-      <p>
-        <span class="fst-italic">{{ release.date ? formatDate(release.date) : "&mdash;" }}</span>
+    <div
+      v-for="(release, index) in releases"
+      :key="release.version"
+      class="border rounded p-2 mb-3"
+    >
+      <h2>{{ release.versionName }}</h2>
+      <div class="d-flex gap-3 mb-3">
+        <span class="fst-italic">{{
+          release.releasedAt ? formatDate(release.releasedAt) : "&mdash;"
+        }}</span>
         <span v-if="!release.downloadUrl">
-          <span v-if="!release.downloadPageUrl" class="d-inline-block ms-3 text-warning-emphasis">
+          <span v-if="!release.downloadPageUrl" class="d-inline-block text-warning-emphasis">
             <span v-if="index === 0">Релиз в процессе сборки. Ссылка появится позже.</span>
           </span>
           <a
             v-else
             :href="release.downloadPageUrl"
             target="_blank"
-            class="d-inline-block ms-3 link-primary"
+            class="d-inline-block link-primary"
             >Перейти к скачиванию</a
           >
         </span>
-        <a v-else :href="release.downloadUrl" class="d-inline-block ms-3 link-primary">Скачать</a>
+        <a v-else :href="release.downloadUrl" class="d-inline-block link-primary">Скачать</a>
 
-        <span v-if="release.fileSize > 0" class="d-inline-block ms-3">{{
+        <span v-if="release.fileSize > 0" class="d-inline-block">{{
           getHumanSize(release.fileSize)
         }}</span>
-      </p>
-      <div v-html="marked.parse(release.descriptionMarkdown)"></div>
+      </div>
+      <div v-if="release.snippetMarkdown" v-html="marked.parse(release.snippetMarkdown)"></div>
+      <div v-if="release.descriptionMarkdown">
+        <button
+          class="btn btn-link link-dark"
+          type="button"
+          data-bs-toggle="collapse"
+          :data-bs-target="'#description_' + release.version"
+          aria-expanded="false"
+          :aria-controls="'description_' + release.version"
+        >
+          Описание
+        </button>
+        <div
+          :id="'description_' + release.version"
+          v-html="marked.parse(release.descriptionMarkdown)"
+        ></div>
+      </div>
     </div>
   </main>
 </template>

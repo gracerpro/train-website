@@ -86,6 +86,9 @@ function load(isFirst: boolean) {
     <div v-if="errorMessage" class="alert alert-danger">
       {{ errorMessage }}
     </div>
+    <div v-else-if="feedbackItems.length === 0 && !isLoading" class="alert alert-info">
+      Список пуст.
+    </div>
     <div>
       <div v-for="item in feedbackItems" :key="item.id" class="border rounded p-2 mb-3">
         <h3>{{ item.subject }}</h3>

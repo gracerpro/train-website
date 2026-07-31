@@ -67,9 +67,9 @@ function load() {
     <loading-row v-else-if="latestReleaseLoading" />
     <div v-else-if="!latestRelease" class="alert alert-warning">Не найден последний релиз.</div>
     <div v-else>
-      <h4>{{ latestRelease.versionLabel }}</h4>
+      <h4>{{ latestRelease.versionName }}</h4>
       <div class="fst-italic mb-3">
-        {{ latestRelease.date ? formatDate(latestRelease.date) : "&mdash;" }}
+        {{ latestRelease.releasedAt ? formatDate(latestRelease.releasedAt) : "&mdash;" }}
       </div>
       <div v-if="!latestRelease.downloadUrl">
         <div v-if="!latestRelease.downloadPageUrl" class="alert alert-warning">
