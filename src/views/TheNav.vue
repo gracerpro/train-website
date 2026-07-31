@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { onMounted, useTemplateRef } from "vue"
-import { LATEST_VERSION } from "@/api/ReleaseApi"
 import SwitchTheme from "@/components/SwitchTheme.vue"
 import { NAME_FEEDBACK } from "@/router"
 
@@ -15,6 +14,8 @@ onMounted(() => {
     })
   }
 })
+
+const LATEST_VERSION = import.meta.env.VITE_VERSION
 </script>
 
 <template>

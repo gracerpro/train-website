@@ -71,6 +71,13 @@ function load() {
       <div class="fst-italic mb-3">
         {{ latestRelease.releasedAt ? formatDate(latestRelease.releasedAt) : "&mdash;" }}
       </div>
+
+      <div
+        v-if="latestRelease.snippetMarkdown"
+        class="mb-3"
+        v-html="marked.parse(latestRelease.snippetMarkdown)"
+      ></div>
+
       <div v-if="!latestRelease.downloadUrl">
         <div v-if="!latestRelease.downloadPageUrl" class="alert alert-warning">
           Релиз в процессе сборки. Ссылка появится позже.
@@ -80,6 +87,7 @@ function load() {
         >
       </div>
       <a v-else :href="latestRelease.downloadUrl" class="btn btn-primary">Скачать</a>
+
       <div class="mt-3" v-html="descriptionHtml"></div>
     </div>
   </main>

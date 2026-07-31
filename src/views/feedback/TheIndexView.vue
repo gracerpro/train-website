@@ -23,7 +23,9 @@ if (!import.meta.env.SSR) {
 
 const isShowMoreVisible = computed(() => feedbackItems.value.length < totalCount.value)
 
-function showMore() {
+function showMore(event: Event) {
+  event.preventDefault()
+
   if (isLoading.value) {
     return
   }
@@ -107,9 +109,7 @@ function load(isFirst: boolean) {
         Показано <span>{{ feedbackItems.length }} / {{ totalCount }}</span>
       </div>
       <div v-if="isShowMoreVisible" class="text-center">
-        <button class="btn btn-link link-dark" :disabled="isLoading" @click="showMore">
-          Показать ещё
-        </button>
+        <a href="#" class="link-info" :disabled="isLoading" @click="showMore"> Показать ещё </a>
         <loading-box :class="[isLoading ? 'visible' : 'invisible']" />
       </div>
     </div>

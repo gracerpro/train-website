@@ -99,17 +99,19 @@ function load() {
       <div v-if="release.snippetMarkdown" v-html="marked.parse(release.snippetMarkdown)"></div>
       <div v-if="release.descriptionMarkdown">
         <button
-          class="btn btn-link link-dark"
+          href="#"
+          class="btn btn-link link-info"
           type="button"
           data-bs-toggle="collapse"
-          :data-bs-target="'#description_' + release.version"
+          :data-bs-target="'#description_' + release.id"
           aria-expanded="false"
-          :aria-controls="'description_' + release.version"
+          :aria-controls="'description_' + release.id"
         >
           Описание
         </button>
         <div
-          :id="'description_' + release.version"
+          :id="'description_' + release.id"
+          class="collapse"
           v-html="marked.parse(release.descriptionMarkdown)"
         ></div>
       </div>

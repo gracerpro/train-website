@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { formatDate } from "@/utils/date-time"
 import { DEFAULT_KEYWORDS, setMetaInfo } from "@/utils/page-meta"
 import PlanBlock from "@/views/PlanBlock.vue"
-import { useSSRContext } from "vue"
+import { computed, useSSRContext } from "vue"
 
 const projectWebsiteUrl = import.meta.env.VITE_PROJECT_WEBSITE_URL
 
@@ -21,6 +22,9 @@ setMetaInfo(
       обмена сообщениями, тревожных кнопок, уведомлений, стираний данных, блокировок телефона, чата,
       и т.п.
       */
+const LATEST_VERSION = import.meta.env.VITE_VERSION
+
+const latestDate = computed(() => new Date(import.meta.env.VITE_VERSION_DATE))
 </script>
 
 <template>
@@ -43,6 +47,11 @@ setMetaInfo(
     <p class="mt-4">
       Код этого сайта открыт, кому интересно его можно посмотреть на
       <a :href="projectWebsiteUrl" target="_blank">GitHub</a>.
+    </p>
+
+    <p>
+      Последняя версия мобильного приложения <b>{{ LATEST_VERSION }}</b> от
+      <b>{{ formatDate(latestDate) }}</b>
     </p>
   </main>
 </template>
