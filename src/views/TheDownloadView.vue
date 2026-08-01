@@ -31,7 +31,9 @@ setMetaInfo(
   ssrContext,
 )
 
-load()
+if (!import.meta.env.SSR) {
+  load()
+}
 
 function load() {
   errorMessage.value = ""

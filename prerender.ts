@@ -10,9 +10,9 @@ const manifest: AppSsrManifest = JSON.parse(
 const template = fs.readFileSync("./dist/static/index.html", "utf-8")
 const { render } = await import("./dist/server/entry-server.js")
 
-const STATUS_PAGES_NAME = "status-pages"
-
+const DIRECTORY_STATUS_PAGES = "status-pages"
 const DIRECTORY_FEEDBACK = "feedback"
+const DIRECTORY_HOME = "home"
 
 const { isClean } = parseParameters(process.argv)
 
@@ -82,6 +82,11 @@ async function createFiles(urls: Array<string>) {
 async function readUrlsFromViews(): Promise<Array<string>> {
   console.log("Read urls from view...")
 
+  const skipNames: { [key: string]: true } = {
+    [DIRECTORY_STATUS_PAGES]: true,
+    [DIRECTORY_FEEDBACK]: true,
+    [DIRECTORY_HOME]: true,
+  }
   const dynamicNamesMap: { [key: string]: boolean } = {}
   const urls: Array<string> = []
   const files = fs.readdirSync("./src/views", { withFileTypes: true, recursive: false })
@@ -89,15 +94,15 @@ async function readUrlsFromViews(): Promise<Array<string>> {
   for (let i = 0; i < files.length; ++i) {
     const file = files[i]
 
-    if (file.name === STATUS_PAGES_NAME) {
+    if (skipNames[file.name]) {
+      console.log("skip name", file.name)
       continue
     }
 
     const name = file.isFile() ? getUrlName(file.name) : file.name
-    console.log("NAME", name)
 
     if (name === null) {
-      console.log("NAME IS NULL")
+      console.log("NAME IS NULL,", "fileName", file.name)
     } else if (dynamicNamesMap[name]) {
       console.log(`- dynamic name! "${name}", get names...`)
       const names = await getDynamicNames(name)
@@ -117,7 +122,16 @@ async function readUrlsFromViews(): Promise<Array<string>> {
     }
   }
 
-  fs.readdirSync("./src/views/" + STATUS_PAGES_NAME, {
+  readStatusPagesUrls().forEach((a) => urls.push(a))
+  readDirectoryUrls(DIRECTORY_FEEDBACK).forEach((a) => urls.push(a))
+
+  return urls
+}
+
+function readStatusPagesUrls(): string[] {
+  const urls: string[] = []
+
+  fs.readdirSync("./src/views/" + DIRECTORY_STATUS_PAGES, {
     withFileTypes: true,
     recursive: false,
   }).forEach((file) => {
@@ -131,13 +145,13 @@ async function readUrlsFromViews(): Promise<Array<string>> {
     urls.push(`/${name}`)
   })
 
-  readDirectoryUrls(DIRECTORY_FEEDBACK).forEach((a) => urls.push(a))
-
   return urls
 }
 
 function readDirectoryUrls(directoryName: string): string[] {
   const urls: string[] = []
+
+  console.log("Read directory", directoryName)
 
   fs.readdirSync("./src/views/" + directoryName, {
     withFileTypes: true,
@@ -148,9 +162,13 @@ function readDirectoryUrls(directoryName: string): string[] {
     }
 
     const name = getUrlName(file.name)
-    console.log(directoryName, "-", name)
+    console.log("-", name)
 
-    urls.push(`/${directoryName}/${name}`)
+    if (name === "index") {
+      urls.push(`/${directoryName}`)
+    } else {
+      urls.push(`/${directoryName}/${name}`)
+    }
   })
 
   return urls
@@ -160,15 +178,19 @@ function initDirectories() {
   console.log("Init directories...")
 
   const basePath = "./dist/static/"
-  const directories = [DIRECTORY_FEEDBACK]
+  const directories: string[] = []
+  let createCount = 0
 
   directories.forEach((path) => {
     console.log("- ", path)
     const directory = basePath + path
     if (!fs.existsSync(directory)) {
       fs.mkdirSync(directory)
+      ++createCount
     }
   })
+
+  console.log(`A directories has been created: ${createCount}`)
 }
 
 async function getDynamicNames(name: string): Promise<Array<string>> {
