@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const currentYear = new Date().getFullYear()
-const appName = import.meta.env.VITE_APP_NAME
+const appName = import.meta.env.VITE_MOBILE_APP_NAME
 </script>
 
 <template>

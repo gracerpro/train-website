@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { onMounted, useTemplateRef } from "vue"
+import { computed, onMounted, useTemplateRef } from "vue"
 import SwitchTheme from "@/components/SwitchTheme.vue"
 import { NAME_FEEDBACK } from "@/router"
+import { useMobileClientStore } from "@/store/client-store"
 
 const togglerButtonRef = useTemplateRef<HTMLElement>("togglerButtonRef")
 
@@ -15,7 +16,9 @@ onMounted(() => {
   }
 })
 
-const LATEST_VERSION = import.meta.env.VITE_VERSION
+const mobileClientStore = useMobileClientStore()
+
+const latestVersion = computed(() => mobileClientStore.version)
 </script>
 
 <template>
@@ -37,7 +40,7 @@ const LATEST_VERSION = import.meta.env.VITE_VERSION
         <div id="navbarNav" class="collapse navbar-collapse justify-content-center">
           <router-link :to="{ name: 'home' }" class="navbar-brand d-block" title="Главная">
             <img src="/favicon.svg" width="24px" height="24px" class="app-icon" />
-            <span class="align-middle ms-2">{{ LATEST_VERSION }}</span>
+            <span class="align-middle ms-2">{{ latestVersion }}</span>
           </router-link>
           <ul class="navbar-nav">
             <li class="nav-item">

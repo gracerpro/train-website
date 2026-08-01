@@ -13,7 +13,7 @@ import { useSSRContext } from "vue"
 
 const rustoreUrl = import.meta.env.VITE_RUSTORE_URL
 const ssrContext = import.meta.env.SSR ? useSSRContext() : null
-const appName = import.meta.env.VITE_APP_NAME
+const appName = import.meta.env.VITE_MOBILE_APP_NAME
 
 setMetaInfo(
   {

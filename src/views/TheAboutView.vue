@@ -2,7 +2,7 @@
 import { formatDate } from "@/utils/date-time"
 import { DEFAULT_KEYWORDS, setMetaInfo } from "@/utils/page-meta"
 import PlanBlock from "@/views/PlanBlock.vue"
-import { computed, useSSRContext } from "vue"
+import { useSSRContext } from "vue"
 
 const projectWebsiteUrl = import.meta.env.VITE_PROJECT_WEBSITE_URL
 
@@ -22,9 +22,11 @@ setMetaInfo(
       обмена сообщениями, тревожных кнопок, уведомлений, стираний данных, блокировок телефона, чата,
       и т.п.
       */
-const LATEST_VERSION = import.meta.env.VITE_VERSION
+//const latestVersion = null
+//const latestDate = null
 
-const latestDate = computed(() => new Date(import.meta.env.VITE_VERSION_DATE))
+const version: string = import.meta.env.VITE_PACKAGE_VERSION
+const versionDate = new Date(import.meta.env.VITE_PACKAGE_RELEASE_AT)
 </script>
 
 <template>
@@ -49,9 +51,9 @@ const latestDate = computed(() => new Date(import.meta.env.VITE_VERSION_DATE))
       <a :href="projectWebsiteUrl" target="_blank">GitHub</a>.
     </p>
 
-    <p>
-      Последняя версия мобильного приложения <b>{{ LATEST_VERSION }}</b> от
-      <b>{{ formatDate(latestDate) }}</b>
+    <p v-if="version && versionDate">
+      Версия сайта <b>{{ version }}</b> от
+      <b>{{ formatDate(versionDate) }}</b>
     </p>
   </main>
 </template>
