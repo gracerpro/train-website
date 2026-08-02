@@ -79,9 +79,11 @@ function load() {
           release.releasedAt ? formatDate(release.releasedAt) : "&mdash;"
         }}</span>
         <span v-if="!release.downloadUrl">
-          <span v-if="!release.downloadPageUrl" class="d-inline-block text-warning-emphasis">
-            <span v-if="index === 0">Релиз в процессе сборки. Ссылка появится позже.</span>
-          </span>
+          <template v-if="!release.downloadPageUrl">
+            <span v-if="index === 0" class="d-inline-block text-warning-emphasis"
+              >Релиз в процессе сборки. Ссылка появится позже.</span
+            >
+          </template>
           <a
             v-else
             :href="release.downloadPageUrl"

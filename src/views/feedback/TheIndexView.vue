@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { FeedbackApi, type Feedback } from "@/api/FeedbackApi"
+import { FeedbackApi, Status, type Feedback } from "@/api/FeedbackApi"
 import { UserError } from "@/exceptions/UserError"
 import { formatDate } from "@/utils/date-time"
 import { computed, reactive, ref } from "vue"
 import LoadingBox from "@/components/LoadingBox.vue"
 import { marked } from "marked"
+import { useStatus } from "@/use/use-feedback-status"
 
 const feedbackApi = new FeedbackApi()
+
+const { getName } = useStatus()
 
 const isLoading = ref(false)
 const errorMessage = ref("")
@@ -70,6 +73,23 @@ function load(isFirst: boolean) {
       isLoading.value = false
     })
 }
+
+function getStatusClass(status: Status): string {
+  if (status === Status.Abort) {
+    return "text-bg-danger"
+  }
+  if (status === Status.Created || status === Status.Moderated) {
+    return "text-bg-info"
+  }
+  if (status === Status.Closed) {
+    return "text-bg-success"
+  }
+  if (status === Status.InProgress) {
+    return "text-bg-primary"
+  }
+
+  return ""
+}
 </script>
 
 <template>
@@ -97,6 +117,9 @@ function load(isFirst: boolean) {
         <div class="mb-3">
           <i>{{ formatDate(item.createdAt) }}</i>
           <span v-if="item.username">, {{ item.username }}</span>
+          <span class="ms-2 badge" :class="getStatusClass(item.status)">{{
+            getName(item.status)
+          }}</span>
         </div>
         <div v-html="marked.parse(item.messageMarkdown)" />
 
