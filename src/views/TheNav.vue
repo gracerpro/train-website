@@ -3,6 +3,9 @@ import { computed, onMounted, useTemplateRef } from "vue"
 import SwitchTheme from "@/components/SwitchTheme.vue"
 import { NAME_FEEDBACK } from "@/router"
 import { useMobileClientStore } from "@/store/client-store"
+import { ReleaseApi } from "@/api/ReleaseApi"
+
+const releaseApi = new ReleaseApi()
 
 const togglerButtonRef = useTemplateRef<HTMLElement>("togglerButtonRef")
 
@@ -19,6 +22,21 @@ onMounted(() => {
 const mobileClientStore = useMobileClientStore()
 
 const latestVersion = computed(() => mobileClientStore.version)
+
+loadLatest()
+
+function loadLatest() {
+  releaseApi
+    .getLatest()
+    .then((release) => {
+      if (release) {
+        mobileClientStore.setVersion(release.version)
+      }
+    })
+    .catch((e) => {
+      console.error(e)
+    })
+}
 </script>
 
 <template>

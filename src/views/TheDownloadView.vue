@@ -7,7 +7,7 @@ import LoadingRow from "@/components/LoadingRow.vue"
 import { formatDate } from "@/utils/date-time"
 import { DEFAULT_KEYWORDS, setMetaInfo } from "@/utils/page-meta"
 
-const client = new ReleaseApi()
+const releaseApi = new ReleaseApi()
 
 const errorMessage = ref("")
 const latestReleaseLoading = ref(true)
@@ -39,7 +39,7 @@ function load() {
   errorMessage.value = ""
   latestReleaseLoading.value = true
 
-  client
+  releaseApi
     .getLatest()
     .then((release) => {
       latestRelease.value = release
