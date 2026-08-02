@@ -78,9 +78,6 @@ function getStatusClass(status: Status): string {
   if (status === Status.Abort) {
     return "text-bg-danger"
   }
-  if (status === Status.Created || status === Status.Moderated) {
-    return "text-bg-info"
-  }
   if (status === Status.Closed) {
     return "text-bg-success"
   }
@@ -88,7 +85,7 @@ function getStatusClass(status: Status): string {
     return "text-bg-primary"
   }
 
-  return ""
+  return "text-bg-info"
 }
 </script>
 
