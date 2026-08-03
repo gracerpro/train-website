@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {
+  getImage,
   URL_SET_PERMISSIONS_ABOUT,
   URL_SET_PERMISSIONS_ALLOW_GPS,
   URL_SET_PERMISSIONS_APPLICATIONS,
@@ -7,6 +8,7 @@ import {
   URL_SET_PERMISSIONS_GPS,
   URL_SET_PERMISSIONS_NOTIFICATIONS,
   URL_SET_PERMISSIONS_SETTINGS,
+  type ImagesKey,
 } from "@/api/ScreenshotApi"
 import { DEFAULT_KEYWORDS, setMetaInfo } from "@/utils/page-meta"
 import { useSSRContext } from "vue"
@@ -23,6 +25,18 @@ setMetaInfo(
   },
   ssrContext,
 )
+
+const images: ImagesKey[] = [
+  URL_SET_PERMISSIONS_SETTINGS,
+  URL_SET_PERMISSIONS_APPLICATIONS,
+  URL_SET_PERMISSIONS_APPLICATIONS_APPLICATIONS,
+  URL_SET_PERMISSIONS_ABOUT,
+  URL_SET_PERMISSIONS_GPS,
+  URL_SET_PERMISSIONS_ALLOW_GPS,
+  URL_SET_PERMISSIONS_NOTIFICATIONS,
+]
+
+const visibleImages = images.map((name) => getImage(name))
 </script>
 
 <template>
@@ -85,13 +99,15 @@ setMetaInfo(
       </div>
       <div class="col-lg-7">
         <div class="row-images">
-          <img :src="URL_SET_PERMISSIONS_SETTINGS" />
-          <img :src="URL_SET_PERMISSIONS_APPLICATIONS" />
-          <img :src="URL_SET_PERMISSIONS_APPLICATIONS_APPLICATIONS" />
-          <img :src="URL_SET_PERMISSIONS_ABOUT" />
-          <img :src="URL_SET_PERMISSIONS_GPS" />
-          <img :src="URL_SET_PERMISSIONS_ALLOW_GPS" />
-          <img :src="URL_SET_PERMISSIONS_NOTIFICATIONS" />
+          <img
+            v-for="image in visibleImages"
+            :key="image.url"
+            :src="image.url"
+            :width="image.width"
+            :height="image.height"
+            :alt="image.alt"
+            :title="image.alt"
+          />
         </div>
       </div>
     </div>

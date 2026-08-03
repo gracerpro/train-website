@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { URL_1_4_2_START } from "@/api/ScreenshotApi"
+import { URL_1_4_2_START, getImage } from "@/api/ScreenshotApi"
 
 const screens = [
   { name: "Главный, начало тренировки" },
@@ -16,6 +16,8 @@ const screens = [
   { name: "Профиль пользователя" },
   { name: "О приложении" },
 ]
+
+const mainScreenshot = getImage(URL_1_4_2_START)
 </script>
 
 <template>
@@ -36,7 +38,13 @@ const screens = [
       </div>
       <div class="col-sm-6">
         <div class="image-item mx-auto">
-          <img :src="URL_1_4_2_START" class="main-image" />
+          <img
+            :src="mainScreenshot.url"
+            :height="mainScreenshot.height"
+            :width="mainScreenshot.width"
+            :alt="mainScreenshot.alt"
+            class="main-image"
+          />
         </div>
       </div>
     </div>

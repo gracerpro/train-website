@@ -1,48 +1,217 @@
-export const URL_1_0_17_START_ACTIVITY = "https://i.postimg.cc/44LFFDtZ/image.png"
-export const URL_1_0_17_ACTIVITY_1 = "https://i.postimg.cc/QCy497sV/1.png"
-export const URL_1_0_17_ACTIVITY_2 = "https://i.postimg.cc/8c5XzH2q/2.png"
-export const URL_1_0_17_ACTIVITY_3 = "https://i.postimg.cc/50pkJGRB/3.png"
-export const URL_1_0_17_SETTINGS = "https://i.postimg.cc/NMQPWYpG/image.png"
-export const URL_1_0_17_PROFILE = "https://i.postimg.cc/8CR0Ksdn/image.png"
-export const URL_1_0_17_ACTIVITY_LIST = "https://i.postimg.cc/VNQhWXtC/image.png"
-
-export const URL_1_2_9_STATISTICS = "https://i.postimg.cc/rwtb4fDT/image.png"
-export const URL_1_2_9_MONTH_STATISTICS = "https://i.postimg.cc/Fs681MsG/image.png"
-export const URL_1_2_9_MONTH_STATISTICS_FILTER = "https://i.postimg.cc/KvjCGGFR/image.png"
-export const URL_1_2_9_EXPORT = "https://i.postimg.cc/jqZGYWpp/image.png"
-
-export const URL_1_4_2_ABOUT = "https://i.postimg.cc/8PqhN7N9/about.png"
-export const URL_1_4_2_ACTIVITING = "https://i.postimg.cc/c15xbjS4/activiting.png"
-export const URL_1_4_2_ACTIVITING_BEFORE = "https://i.postimg.cc/vH1WJrF5/activiting-before.png"
-export const URL_1_4_2_ACTIVITING_PREPARE = "https://i.postimg.cc/NGC6CNVg/activiting-prepare.png" // remove?
-export const URL_1_4_2_ACTIVITY_CARD = "https://i.postimg.cc/J0FjynJy/activity-card.png"
-export const URL_1_4_2_ACTIVITY_GRAPHIC = "https://i.postimg.cc/XN2VzyrC/activity-graphic.png"
-export const URL_1_4_2_ACTIVITY_LIST = "https://i.postimg.cc/pTqfHkLJ/activity-list.png"
-export const URL_1_4_2_ACTIVITY_TABLE = "https://i.postimg.cc/9MWdKsCf/activity-table.png"
-export const URL_1_4_2_ACTIVITY_TYPES = "https://i.postimg.cc/bvfHHs5k/activity-types.png"
-export const URL_1_4_2_ADD_ACTIVITY = "https://i.postimg.cc/kgbvbxT7/add-activity.png"
+export const URL_1_4_2_ABOUT = "https://ltdfoto.ru/images/2026/08/03/about.png"
+export const URL_1_4_2_ACTIVITING = "https://ltdfoto.ru/images/2026/08/03/activiting.png"
+export const URL_1_4_2_ACTIVITING_BEFORE =
+  "https://ltdfoto.ru/images/2026/08/03/activiting_before.png"
+export const URL_1_4_2_ACTIVITY_CARD = "https://ltdfoto.ru/images/2026/08/03/activity_card.png"
+export const URL_1_4_2_ACTIVITY_GRAPHIC =
+  "https://ltdfoto.ru/images/2026/08/03/activity_graphic.png"
+export const URL_1_4_2_ACTIVITY_LIST = "https://ltdfoto.ru/images/2026/08/03/activity_list.png"
+export const URL_1_4_2_ACTIVITY_TABLE = "https://ltdfoto.ru/images/2026/08/03/activity_table.png"
+export const URL_1_4_2_ACTIVITY_TYPES = "https://ltdfoto.ru/images/2026/08/03/activity_types.png"
+export const URL_1_4_2_ADD_ACTIVITY = "https://ltdfoto.ru/images/2026/08/03/add_activity.png"
 export const URL_1_4_2_EDIT_ACTIVITY_DIALOG =
-  "https://i.postimg.cc/m2qSkdNd/edit-activity-dialog.png"
-export const URL_1_4_2_EDIT_ROUTE = "https://i.postimg.cc/Bv55hJWy/edit-route.png"
-export const URL_1_4_2_EXPORT = "https://i.postimg.cc/SNjry082/export.png"
-export const URL_1_4_2_IMPORT = "https://i.postimg.cc/44WPk4KR/import.png"
-export const URL_1_4_2_PROFILE = "https://i.postimg.cc/G2rKrHJd/profile.png"
-export const URL_1_4_2_SETTINGS = "https://i.postimg.cc/13HpJvMp/settings.png"
-export const URL_1_4_2_START = "https://i.postimg.cc/sxgJQqNL/start.png"
-export const URL_1_4_2_STATISTICS = "https://i.postimg.cc/25nGP4W0/statistics.png"
-export const URL_1_4_2_MONTH_STATISTICS = "https://i.postimg.cc/prcJDkNL/month-statistics.png"
-export const URL_1_4_2_STATISTICS_SHORT = "https://i.postimg.cc/fRmnKWZm/statistics-short.png"
-export const URL_1_4_2_RESTORE = "https://i.postimg.cc/TY43pWG6/restore-start.png"
+  "https://ltdfoto.ru/images/2026/08/03/edit_activity_dialog.png"
+export const URL_1_4_2_EDIT_ROUTE = "https://ltdfoto.ru/images/2026/08/03/edit_route.png"
+export const URL_1_4_2_EXPORT = "https://ltdfoto.ru/images/2026/08/03/export.png"
+export const URL_1_4_2_IMPORT = "https://ltdfoto.ru/images/2026/08/03/import.png"
+export const URL_1_4_2_PROFILE = "https://ltdfoto.ru/images/2026/08/03/profile.png"
+export const URL_1_4_2_SETTINGS = "https://ltdfoto.ru/images/2026/08/03/settings.png"
+export const URL_1_4_2_START = "https://ltdfoto.ru/images/2026/08/03/start.png"
+export const URL_1_4_2_STATISTICS = "https://ltdfoto.ru/images/2026/08/03/statistics.png"
+export const URL_1_4_2_MONTH_STATISTICS =
+  "https://ltdfoto.ru/images/2026/08/03/month_statistics.png"
+export const URL_1_4_2_STATISTICS_SHORT =
+  "https://ltdfoto.ru/images/2026/08/03/statistics-short.png"
+export const URL_1_4_2_RESTORE = "https://ltdfoto.ru/images/2026/08/03/restore_start.png"
 
-export const URL_SET_PERMISSIONS_ABOUT = "https://i.postimg.cc/bJgN1sY7/set-permissions-about.png"
+export const URL_SET_PERMISSIONS_ABOUT =
+  "https://ltdfoto.ru/images/2026/08/03/set-permissions_about.png"
 export const URL_SET_PERMISSIONS_ALLOW_GPS =
-  "https://i.postimg.cc/zfxRrJ4F/set-permissions-allow-gps.jpg"
+  "https://ltdfoto.ru/images/2026/08/03/set-permissions_allow_gps.jpg"
 export const URL_SET_PERMISSIONS_APPLICATIONS =
-  "https://i.postimg.cc/LX28qzSk/set-permissions-applications.jpg"
+  "https://ltdfoto.ru/images/2026/08/03/set-permissions_applications.jpg"
 export const URL_SET_PERMISSIONS_APPLICATIONS_APPLICATIONS =
-  "https://i.postimg.cc/7Y6bMM2m/set-permissions-applications-applications.jpg"
-export const URL_SET_PERMISSIONS_GPS = "https://i.postimg.cc/15jXWn0P/set-permissions-gps.jpg"
+  "https://ltdfoto.ru/images/2026/08/03/set-permissions_applications_applications.jpg"
+export const URL_SET_PERMISSIONS_GPS =
+  "https://ltdfoto.ru/images/2026/08/03/set-permissions_gps.jpg"
 export const URL_SET_PERMISSIONS_NOTIFICATIONS =
-  "https://i.postimg.cc/htQjNDMm/set-permissions-notifications.jpg"
+  "https://ltdfoto.ru/images/2026/08/03/set-permissions_notifications.jpg"
 export const URL_SET_PERMISSIONS_SETTINGS =
-  "https://i.postimg.cc/s2FXrk0N/set-permissions-settings.jpg"
+  "https://ltdfoto.ru/images/2026/08/03/set-permissions_settings.jpg"
+
+const images = {
+  [URL_SET_PERMISSIONS_NOTIFICATIONS]: {
+    width: 234,
+    height: 500,
+    url: URL_SET_PERMISSIONS_NOTIFICATIONS,
+    alt: "Разрешить уведомления",
+  },
+  [URL_SET_PERMISSIONS_GPS]: {
+    width: 234,
+    height: 500,
+    url: URL_SET_PERMISSIONS_GPS,
+    alt: "Разрешения приложений, запрещено GPS",
+  },
+  [URL_SET_PERMISSIONS_APPLICATIONS_APPLICATIONS]: {
+    width: 234,
+    height: 500,
+    url: URL_SET_PERMISSIONS_APPLICATIONS_APPLICATIONS,
+    alt: "Поиск приложения",
+  },
+  [URL_SET_PERMISSIONS_ALLOW_GPS]: {
+    width: 234,
+    height: 500,
+    url: URL_SET_PERMISSIONS_ALLOW_GPS,
+    alt: "Права GPS",
+  },
+  [URL_SET_PERMISSIONS_APPLICATIONS]: {
+    width: 234,
+    height: 500,
+    url: URL_SET_PERMISSIONS_APPLICATIONS,
+    alt: "Приложения",
+  },
+  [URL_SET_PERMISSIONS_SETTINGS]: {
+    width: 234,
+    height: 500,
+    url: URL_SET_PERMISSIONS_SETTINGS,
+    alt: "Настройки, приложения",
+  },
+  [URL_SET_PERMISSIONS_ABOUT]: {
+    width: 234,
+    height: 500,
+    url: URL_SET_PERMISSIONS_ABOUT,
+    alt: "О приложении, права",
+  },
+  [URL_1_4_2_EXPORT]: {
+    width: 234,
+    height: 500,
+    url: URL_1_4_2_EXPORT,
+    alt: "Экспорт",
+  },
+  [URL_1_4_2_IMPORT]: {
+    width: 234,
+    height: 500,
+    url: URL_1_4_2_IMPORT,
+    alt: "Импорт",
+  },
+  [URL_1_4_2_MONTH_STATISTICS]: {
+    width: 234,
+    height: 500,
+    url: URL_1_4_2_MONTH_STATISTICS,
+    alt: "Статистика за месяц",
+  },
+  [URL_1_4_2_STATISTICS]: {
+    width: 234,
+    height: 500,
+    url: URL_1_4_2_STATISTICS,
+    alt: "Статистика",
+  },
+  [URL_1_4_2_PROFILE]: {
+    width: 234,
+    height: 500,
+    url: URL_1_4_2_PROFILE,
+    alt: "Профиль",
+  },
+  [URL_1_4_2_START]: {
+    width: 234,
+    height: 500,
+    url: URL_1_4_2_START,
+    alt: "Главный экран, начало тренировки",
+  },
+  [URL_1_4_2_ACTIVITING]: {
+    width: 234,
+    height: 500,
+    url: URL_1_4_2_ACTIVITING,
+    alt: "Запись тренировки",
+  },
+  [URL_1_4_2_ACTIVITING_BEFORE]: {
+    width: 234,
+    height: 500,
+    url: URL_1_4_2_ACTIVITING_BEFORE,
+    alt: "Начало тренировки",
+  },
+  [URL_1_4_2_ABOUT]: {
+    width: 234,
+    height: 500,
+    url: URL_1_4_2_ABOUT,
+    alt: "О программе",
+  },
+  [URL_1_4_2_STATISTICS_SHORT]: {
+    width: 234,
+    height: 500,
+    url: URL_1_4_2_STATISTICS_SHORT,
+    alt: "Статистика по годам",
+  },
+  [URL_1_4_2_RESTORE]: {
+    width: 234,
+    height: 500,
+    url: URL_1_4_2_RESTORE,
+    alt: "Восстановлена тренировка",
+  },
+  [URL_1_4_2_ACTIVITY_LIST]: {
+    width: 234,
+    height: 500,
+    url: URL_1_4_2_ACTIVITY_LIST,
+    alt: "Список тренировок",
+  },
+  [URL_1_4_2_ACTIVITY_CARD]: {
+    width: 234,
+    height: 500,
+    url: URL_1_4_2_ACTIVITY_CARD,
+    alt: "Карточка тренировки",
+  },
+  [URL_1_4_2_EDIT_ACTIVITY_DIALOG]: {
+    width: 234,
+    height: 500,
+    url: URL_1_4_2_EDIT_ACTIVITY_DIALOG,
+    alt: "Редактирование тренировки",
+  },
+  [URL_1_4_2_ACTIVITY_GRAPHIC]: {
+    width: 234,
+    height: 500,
+    url: URL_1_4_2_ACTIVITY_GRAPHIC,
+    alt: "График скорости",
+  },
+  [URL_1_4_2_ACTIVITY_TABLE]: {
+    width: 234,
+    height: 500,
+    url: URL_1_4_2_ACTIVITY_TABLE,
+    alt: "Таблица координат маршрута",
+  },
+  [URL_1_4_2_EDIT_ROUTE]: {
+    width: 234,
+    height: 500,
+    url: URL_1_4_2_EDIT_ROUTE,
+    alt: "Редактирование маршрута",
+  },
+  [URL_1_4_2_ACTIVITY_TYPES]: {
+    width: 234,
+    height: 500,
+    url: URL_1_4_2_ACTIVITY_TYPES,
+    alt: "Типы тренировок",
+  },
+  [URL_1_4_2_ADD_ACTIVITY]: {
+    width: 234,
+    height: 500,
+    url: URL_1_4_2_ADD_ACTIVITY,
+    alt: "Добавление тренировки",
+  },
+  [URL_1_4_2_SETTINGS]: {
+    width: 234,
+    height: 500,
+    url: URL_1_4_2_SETTINGS,
+    alt: "Настройки",
+  },
+} as const
+
+export type Image = {
+  url: string
+  width: number
+  height: number
+  alt?: string
+}
+export type ImagesKey = keyof typeof images
+
+export function getImage(key: ImagesKey): Image {
+  return images[key]
+}
