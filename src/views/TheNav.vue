@@ -57,7 +57,7 @@ function loadLatest() {
         </button>
         <div id="navbarNav" class="collapse navbar-collapse justify-content-center">
           <router-link :to="{ name: 'home' }" class="navbar-brand d-block" title="Главная">
-            <img src="/favicon.svg" width="24px" height="24px" class="app-icon" />
+            <span class="app-icon" />
             <span class="align-middle ms-2">{{ latestVersion }}</span>
           </router-link>
           <ul class="navbar-nav">
@@ -97,19 +97,17 @@ function loadLatest() {
 </template>
 
 <style scoped>
-/* TODO: change color by theme
-
 .app-icon {
   display: inline-block;
   vertical-align: middle;
-  background-color: red;
-  mask-image: url(/favicon.svg);
-  mask-size: 100%;
-  mask-repeat: no-repeat;
-  mask-position: center;
+  background-color: #000000;
+  mask: url("/favicon.svg") no-repeat center / contain;
   width: 24px;
   height: 24px;
-}*/
+}
+[data-bs-theme="dark"] .app-icon {
+  background-color: #ffffff;
+}
 
 .swith-theme {
   margin-left: 16px;
