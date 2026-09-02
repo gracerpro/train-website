@@ -1,27 +1,29 @@
-export const URL_1_4_2_ABOUT = "https://ltdfoto.ru/images/2026/08/03/about.png"
-export const URL_1_4_2_ACTIVITING = "https://ltdfoto.ru/images/2026/08/03/activiting.png"
+export const URL_ABOUT = "https://ltdfoto.ru/images/2026/09/01/about.jpg"
+export const URL_ACTIVITING = "https://ltdfoto.ru/images/2026/09/02/activiting.jpg"
 export const URL_1_4_2_ACTIVITING_BEFORE =
   "https://ltdfoto.ru/images/2026/08/03/activiting_before.png"
-export const URL_1_4_2_ACTIVITY_CARD = "https://ltdfoto.ru/images/2026/08/03/activity_card.png"
-export const URL_1_4_2_ACTIVITY_GRAPHIC =
-  "https://ltdfoto.ru/images/2026/08/03/activity_graphic.png"
-export const URL_1_4_2_ACTIVITY_LIST = "https://ltdfoto.ru/images/2026/08/03/activity_list.png"
-export const URL_1_4_2_ACTIVITY_TABLE = "https://ltdfoto.ru/images/2026/08/03/activity_table.png"
-export const URL_1_4_2_ACTIVITY_TYPES = "https://ltdfoto.ru/images/2026/08/03/activity_types.png"
-export const URL_1_4_2_ADD_ACTIVITY = "https://ltdfoto.ru/images/2026/08/03/add_activity.png"
-export const URL_1_4_2_EDIT_ACTIVITY_DIALOG =
-  "https://ltdfoto.ru/images/2026/08/03/edit_activity_dialog.png"
-export const URL_1_4_2_EDIT_ROUTE = "https://ltdfoto.ru/images/2026/08/03/edit_route.png"
-export const URL_1_4_2_EXPORT = "https://ltdfoto.ru/images/2026/08/03/export.png"
-export const URL_1_4_2_IMPORT = "https://ltdfoto.ru/images/2026/08/03/import.png"
-export const URL_1_4_2_PROFILE = "https://ltdfoto.ru/images/2026/08/03/profile.png"
-export const URL_1_4_2_SETTINGS = "https://ltdfoto.ru/images/2026/08/03/settings.png"
-export const URL_1_4_2_START = "https://ltdfoto.ru/images/2026/08/03/start.png"
-export const URL_1_4_2_STATISTICS = "https://ltdfoto.ru/images/2026/08/03/statistics.png"
-export const URL_1_4_2_MONTH_STATISTICS =
-  "https://ltdfoto.ru/images/2026/08/03/month_statistics.png"
-export const URL_1_4_2_STATISTICS_SHORT =
-  "https://ltdfoto.ru/images/2026/08/03/statistics-short.png"
+export const URL_ACTIVITY_CARD = "https://ltdfoto.ru/images/2026/09/01/activity_card.jpg"
+export const URL_ACTIVITY_CARD_NO_NAME =
+  "https://ltdfoto.ru/images/2026/09/01/activity_card-no-name.jpg"
+export const URL_ACTIVITY_DETAIL_GRAPHIC =
+  "https://ltdfoto.ru/images/2026/09/01/activity_detail_graphic.jpg"
+export const URL_ACTIVITY_LIST = "https://ltdfoto.ru/images/2026/09/01/activity_list.jpg"
+export const URL_ACTIVITY_DETAIL_TABLE =
+  "https://ltdfoto.ru/images/2026/09/01/activity_detail_table.jpg"
+export const URL_ACTIVITY_DETAIL_SEGMENTS =
+  "https://ltdfoto.ru/images/2026/09/01/activity_detail_segments.jpg"
+export const URL_ACTIVITY_TYPES = "https://ltdfoto.ru/images/2026/09/01/activity_types.jpg"
+export const URL_ADD_ACTIVITY = "https://ltdfoto.ru/images/2026/09/01/activity_add.jpg"
+export const URL_EDIT_ACTIVITY_DIALOG = "https://ltdfoto.ru/images/2026/09/01/activity_edit.jpg"
+export const URL_EDIT_ROUTE = "https://ltdfoto.ru/images/2026/09/01/edit_route.jpg"
+export const URL_EXPORT = "https://ltdfoto.ru/images/2026/09/01/export.jpg"
+export const URL_IMPORT = "https://ltdfoto.ru/images/2026/09/01/import.jpg"
+export const URL_PROFILE = "https://ltdfoto.ru/images/2026/09/02/profile.jpg"
+export const URL_SETTINGS = "https://ltdfoto.ru/images/2026/09/01/settings.jpg"
+export const URL_START = "https://ltdfoto.ru/images/2026/09/01/start.jpg"
+export const URL_STATISTICS = "https://ltdfoto.ru/images/2026/09/01/statistics.jpg"
+export const URL_MONTH_STATISTICS = "https://ltdfoto.ru/images/2026/09/01/statistics_month.jpg"
+export const URL_STATISTICS_SHORT = "https://ltdfoto.ru/images/2026/09/01/statistics_short.jpg"
 export const URL_1_4_2_RESTORE = "https://ltdfoto.ru/images/2026/08/03/restore_start.png"
 
 export const URL_SET_PERMISSIONS_ABOUT =
@@ -82,46 +84,46 @@ const images = {
     url: URL_SET_PERMISSIONS_ABOUT,
     alt: "О приложении, права",
   },
-  [URL_1_4_2_EXPORT]: {
-    width: 234,
-    height: 500,
-    url: URL_1_4_2_EXPORT,
+  [URL_EXPORT]: {
+    width: 1080,
+    height: 2310,
+    url: URL_EXPORT,
     alt: "Экспорт",
   },
-  [URL_1_4_2_IMPORT]: {
-    width: 234,
-    height: 500,
-    url: URL_1_4_2_IMPORT,
+  [URL_IMPORT]: {
+    width: 1080,
+    height: 2310,
+    url: URL_IMPORT,
     alt: "Импорт",
   },
-  [URL_1_4_2_MONTH_STATISTICS]: {
-    width: 234,
-    height: 500,
-    url: URL_1_4_2_MONTH_STATISTICS,
+  [URL_MONTH_STATISTICS]: {
+    width: 1080,
+    height: 2310,
+    url: URL_MONTH_STATISTICS,
     alt: "Статистика за месяц",
   },
-  [URL_1_4_2_STATISTICS]: {
-    width: 234,
-    height: 500,
-    url: URL_1_4_2_STATISTICS,
+  [URL_STATISTICS]: {
+    width: 1080,
+    height: 2310,
+    url: URL_STATISTICS,
     alt: "Статистика",
   },
-  [URL_1_4_2_PROFILE]: {
-    width: 234,
-    height: 500,
-    url: URL_1_4_2_PROFILE,
+  [URL_PROFILE]: {
+    width: 1080,
+    height: 2310,
+    url: URL_PROFILE,
     alt: "Профиль",
   },
-  [URL_1_4_2_START]: {
-    width: 234,
-    height: 500,
-    url: URL_1_4_2_START,
+  [URL_START]: {
+    width: 1080,
+    height: 2310,
+    url: URL_START,
     alt: "Главный экран, начало тренировки",
   },
-  [URL_1_4_2_ACTIVITING]: {
-    width: 234,
-    height: 500,
-    url: URL_1_4_2_ACTIVITING,
+  [URL_ACTIVITING]: {
+    width: 1080,
+    height: 2310,
+    url: URL_ACTIVITING,
     alt: "Запись тренировки",
   },
   [URL_1_4_2_ACTIVITING_BEFORE]: {
@@ -130,16 +132,16 @@ const images = {
     url: URL_1_4_2_ACTIVITING_BEFORE,
     alt: "Начало тренировки",
   },
-  [URL_1_4_2_ABOUT]: {
-    width: 234,
-    height: 500,
-    url: URL_1_4_2_ABOUT,
+  [URL_ABOUT]: {
+    width: 1080,
+    height: 2310,
+    url: URL_ABOUT,
     alt: "О программе",
   },
-  [URL_1_4_2_STATISTICS_SHORT]: {
-    width: 234,
-    height: 500,
-    url: URL_1_4_2_STATISTICS_SHORT,
+  [URL_STATISTICS_SHORT]: {
+    width: 1080,
+    height: 2310,
+    url: URL_STATISTICS_SHORT,
     alt: "Статистика по годам",
   },
   [URL_1_4_2_RESTORE]: {
@@ -148,58 +150,70 @@ const images = {
     url: URL_1_4_2_RESTORE,
     alt: "Восстановлена тренировка",
   },
-  [URL_1_4_2_ACTIVITY_LIST]: {
-    width: 234,
-    height: 500,
-    url: URL_1_4_2_ACTIVITY_LIST,
+  [URL_ACTIVITY_LIST]: {
+    width: 1080,
+    height: 2310,
+    url: URL_ACTIVITY_LIST,
     alt: "Список тренировок",
   },
-  [URL_1_4_2_ACTIVITY_CARD]: {
-    width: 234,
-    height: 500,
-    url: URL_1_4_2_ACTIVITY_CARD,
+  [URL_ACTIVITY_CARD]: {
+    width: 1080,
+    height: 2310,
+    url: URL_ACTIVITY_CARD,
     alt: "Карточка тренировки",
   },
-  [URL_1_4_2_EDIT_ACTIVITY_DIALOG]: {
-    width: 234,
-    height: 500,
-    url: URL_1_4_2_EDIT_ACTIVITY_DIALOG,
+  [URL_ACTIVITY_CARD_NO_NAME]: {
+    width: 1080,
+    height: 2310,
+    url: URL_ACTIVITY_CARD_NO_NAME,
+    alt: "Карточка тренировки Без названий на карте",
+  },
+  [URL_EDIT_ACTIVITY_DIALOG]: {
+    width: 1080,
+    height: 2310,
+    url: URL_EDIT_ACTIVITY_DIALOG,
     alt: "Редактирование тренировки",
   },
-  [URL_1_4_2_ACTIVITY_GRAPHIC]: {
-    width: 234,
-    height: 500,
-    url: URL_1_4_2_ACTIVITY_GRAPHIC,
+  [URL_ACTIVITY_DETAIL_GRAPHIC]: {
+    width: 1080,
+    height: 2310,
+    url: URL_ACTIVITY_DETAIL_GRAPHIC,
     alt: "График скорости",
   },
-  [URL_1_4_2_ACTIVITY_TABLE]: {
-    width: 234,
-    height: 500,
-    url: URL_1_4_2_ACTIVITY_TABLE,
-    alt: "Таблица координат маршрута",
+  [URL_ACTIVITY_DETAIL_SEGMENTS]: {
+    width: 1080,
+    height: 2310,
+    url: URL_ACTIVITY_DETAIL_SEGMENTS,
+    alt: "Сегменты",
   },
-  [URL_1_4_2_EDIT_ROUTE]: {
-    width: 234,
-    height: 500,
-    url: URL_1_4_2_EDIT_ROUTE,
+  [URL_ACTIVITY_DETAIL_TABLE]: {
+    width: 1080,
+    height: 2310,
+    url: URL_ACTIVITY_DETAIL_TABLE,
+    alt: "Таблица времени и скорости",
+  },
+  [URL_EDIT_ROUTE]: {
+    width: 1080,
+    height: 2310,
+    url: URL_EDIT_ROUTE,
     alt: "Редактирование маршрута",
   },
-  [URL_1_4_2_ACTIVITY_TYPES]: {
-    width: 234,
-    height: 500,
-    url: URL_1_4_2_ACTIVITY_TYPES,
+  [URL_ACTIVITY_TYPES]: {
+    width: 1080,
+    height: 2310,
+    url: URL_ACTIVITY_TYPES,
     alt: "Типы тренировок",
   },
-  [URL_1_4_2_ADD_ACTIVITY]: {
-    width: 234,
-    height: 500,
-    url: URL_1_4_2_ADD_ACTIVITY,
+  [URL_ADD_ACTIVITY]: {
+    width: 1080,
+    height: 2310,
+    url: URL_ADD_ACTIVITY,
     alt: "Добавление тренировки",
   },
-  [URL_1_4_2_SETTINGS]: {
-    width: 234,
-    height: 500,
-    url: URL_1_4_2_SETTINGS,
+  [URL_SETTINGS]: {
+    width: 1080,
+    height: 2310,
+    url: URL_SETTINGS,
     alt: "Настройки",
   },
 } as const
