@@ -1,53 +1,5 @@
-<script setup lang="ts">
-import { URL_START, getImage } from "@/api/ScreenshotApi"
-
-const screens = [
-  { name: "Главный, начало тренировки" },
-  { name: "Тренировка, запись маршрута" },
-  { name: "Просмотр тренировки, детали, графики" },
-  { name: "Список тренировок" },
-  { name: "Экспорт тренировок" },
-  { name: "Импорт тренировок" },
-  { name: "Добавление тренировки вручную" },
-  { name: "Статистика" },
-  { name: "Статистика за месяц" },
-  { name: "Настройки" },
-  { name: "Типы тренировок" },
-  { name: "Профиль пользователя" },
-  { name: "О приложении" },
-]
-
-const mainScreenshot = getImage(URL_START)
-</script>
-
 <template>
   <div>
-    <h1>Мобильное приложение для учёта тренировок</h1>
-
-    <div class="row">
-      <div class="col-sm-6">
-        <p>
-          Приложение представляет собой <b>GPS трекер</b>, поэтому может использоваться для
-          различных тренировок: бег, ходьба, езда на велосипеде и т. д. Хранит все тренирови на
-          мобильном устройстве. Может использоваться без интернета.
-        </p>
-        <p>Приложение разделено на экраны, всего {{ screens.length }} шт.</p>
-        <ol>
-          <li v-for="(screen, i) in screens" :key="i">{{ screen.name }}</li>
-        </ol>
-      </div>
-      <div class="col-sm-6">
-        <div class="image-box mx-auto">
-          <img
-            :src="mainScreenshot.url"
-            :height="mainScreenshot.height"
-            :width="mainScreenshot.width"
-            :alt="mainScreenshot.alt"
-            class="main-image"
-          />
-        </div>
-      </div>
-    </div>
     <h3>Преимущества</h3>
     <ul>
       <li>
@@ -86,9 +38,3 @@ const mainScreenshot = getImage(URL_START)
     </ol>
   </div>
 </template>
-
-<style>
-.main-image {
-  outline: 1px solid #ddd;
-}
-</style>
