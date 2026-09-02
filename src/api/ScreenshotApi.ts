@@ -1,7 +1,6 @@
 export const URL_ABOUT = "https://ltdfoto.ru/images/2026/09/01/about.jpg"
 export const URL_ACTIVITING = "https://ltdfoto.ru/images/2026/09/02/activiting.jpg"
-export const URL_1_4_2_ACTIVITING_BEFORE =
-  "https://ltdfoto.ru/images/2026/08/03/activiting_before.png"
+export const URL_ACTIVITING_BEFORE = "https://ltdfoto.ru/images/2026/09/02/activiting_before.jpg"
 export const URL_ACTIVITY_CARD = "https://ltdfoto.ru/images/2026/09/01/activity_card.jpg"
 export const URL_ACTIVITY_CARD_NO_NAME =
   "https://ltdfoto.ru/images/2026/09/01/activity_card-no-name.jpg"
@@ -126,10 +125,10 @@ const images = {
     url: URL_ACTIVITING,
     alt: "Запись тренировки",
   },
-  [URL_1_4_2_ACTIVITING_BEFORE]: {
+  [URL_ACTIVITING_BEFORE]: {
     width: 234,
     height: 500,
-    url: URL_1_4_2_ACTIVITING_BEFORE,
+    url: URL_ACTIVITING_BEFORE,
     alt: "Начало тренировки",
   },
   [URL_ABOUT]: {
