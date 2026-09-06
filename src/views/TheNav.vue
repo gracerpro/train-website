@@ -68,6 +68,9 @@ function loadLatest() {
               <router-link :to="{ name: 'history' }" class="nav-link">История</router-link>
             </li>
             <li class="nav-item">
+              <router-link :to="{ name: 'convert' }" class="nav-link" title="Из Strava или Adidas runing">Импорт</router-link>
+            </li>
+            <li class="nav-item">
               <router-link :to="{ name: 'documentation' }" class="nav-link"
                 >Документация</router-link
               >
