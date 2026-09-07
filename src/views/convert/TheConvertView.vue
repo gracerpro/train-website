@@ -1,46 +1,44 @@
 <script setup lang="ts">
+import { ExternalActivityApi, ExternalService } from "@/api/ExternalActivityApi"
 import { TaskApi, TaskStatusId, type Task } from "@/api/TaskApi"
 import { HttpError } from "@/exceptions/HttpError"
 import { UserError } from "@/exceptions/UserError"
+import { ValidateError } from "@/exceptions/ValidateError"
 import { delay } from "@/utils/core"
 import { computed, ref } from "vue"
 
-enum ConvertType {
-  Strava = "strava",
-  AdidasRuning = "adidas_runing",
-}
-
-const typesLabels = computed<{ value: ConvertType; label: string }[]>(() => {
+const typesLabels = computed<{ value: ExternalService; label: string }[]>(() => {
   return [
     {
-      value: ConvertType.Strava,
+      value: ExternalService.Strava,
       label: "Strava",
     },
     {
-      value: ConvertType.AdidasRuning,
+      value: ExternalService.AdidasRuning,
       label: "Adidas runing",
     },
   ]
 })
 
 type ValidationErrors = {
-  type: string
+  service: string
   file: string
 }
 
 const getValidationDefaultErrors = (): ValidationErrors => ({
-  type: "",
+  service: "",
   file: "",
 })
 
 const taskApi = new TaskApi()
+const externalActivityApi = new ExternalActivityApi()
 
 const isProcessing = ref(false)
 const formData = ref<{
-  type: ConvertType | null
+  service: ExternalService | null
   file: File | null
 }>({
-  type: null,
+  service: null,
   file: null,
 })
 const errorMessage = ref("")
@@ -52,23 +50,18 @@ const task = ref<Task | null>(null)
 function onSubmit() {
   console.log(formData.value)
 
-  if (!validate()) {
+  let validFormData: ValidFormData
+
+  try {
+    validFormData = validate()
+  } catch {
     return
   }
 
-  /*
-  // start, upload the archive, return task
-  // run task
-  // wait
-  // success -> file
-  // fail -> message
-  */
-
-  convertStart()
+  convertStart(validFormData)
     .then((task) => {
       waitTask(task)
         .catch((error: Error) => {
-          console.log(error)
           errorMessage.value = error.message
         })
         .finally(() => {
@@ -76,30 +69,36 @@ function onSubmit() {
         })
     })
     .catch((error: Error) => {
-      console.log(error)
       errorMessage.value = error.message
       isProcessing.value = false
     })
 }
 
-async function convertStart(): Promise<Task> {
+async function convertStart(validFormData: ValidFormData): Promise<Task> {
   isProcessing.value = true
   task.value = null
   errorMessage.value = ""
 
-  task.value = {
+ /* task.value = {
     id: 1,
     status: { id: TaskStatusId.Free },
     completePercent: 0,
     resultText: "",
     resultData: null,
-  }
+  } */
+
+  task.value = await externalActivityApi.start(
+    {
+      service: validFormData.service
+    },
+    validFormData.file
+  )
 
   return task.value
 }
 
 async function waitTask(inputTask: Task): Promise<Task> {
-  await delay(1000)
+  await delay(2000)
 
   while (true) {
     const notFoundMessage = "Задача не найдена."
@@ -140,43 +139,51 @@ async function waitTask(inputTask: Task): Promise<Task> {
   }
 }
 
-function validate(): boolean {
+type ValidFormData = {
+  result: boolean
+  service: ExternalService
+  file: File
+}
+
+function validate(): ValidFormData {
   let result = true
   validationErrors.value = getValidationDefaultErrors()
 
-  if (!formData.value.type) {
-    validationErrors.value.type = "Нужно выбрать сервис"
+  let service: ExternalService
+
+  if (!formData.value.service) {
+    validationErrors.value.service = "Нужно выбрать сервис"
     result = false
+  } else {
+    service = formData.value.service
   }
-  if (!validateFile()) {
+
+  let file: File
+
+  if (!formData.value.file) {
+    validationErrors.value.file = "Нужно выбрать архив"
     result = false
+  } else {
+    file = formData.value.file
   }
 
   wasValidated.value = true
 
-  console.log(validationErrors.value)
-
-  return result
-}
-
-function validateFile(): boolean {
-  validationErrors.value.file = ""
-
-  if (!formData.value.file) {
-    validationErrors.value.file = "Нужно выбрать архив"
+  if (!result) {
+    throw new ValidateError()
   }
 
-  return validationErrors.value.file === ""
+  return {
+    service,
+    file,
+  }
 }
 
 function onFileChange(event: Event) {
-  console.log(event)
-
   const files = (event.target as HTMLInputElement).files
 
   if (files && files.length > 0) {
     formData.value.file = files[0]
-    validateFile()
   }
 }
 </script>
@@ -192,11 +199,11 @@ function onFileChange(event: Event) {
       @submit.prevent="onSubmit"
     >
       <div class="mb-3">
-        <label :for="'type_' + ConvertType.Strava" class="form-label fw-bold">Импорт из сервиса</label>
+        <label :for="'service_' + ExternalService.Strava" class="form-label fw-bold">Импорт из сервиса</label>
         <div v-for="(item, index) in typesLabels" :key="item.value" class="form-check">
           <input
-            :id="'type_' + item.value"
-            v-model="formData.type"
+            :id="'service_' + item.value"
+            v-model="formData.service"
             :value="item.value"
             :disabled="isProcessing"
             class="form-check-input"
@@ -204,14 +211,14 @@ function onFileChange(event: Event) {
             name="type"
             required
           />
-          <label class="form-check-label" :for="'type_' + item.value">
+          <label class="form-check-label" :for="'service_' + item.value">
             {{ item.label }}
           </label>
           <div
-            v-if="index === typesLabels.length - 1 && validationErrors.type"
+            v-if="index === typesLabels.length - 1 && validationErrors.service"
             class="invalid-feedback"
           >
-            {{ validationErrors.type }}
+            {{ validationErrors.service }}
           </div>
         </div>
       </div>
@@ -232,7 +239,7 @@ function onFileChange(event: Event) {
       <div class="row">
         <div class="col-lg-10 mb-3">
           <div v-if="task?.status.id === TaskStatusId.Free" class="text-center">
-            Задача отправлена в очередь.
+            Задача на конвертацию архива отправлена в очередь.
           </div>
           <div
             v-if="task?.status.id === TaskStatusId.Processing"

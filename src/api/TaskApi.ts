@@ -37,25 +37,30 @@ export class TaskApi {
       return null
     }
 
-    let taskStatus: TaskStatus
-    const task = response.task
-
-    switch (task.statusId) {
-      case TaskStatusId.Success:
-        if (!task?.resultData.fileId || task.resultData.fileId == 0) {
-          throw new Error("Не найден ID файла.")
-        }
-        taskStatus = { id: TaskStatusId.Success, fileId: task.resultData.fileId }
-        break
-      case TaskStatusId.Fail:
-        taskStatus = { id: TaskStatusId.Fail, message: task.resultText }
-        break
-      default:
-        taskStatus = { id: task.status }
-    }
-
-    task.status = taskStatus
-
-    return task
+    return modifyTask(response.task)
   }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function modifyTask(data: any): Task {
+  let taskStatus: TaskStatus
+  const task = data
+
+  switch (task.statusId) {
+    case TaskStatusId.Success:
+      if (!task?.resultData.fileId || task.resultData.fileId == 0) {
+        throw new Error("Не найден ID файла.")
+      }
+      taskStatus = { id: TaskStatusId.Success, fileId: task.resultData.fileId }
+      break
+    case TaskStatusId.Fail:
+      taskStatus = { id: TaskStatusId.Fail, message: task.resultText }
+      break
+    default:
+      taskStatus = { id: task.status }
+  }
+
+  task.status = taskStatus
+
+  return task
 }
