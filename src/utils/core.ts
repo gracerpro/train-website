@@ -2,3 +2,7 @@
 export function isObject(o: any) {
   return o !== null && typeof o === "object" && !Array.isArray(o)
 }
+
+export function delay(millis: number) {
+  return new Promise((resolve) => setTimeout(resolve, millis))
+}

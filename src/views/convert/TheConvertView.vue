@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { TaskApi, TaskStatusId, type Task } from "@/api/TaskApi"
+import { HttpError } from "@/exceptions/HttpError"
+import { UserError } from "@/exceptions/UserError"
+import { delay } from "@/utils/core"
 import { computed, ref } from "vue"
 
 enum ConvertType {
@@ -29,6 +33,8 @@ const getValidationDefaultErrors = (): ValidationErrors => ({
   file: "",
 })
 
+const taskApi = new TaskApi()
+
 const isProcessing = ref(false)
 const formData = ref<{
   type: ConvertType | null
@@ -41,7 +47,7 @@ const errorMessage = ref("")
 const validationErrors = ref<ValidationErrors>(getValidationDefaultErrors())
 const wasValidated = ref(false)
 
-const task = ref<{ id: number } | null>(null)
+const task = ref<Task | null>(null)
 
 function onSubmit() {
   console.log(formData.value)
@@ -49,8 +55,6 @@ function onSubmit() {
   if (!validate()) {
     return
   }
-
-  isProcessing.value = true
 
   /*
   // start, upload the archive, return task
@@ -60,17 +64,80 @@ function onSubmit() {
   // fail -> message
   */
 
-  task.value = { id: 1 }
-
-  waitTask()
+  convertStart()
+    .then((task) => {
+      waitTask(task)
+        .catch((error: Error) => {
+          console.log(error)
+          errorMessage.value = error.message
+        })
+        .finally(() => {
+          isProcessing.value = false
+        })
+    })
+    .catch((error: Error) => {
+      console.log(error)
+      errorMessage.value = error.message
+      isProcessing.value = false
+    })
 }
 
-function waitTask() {
-  // ...
+async function convertStart(): Promise<Task> {
+  isProcessing.value = true
+  task.value = null
+  errorMessage.value = ""
 
-  errorMessage.value = "Ошибка"
+  task.value = {
+    id: 1,
+    status: { id: TaskStatusId.Free },
+    completePercent: 0,
+    resultText: "",
+    resultData: null,
+  }
 
-  // isProcessing.value = false
+  return task.value
+}
+
+async function waitTask(inputTask: Task): Promise<Task> {
+  await delay(1000)
+
+  while (true) {
+    const notFoundMessage = "Задача не найдена."
+    let newTask
+    try {
+      newTask = await taskApi.get(inputTask.id)
+    } catch (error: unknown) {
+      if (error instanceof HttpError && error.statusCode === 404) {
+        task.value = null
+        throw new UserError(notFoundMessage)
+      } else {
+        throw error
+      }
+    }
+
+    task.value = newTask
+
+    if (newTask === null) {
+      throw new UserError(notFoundMessage)
+    }
+
+    switch (newTask.status.id) {
+      case TaskStatusId.Success:
+        return newTask
+      case TaskStatusId.Fail:
+        throw new UserError(newTask.resultText)
+      case TaskStatusId.Free:
+      case TaskStatusId.Processing:
+        // TODO: sleep 1, 2, 4, 8 seconds
+        await delay(1000)
+        break
+      default: {
+        // Compile-time safety check
+        const _a: never = newTask.status
+        return _a
+      }
+    }
+  }
 }
 
 function validate(): boolean {
@@ -81,8 +148,7 @@ function validate(): boolean {
     validationErrors.value.type = "Нужно выбрать сервис"
     result = false
   }
-  if (!formData.value.file) {
-    validationErrors.value.file = "Нужно выбрать архив"
+  if (!validateFile()) {
     result = false
   }
 
@@ -92,6 +158,27 @@ function validate(): boolean {
 
   return result
 }
+
+function validateFile(): boolean {
+  validationErrors.value.file = ""
+
+  if (!formData.value.file) {
+    validationErrors.value.file = "Нужно выбрать архив"
+  }
+
+  return validationErrors.value.file === ""
+}
+
+function onFileChange(event: Event) {
+  console.log(event)
+
+  const files = (event.target as HTMLInputElement).files
+
+  if (files && files.length > 0) {
+    formData.value.file = files[0]
+    validateFile()
+  }
+}
 </script>
 
 <template>
@@ -99,18 +186,19 @@ function validate(): boolean {
     <p>Конвертация тренировок из <b>Strava</b> или <b>Adidas runing</b></p>
 
     <form
-      class="border rounded p-3 mb-3"
+      class="border rounded p-3 pb-0 mb-3"
       novalidate
       :class="{ 'was-validated': wasValidated }"
       @submit.prevent="onSubmit"
     >
       <div class="mb-3">
-        <label :for="'type_' + ConvertType.Strava">Импорт из сервиса</label>
+        <label :for="'type_' + ConvertType.Strava" class="form-label fw-bold">Импорт из сервиса</label>
         <div v-for="(item, index) in typesLabels" :key="item.value" class="form-check">
           <input
             :id="'type_' + item.value"
             v-model="formData.type"
             :value="item.value"
+            :disabled="isProcessing"
             class="form-check-input"
             type="radio"
             name="type"
@@ -128,17 +216,51 @@ function validate(): boolean {
         </div>
       </div>
       <div class="mb-3">
-        <label for="formFile" class="form-label">Архив</label>
-        <input id="formFile" class="form-control" type="file" accept=".zip" required />
+        <label for="formFile" class="form-label fw-bold">Архив</label>
+        <input
+          id="formFile"
+          class="form-control"
+          type="file"
+          accept=".zip"
+          required
+          :disabled="isProcessing"
+          :class="wasValidated ? (validationErrors.file ? 'is-invalid' : 'is-valid') : undefined"
+          @change="onFileChange"
+        />
         <div v-if="validationErrors.file" class="invalid-feedback">{{ validationErrors.file }}</div>
       </div>
-      <div class="text-end">
-        <button type="submit" class="btn btn-primary">Отправить</button>
+      <div class="row">
+        <div class="col-lg-10 mb-3">
+          <div v-if="task?.status.id === TaskStatusId.Free" class="text-center">
+            Задача отправлена в очередь.
+          </div>
+          <div
+            v-if="task?.status.id === TaskStatusId.Processing"
+            class="progress"
+            role="progressbar"
+            aria-label="Basic example"
+            aria-valuenow="0"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          >
+            <div class="progress-bar" style="width: 0%"></div>
+          </div>
+        </div>
+        <div class="col-lg-2 mb-3 d-flex justify-content-end align-items-center">
+          <div v-if="isProcessing" class="spinner-border me-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <button type="submit" class="btn btn-primary" :disabled="isProcessing">Отправить</button>
+        </div>
       </div>
     </form>
 
     <div v-if="errorMessage" class="alert alert-danger mb-3">
       {{ errorMessage }}
+    </div>
+    <div v-if="task && task.status.id === TaskStatusId.Success" class="alert alert-success mb-3">
+      Готовый архив, который можно загрузить в мобильном приложении
+      <b>Скачать ID = {{ task.status.fileId }}</b>
     </div>
   </div>
 </template>
