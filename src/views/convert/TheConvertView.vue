@@ -5,6 +5,7 @@ import { HttpError } from "@/exceptions/HttpError"
 import { UserError } from "@/exceptions/UserError"
 import { ValidateError } from "@/exceptions/ValidateError"
 import { delay } from "@/utils/core"
+import { getHumanSize } from "@/utils/formatter"
 import { computed, ref } from "vue"
 
 const typesLabels = computed<{ value: ExternalService; label: string }[]>(() => {
@@ -91,7 +92,10 @@ async function convertStart(validFormData: ValidFormData): Promise<Task> {
     {
       service: validFormData.service
     },
-    validFormData.file
+    {
+      name: "file",
+      file: validFormData.file,
+    }
   )
 
   return task.value
@@ -140,7 +144,6 @@ async function waitTask(inputTask: Task): Promise<Task> {
 }
 
 type ValidFormData = {
-  result: boolean
   service: ExternalService
   file: File
 }
@@ -149,22 +152,18 @@ function validate(): ValidFormData {
   let result = true
   validationErrors.value = getValidationDefaultErrors()
 
-  let service: ExternalService
+  const service = formData.value.service
 
-  if (!formData.value.service) {
+  if (!service) {
     validationErrors.value.service = "Нужно выбрать сервис"
     result = false
-  } else {
-    service = formData.value.service
   }
 
-  let file: File
+  const file = formData.value.file
 
-  if (!formData.value.file) {
+  if (!file) {
     validationErrors.value.file = "Нужно выбрать архив"
     result = false
-  } else {
-    file = formData.value.file
   }
 
   wasValidated.value = true
@@ -173,9 +172,13 @@ function validate(): ValidFormData {
     throw new ValidateError()
   }
 
+  if (file === null || service === null) {
+    throw new Error()
+  }
+
   return {
-    service,
     file,
+    service,
   }
 }
 
@@ -266,8 +269,11 @@ function onFileChange(event: Event) {
       {{ errorMessage }}
     </div>
     <div v-if="task && task.status.id === TaskStatusId.Success" class="alert alert-success mb-3">
-      Готовый архив, который можно загрузить в мобильном приложении
-      <b>Скачать ID = {{ task.status.fileId }}</b>
+      <p>{{ task.resultText }}</p>
+      <div>Готовый архив, который можно загрузить в мобильном приложении</div>
+      <div>Скачать <b>{{ task.status.relativeFilePath }}</b>,
+        размер <b>{{ getHumanSize(task.status.fileSize, 2) }}</b>
+      </div>
     </div>
   </div>
 </template>

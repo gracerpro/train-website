@@ -6,7 +6,12 @@ export enum TaskStatusId {
   Fail = 3,
   Success = 4,
 }
-export type ResultData = { fileId: number }
+export type ResultData = {
+  relativeFilePath: string
+  relativeFileUrl: string
+  activitiesCount: number
+  fileSize: number
+}
 export type TaskStatus =
   | { id: TaskStatusId.Free }
   | { id: TaskStatusId.Processing }
@@ -48,16 +53,22 @@ export function modifyTask(data: any): Task {
 
   switch (task.statusId) {
     case TaskStatusId.Success:
-      if (!task?.resultData.fileId || task.resultData.fileId == 0) {
-        throw new Error("Не найден ID файла.")
+      if (!task?.resultData.relativeFileUrl || task.resultData.relativeFileUrl === '') {
+        throw new Error("В задаче не найден файл.")
       }
-      taskStatus = { id: TaskStatusId.Success, fileId: task.resultData.fileId }
+      taskStatus = {
+        id: TaskStatusId.Success,
+        relativeFileUrl: task.resultData.relativeFileUrl,
+        relativeFilePath: task.resultData.relativeFilePath ?? '',
+        activitiesCount: task.resultData.activitiesCount ?? 0,
+        fileSize: task.resultData.fileSize ?? 0,
+      }
       break
     case TaskStatusId.Fail:
       taskStatus = { id: TaskStatusId.Fail, message: task.resultText }
       break
     default:
-      taskStatus = { id: task.status }
+      taskStatus = { id: task.statusId }
   }
 
   task.status = taskStatus

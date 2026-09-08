@@ -1,4 +1,4 @@
-import { ApiRequest } from "@/core/ApiRequest"
+import { ApiRequest, type Fileable } from "@/core/ApiRequest"
 import { modifyTask, type Task } from "./TaskApi"
 
 export enum ExternalService {
@@ -17,8 +17,12 @@ export class ExternalActivityApi {
     this.apiRequest = new ApiRequest()
   }
 
-  async start(data: RequestData, file: File): Promise<Task> {
-    const response = await this.apiRequest.post("/external-activities/convert", data)
+  async start(data: RequestData, file: Fileable): Promise<Task> {
+    const response = await this.apiRequest.post(
+      "/external-activities/convert",
+      data,
+      file
+    )
 
     return modifyTask(response.task)
   }
