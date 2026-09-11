@@ -36,7 +36,7 @@ const router = createRouter({
     {
       path: "/convert",
       name: "convert",
-      component: () => import("../views/convert/TheConvertView.vue")
+      component: () => import("../views/convert/TheConvertView.vue"),
     },
     {
       path: "/documentation",

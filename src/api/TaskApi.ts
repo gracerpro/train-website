@@ -11,6 +11,7 @@ export type ResultData = {
   relativeFileUrl: string
   activitiesCount: number
   fileSize: number
+  fileName: string
 }
 export type TaskStatus =
   | { id: TaskStatusId.Free }
@@ -53,14 +54,15 @@ export function modifyTask(data: any): Task {
 
   switch (task.statusId) {
     case TaskStatusId.Success:
-      if (!task?.resultData.relativeFileUrl || task.resultData.relativeFileUrl === '') {
+      if (!task?.resultData.relativeFileUrl || task.resultData.relativeFileUrl === "") {
         throw new Error("В задаче не найден файл.")
       }
       taskStatus = {
         id: TaskStatusId.Success,
         relativeFileUrl: task.resultData.relativeFileUrl,
-        relativeFilePath: task.resultData.relativeFilePath ?? '',
+        relativeFilePath: task.resultData.relativeFilePath ?? "",
         activitiesCount: task.resultData.activitiesCount ?? 0,
+        fileName: task.resultData.fileName ?? "",
         fileSize: task.resultData.fileSize ?? 0,
       }
       break

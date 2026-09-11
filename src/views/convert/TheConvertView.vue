@@ -1,25 +1,18 @@
 <script setup lang="ts">
-import { ExternalActivityApi, ExternalService } from "@/api/ExternalActivityApi"
-import { TaskApi, TaskStatusId, type Task } from "@/api/TaskApi"
+import { CommonApi } from "@/api/common"
+import {
+  ExternalActivityApi,
+  ExternalService,
+  type StartConvertationResult,
+} from "@/api/ExternalActivityApi"
+import { TaskApi, TaskStatusId, type ResultData, type Task } from "@/api/TaskApi"
 import { HttpError } from "@/exceptions/HttpError"
 import { UserError } from "@/exceptions/UserError"
 import { ValidateError } from "@/exceptions/ValidateError"
 import { delay } from "@/utils/core"
+import { asDateShortTime } from "@/utils/date-time"
 import { getHumanSize } from "@/utils/formatter"
-import { computed, ref } from "vue"
-
-const typesLabels = computed<{ value: ExternalService; label: string }[]>(() => {
-  return [
-    {
-      value: ExternalService.Strava,
-      label: "Strava",
-    },
-    {
-      value: ExternalService.AdidasRuning,
-      label: "Adidas runing",
-    },
-  ]
-})
+import { computed, onUnmounted, ref } from "vue"
 
 type ValidationErrors = {
   service: string
@@ -33,6 +26,7 @@ const getValidationDefaultErrors = (): ValidationErrors => ({
 
 const taskApi = new TaskApi()
 const externalActivityApi = new ExternalActivityApi()
+const commonApi = new CommonApi()
 
 const isProcessing = ref(false)
 const formData = ref<{
@@ -47,10 +41,68 @@ const validationErrors = ref<ValidationErrors>(getValidationDefaultErrors())
 const wasValidated = ref(false)
 
 const task = ref<Task | null>(null)
+const convertations = ref<Convertation[]>([])
+const removeMap = ref<{ [key: string]: true }>({})
+
+const visibleConvertations = computed(() => {
+  return convertations.value.slice().sort((a, b) => b.date.getTime() - a.date.getTime())
+})
+
+const typesLabels = computed<{ value: ExternalService; label: string }[]>(() => {
+  return [
+    {
+      value: ExternalService.Strava,
+      label: "Strava",
+    },
+    {
+      value: ExternalService.AdidasRuning,
+      label: "Adidas runing",
+    },
+  ]
+})
+
+onUnmounted(() => saveState())
+
+if (!import.meta.env.SSR) {
+  readState()
+}
+
+function getDownloadUrl(relativeFileUrl: string) {
+  return import.meta.env.VITE_BACKEND_API_URL + relativeFileUrl
+}
+
+function downloadArchive(event: Event, relativeFileUrl: string) {
+  event.preventDefault()
+
+  const link = event.target as HTMLAnchorElement
+
+  commonApi
+    .checkFile(relativeFileUrl)
+    .then(() => {
+      downloadByLink(link.href, link.download)
+    })
+    .catch(() => {
+      alert("Файл не найден или к нему закрыт доступ.")
+
+      removeFromClient({
+        relativeFileUrl,
+        fileName: link.download,
+      })
+    })
+}
+
+function downloadByLink(downloadUrl: string, fileName: string) {
+  const link = document.createElement("a")
+  link.href = downloadUrl
+  link.download = fileName
+
+  document.body.appendChild(link)
+  link.click()
+
+  document.body.removeChild(link)
+}
 
 function onSubmit() {
-  console.log(formData.value)
-
   let validFormData: ValidFormData
 
   try {
@@ -59,9 +111,23 @@ function onSubmit() {
     return
   }
 
-  convertStart(validFormData)
-    .then((task) => {
-      waitTask(task)
+  startConvertation(validFormData)
+    .then((startResult) => {
+      formData.value.file = null
+
+      waitTask(startResult.task)
+        .then((result) => {
+          addConvertation({
+            guid: startResult.guid,
+            taskId: startResult.task.id,
+            inputFileId: startResult.fileId,
+            inputOriginFileName: validFormData.file.name,
+            date: new Date(),
+            relativeFileUrl: result.relativeFileUrl,
+            fileSize: result.fileSize,
+            fileName: result.fileName,
+          })
+        })
         .catch((error: Error) => {
           errorMessage.value = error.message
         })
@@ -75,33 +141,88 @@ function onSubmit() {
     })
 }
 
-async function convertStart(validFormData: ValidFormData): Promise<Task> {
+async function startConvertation(validFormData: ValidFormData): Promise<StartConvertationResult> {
   isProcessing.value = true
   task.value = null
   errorMessage.value = ""
 
- /* task.value = {
-    id: 1,
-    status: { id: TaskStatusId.Free },
-    completePercent: 0,
-    resultText: "",
-    resultData: null,
-  } */
-
-  task.value = await externalActivityApi.start(
+  const result = await externalActivityApi.startConvertation(
     {
-      service: validFormData.service
+      service: validFormData.service,
     },
     {
       name: "file",
       file: validFormData.file,
-    }
+    },
   )
 
-  return task.value
+  task.value = result.task
+
+  return result
 }
 
-async function waitTask(inputTask: Task): Promise<Task> {
+type Convertation = {
+  date: Date
+  guid: string
+  taskId: number
+  inputFileId: number
+  inputOriginFileName: string
+  relativeFileUrl: string
+  fileSize: number
+  fileName: string
+}
+type ConvertationData = Omit<Convertation, "date"> & {
+  date: string
+}
+type ConvertationLink = {
+  relativeFileUrl: string
+  fileName: string
+}
+
+const STORAGE_COMPONENT_ID = "convert.indexView"
+
+function addConvertation(item: Convertation) {
+  const index = convertations.value.findIndex((a) => a.relativeFileUrl === item.relativeFileUrl)
+
+  if (index < 0) {
+    convertations.value.push(item)
+    saveState()
+  }
+}
+
+function removeConvertation(item: Convertation) {
+  if (removeMap.value[item.guid]) {
+    return
+  }
+
+  removeMap.value[item.guid] = true
+
+  if (task.value && task.value.id === item.taskId) {
+    task.value = null
+  }
+
+  externalActivityApi
+    .removeConvertation(item.taskId, item.guid)
+    .then(() => {
+      removeFromClient(item)
+    })
+    .catch((error: Error) => {
+      alert(error.message)
+      removeFromClient(item)
+    })
+    .finally(() => delete removeMap.value[item.guid])
+}
+
+function removeFromClient(item: ConvertationLink) {
+  const index = convertations.value.findIndex((a) => a.relativeFileUrl === item.relativeFileUrl)
+
+  if (index >= 0) {
+    convertations.value.splice(index, 1)
+    saveState()
+  }
+}
+
+async function waitTask(inputTask: Task): Promise<ResultData> {
   await delay(2000)
 
   while (true) {
@@ -126,7 +247,7 @@ async function waitTask(inputTask: Task): Promise<Task> {
 
     switch (newTask.status.id) {
       case TaskStatusId.Success:
-        return newTask
+        return newTask.status
       case TaskStatusId.Fail:
         throw new UserError(newTask.resultText)
       case TaskStatusId.Free:
@@ -189,90 +310,189 @@ function onFileChange(event: Event) {
     formData.value.file = files[0]
   }
 }
+
+function readState() {
+  let stateStr = localStorage.getItem(STORAGE_COMPONENT_ID)
+
+  if (typeof stateStr !== "string") {
+    stateStr = ""
+  }
+
+  let data
+  try {
+    data = JSON.parse(stateStr)
+  } catch {
+    data = {}
+  }
+  if (data === null || Array.isArray(data) || typeof data !== "object") {
+    data = {}
+  }
+
+  convertations.value = []
+
+  if (data.convertations && Array.isArray(data.convertations)) {
+    try {
+      convertations.value = data.convertations.map((a: ConvertationData) => {
+        return {
+          ...a,
+          date: new Date(a.date),
+        }
+      })
+    } catch {
+      convertations.value = []
+    }
+  }
+}
+
+function saveState() {
+  const state = {
+    convertations: convertations.value,
+  }
+
+  localStorage.setItem(STORAGE_COMPONENT_ID, JSON.stringify(state))
+}
 </script>
 
 <template>
-  <div class="content container">
+  <div class="content container container-text">
     <p>Конвертация тренировок из <b>Strava</b> или <b>Adidas runing</b></p>
 
-    <form
-      class="border rounded p-3 pb-0 mb-3"
-      novalidate
-      :class="{ 'was-validated': wasValidated }"
-      @submit.prevent="onSubmit"
-    >
-      <div class="mb-3">
-        <label :for="'service_' + ExternalService.Strava" class="form-label fw-bold">Импорт из сервиса</label>
-        <div v-for="(item, index) in typesLabels" :key="item.value" class="form-check">
-          <input
-            :id="'service_' + item.value"
-            v-model="formData.service"
-            :value="item.value"
-            :disabled="isProcessing"
-            class="form-check-input"
-            type="radio"
-            name="type"
-            required
-          />
-          <label class="form-check-label" :for="'service_' + item.value">
-            {{ item.label }}
-          </label>
-          <div
-            v-if="index === typesLabels.length - 1 && validationErrors.service"
-            class="invalid-feedback"
-          >
-            {{ validationErrors.service }}
+    <div class="row">
+      <div class="col-lg-8 offset-lg-2">
+        <form
+          class="border rounded p-3 pb-0 mb-3"
+          novalidate
+          :class="{ 'was-validated': wasValidated }"
+          @submit.prevent="onSubmit"
+        >
+          <div class="mb-3">
+            <label :for="'service_' + ExternalService.Strava" class="form-label fw-bold"
+              >Импорт из сервиса</label
+            >
+            <div v-for="(item, index) in typesLabels" :key="item.value" class="form-check">
+              <input
+                :id="'service_' + item.value"
+                v-model="formData.service"
+                :value="item.value"
+                :disabled="isProcessing"
+                class="form-check-input"
+                type="radio"
+                name="type"
+                required
+              />
+              <label class="form-check-label" :for="'service_' + item.value">
+                {{ item.label }}
+              </label>
+              <div
+                v-if="index === typesLabels.length - 1 && validationErrors.service"
+                class="invalid-feedback"
+              >
+                {{ validationErrors.service }}
+              </div>
+            </div>
           </div>
-        </div>
+          <div class="mb-3">
+            <label for="formFile" class="form-label fw-bold">Архив</label>
+            <input
+              id="formFile"
+              class="form-control"
+              type="file"
+              accept=".zip"
+              required
+              :disabled="isProcessing"
+              :class="
+                wasValidated ? (validationErrors.file ? 'is-invalid' : 'is-valid') : undefined
+              "
+              @change="onFileChange"
+            />
+            <div v-if="validationErrors.file" class="invalid-feedback">
+              {{ validationErrors.file }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-8 mb-3">
+              <div v-if="task?.status.id === TaskStatusId.Free" class="text-center">
+                Задача на конвертацию архива отправлена в очередь.
+              </div>
+              <div
+                v-if="task?.status.id === TaskStatusId.Processing"
+                class="progress"
+                role="progressbar"
+                aria-label="Basic example"
+                aria-valuenow="0"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                <div class="progress-bar" style="width: 0%"></div>
+              </div>
+            </div>
+            <div class="col-lg-4 mb-3 d-flex justify-content-end align-items-center">
+              <div
+                :class="isProcessing ? '' : 'invisible'"
+                class="spinner-border me-3"
+                role="status"
+              >
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <button type="submit" class="btn btn-primary" :disabled="isProcessing">
+                Отправить
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
-      <div class="mb-3">
-        <label for="formFile" class="form-label fw-bold">Архив</label>
-        <input
-          id="formFile"
-          class="form-control"
-          type="file"
-          accept=".zip"
-          required
-          :disabled="isProcessing"
-          :class="wasValidated ? (validationErrors.file ? 'is-invalid' : 'is-valid') : undefined"
-          @change="onFileChange"
-        />
-        <div v-if="validationErrors.file" class="invalid-feedback">{{ validationErrors.file }}</div>
-      </div>
-      <div class="row">
-        <div class="col-lg-10 mb-3">
-          <div v-if="task?.status.id === TaskStatusId.Free" class="text-center">
-            Задача на конвертацию архива отправлена в очередь.
-          </div>
-          <div
-            v-if="task?.status.id === TaskStatusId.Processing"
-            class="progress"
-            role="progressbar"
-            aria-label="Basic example"
-            aria-valuenow="0"
-            aria-valuemin="0"
-            aria-valuemax="100"
-          >
-            <div class="progress-bar" style="width: 0%"></div>
-          </div>
-        </div>
-        <div class="col-lg-2 mb-3 d-flex justify-content-end align-items-center">
-          <div v-if="isProcessing" class="spinner-border me-3" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-          <button type="submit" class="btn btn-primary" :disabled="isProcessing">Отправить</button>
-        </div>
-      </div>
-    </form>
+    </div>
 
     <div v-if="errorMessage" class="alert alert-danger mb-3">
       {{ errorMessage }}
     </div>
-    <div v-if="task && task.status.id === TaskStatusId.Success" class="alert alert-success mb-3">
+
+    <div v-if="task?.status.id === TaskStatusId.Success" class="alert alert-success mb-3">
       <p>{{ task.resultText }}</p>
       <div>Готовый архив, который можно загрузить в мобильном приложении</div>
-      <div>Скачать <b>{{ task.status.relativeFilePath }}</b>,
-        размер <b>{{ getHumanSize(task.status.fileSize, 2) }}</b>
+      <div class="text-center mt-4">
+        <b
+          ><a
+            :href="getDownloadUrl(task.status.relativeFileUrl)"
+            :download="task.status.fileName"
+            @click="downloadArchive($event, task.status.relativeFileUrl)"
+            >Скачать</a
+          >
+          {{ getHumanSize(task.status.fileSize, 2) }}</b
+        >
+      </div>
+    </div>
+
+    <div v-if="visibleConvertations.length > 0">
+      <h4>Список конвертаций</h4>
+
+      <div
+        v-for="item in visibleConvertations"
+        :key="item.relativeFileUrl"
+        class="d-flex align-items-center border rounded p-3 mb-3"
+      >
+        <div class="flex-fill">
+          <div>{{ asDateShortTime(item.date) }} {{ item.inputOriginFileName }}</div>
+          <div>
+            <b
+              ><a
+                :href="getDownloadUrl(item.relativeFileUrl)"
+                :download="item.fileName"
+                @click="downloadArchive($event, item.relativeFileUrl)"
+                >Скачать</a
+              >
+              {{ getHumanSize(item.fileSize) }}</b
+            >
+          </div>
+        </div>
+        <button
+          type="button"
+          :disabled="removeMap[item.guid]"
+          class="btn btn-outline-danger mx-2"
+          @click="removeConvertation(item)"
+        >
+          X
+        </button>
       </div>
     </div>
   </div>

@@ -1,5 +1,3 @@
-import { UserError } from "./UserError";
+import { UserError } from "./UserError"
 
-export class ValidateError extends UserError {
-
-}
+export class ValidateError extends UserError {}

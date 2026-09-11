@@ -2,7 +2,7 @@ import { HttpError } from "@/exceptions/HttpError"
 import { UserError } from "@/exceptions/UserError"
 import { isObject } from "@/utils/core"
 
-interface AppResponse {
+export interface AppResponse {
   status: number
   ok: boolean
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -60,9 +60,21 @@ export class ApiRequest {
     return response.json()
   }
 
+  async head(url: string): Promise<AppResponse> {
+    const headers = new Headers({
+      Accept: "application/json",
+    })
+
+    return this.fetch(this.backendUrl + url, {
+      method: "HEAD",
+      headers,
+      redirect: "follow",
+    })
+  }
+
   async post(
     url: string,
-    data: Record<string, string>,
+    data?: Record<string, string>,
     file?: Fileable,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> {
@@ -84,7 +96,6 @@ export class ApiRequest {
     } else {
       body = JSON.stringify(data)
     }
-    console.log(body)
 
     const options = {
       ...this.getOptions("POST", file !== undefined),
