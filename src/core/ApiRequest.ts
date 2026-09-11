@@ -2,7 +2,7 @@ import { HttpError } from "@/exceptions/HttpError"
 import { UserError } from "@/exceptions/UserError"
 import { isObject } from "@/utils/core"
 
-interface AppResponse {
+export interface AppResponse {
   status: number
   ok: boolean
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -18,6 +18,11 @@ interface AppRequestInit {
 interface ErrorResponse {
   isClientSafe?: boolean
   message?: string
+}
+
+export interface Fileable {
+  name: string
+  file: File
 }
 
 export class ApiRequest {
@@ -55,12 +60,48 @@ export class ApiRequest {
     return response.json()
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async post(url: string, data: object): Promise<any> {
-    const options = {
-      ...this.getOptions("POST"),
-      body: JSON.stringify(data),
+  async head(url: string): Promise<AppResponse> {
+    const headers = new Headers({
+      Accept: "application/json",
+    })
+
+    return this.fetch(this.backendUrl + url, {
+      method: "HEAD",
+      headers,
+      redirect: "follow",
+    })
+  }
+
+  async post(
+    url: string,
+    data?: Record<string, string>,
+    file?: Fileable,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ): Promise<any> {
+    let body
+
+    if (file) {
+      const formData = new FormData()
+      formData.append(file.name, file.file)
+
+      for (const field in data) {
+        const value = data[field]
+
+        if (value !== undefined) {
+          formData.append(field, value)
+        }
+      }
+
+      body = formData
+    } else {
+      body = JSON.stringify(data)
     }
+
+    const options = {
+      ...this.getOptions("POST", file !== undefined),
+      body,
+    }
+
     const response = await this.fetch(this.backendUrl + url, options)
 
     if (!response.ok) {
@@ -85,11 +126,14 @@ export class ApiRequest {
     return response.json()
   }
 
-  private getOptions(method: string): AppRequestInit {
+  private getOptions(method: string, hasFile: boolean = false): AppRequestInit {
     const headers = new Headers({
-      "Content-Type": "application/json; charset=UTF-8",
       Accept: "application/json",
     })
+
+    if (!hasFile) {
+      headers.append("Content-Type", "application/json; charset=UTF-8")
+    }
 
     return {
       method,

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getImage, URL_ACTIVITY_CARD_NO_NAME, URL_START } from '@/api/ScreenshotApi';
+import { getImage, URL_ACTIVITY_CARD_NO_NAME, URL_START } from "@/api/ScreenshotApi"
 
 const mainScreenshot = getImage(URL_START)
 const cardImage = getImage(URL_ACTIVITY_CARD_NO_NAME)
