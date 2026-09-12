@@ -17,12 +17,12 @@ export class CommonApi {
     this.apiRequest = new ApiRequest()
   }
 
-  async checkFile(url: string) {
+  async checkFile(relativeUrl: string) {
     let response: AppResponse
     const message = "File is not available or access is denied"
 
     try {
-      response = await this.apiRequest.head(url)
+      response = await this.apiRequest.head(relativeUrl)
     } catch {
       throw new Error(message)
     }

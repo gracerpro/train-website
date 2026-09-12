@@ -60,12 +60,12 @@ export class ApiRequest {
     return response.json()
   }
 
-  async head(url: string): Promise<AppResponse> {
+  async head(relativeUrl: string): Promise<AppResponse> {
     const headers = new Headers({
       Accept: "application/json",
     })
 
-    return this.fetch(this.backendUrl + url, {
+    return this.fetch(this.backendUrl + relativeUrl, {
       method: "HEAD",
       headers,
       redirect: "follow",

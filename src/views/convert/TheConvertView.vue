@@ -122,6 +122,7 @@ function onSubmit() {
             taskId: startResult.task.id,
             inputFileId: startResult.fileId,
             inputOriginFileName: validFormData.file.name,
+            inputFileSize: validFormData.file.size,
             date: new Date(),
             relativeFileUrl: result.relativeFileUrl,
             fileSize: result.fileSize,
@@ -167,6 +168,7 @@ type Convertation = {
   taskId: number
   inputFileId: number
   inputOriginFileName: string
+  inputFileSize: number
   relativeFileUrl: string
   fileSize: number
   fileName: string
@@ -416,14 +418,18 @@ function saveState() {
               </div>
               <div
                 v-if="task?.status.id === TaskStatusId.Processing"
-                class="progress"
-                role="progressbar"
-                aria-label="Basic example"
-                aria-valuenow="0"
-                aria-valuemin="0"
-                aria-valuemax="100"
+                class="h-100 d-flex align-items-center"
               >
-                <div class="progress-bar" style="width: 0%"></div>
+                <div
+                  class="progress w-100"
+                  role="progressbar"
+                  aria-label="Processing"
+                  :aria-valuenow="task.completePercent"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
+                  <div class="progress-bar" :style="'width: ' + task.completePercent + '%'"></div>
+                </div>
               </div>
             </div>
             <div class="col-lg-4 mb-3 d-flex justify-content-end align-items-center">
@@ -472,17 +478,22 @@ function saveState() {
         class="d-flex align-items-center border rounded p-3 mb-3"
       >
         <div class="flex-fill">
-          <div>{{ asDateShortTime(item.date) }} {{ item.inputOriginFileName }}</div>
+          <div class="mb-2">
+            <span class="fst-italic me-3">{{ asDateShortTime(item.date) }}</span>
+            {{ item.inputOriginFileName }}
+            {{ getHumanSize(item.inputFileSize) }}
+          </div>
           <div>
-            <b
+            <b class="me-3"
               ><a
                 :href="getDownloadUrl(item.relativeFileUrl)"
                 :download="item.fileName"
                 @click="downloadArchive($event, item.relativeFileUrl)"
                 >Скачать</a
               >
-              {{ getHumanSize(item.fileSize) }}</b
-            >
+            </b>
+            {{ item.fileName }}
+            <b>{{ getHumanSize(item.fileSize) }}</b>
           </div>
         </div>
         <button
