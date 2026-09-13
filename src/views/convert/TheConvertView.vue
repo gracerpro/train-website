@@ -352,6 +352,8 @@ function saveState() {
 
 <template>
   <div class="content container container-text">
+    <h1>Конвертация</h1>
+
     <p>Конвертация тренировок из <b>Strava</b> или <b>Adidas runing</b></p>
 
     <div class="row">
