@@ -125,10 +125,6 @@ const visibleImages = images.map((name) => getImage(name))
     </p>
 
     <h3 id="how-to-import-from-strava">Как импортировать тренировки из Strava?</h3>
-    <div class="mb-3">
-      <span class="badge text-bg-warning">путь не для ленивых</span>
-      <span class="badge text-bg-danger ms-2">разработка</span>
-    </div>
     <ol>
       <li>
         В web версии <a href="https://www.strava.com" target="_blank">Strava</a> нужно запустить
@@ -137,21 +133,13 @@ const visibleImages = images.map((name) => getImage(name))
       <li>Дождаться выгрузки, она может идти до нескольких дней.</li>
       <li>
         Выгруженный архив прогнать через
-        <b
-          ><a href="https://github.com/gracerpro/convert-sport-activity" target="_blank"
-            >конвертер тренировок</a
-          ></b
-        >. Web интерфейса нет потому что этот сервер не раполагает большим количеством дисковой и
-        оперативной памяти, а что бы распарсить архив нужно немало памяти.
+        <b><router-link :to="{ name: 'convert' }">конвертацию тренировок</router-link></b
+        >.
       </li>
-      <li>Конвертер сгенерирует архив, который можно загружать в мобильное приложение.</li>
+      <li>Сгенерируется архив, который можно загружать в мобильное приложение.</li>
     </ol>
 
     <h3 id="how-to-import-from-adidas-runing">Как импортировать тренировки из Adidas running?</h3>
-    <div class="mb-3">
-      <span class="badge text-bg-warning">путь не для ленивых</span>
-      <span class="badge text-bg-danger ms-2">разработка</span>
-    </div>
     <ol>
       <li>
         В web версии <a href="https://www.runtastic.com/" target="_blank">Adidas running</a> нужно
@@ -160,14 +148,10 @@ const visibleImages = images.map((name) => getImage(name))
       <li>Дождаться выгрузки, она может идти до нескольких дней.</li>
       <li>
         Выгруженный архив прогнать через
-        <b
-          ><a href="https://github.com/gracerpro/convert-sport-activity" target="_blank"
-            >конвертер тренировок</a
-          ></b
-        >. Web интерфейса нет потому что этот сервер не раполагает большим количеством дисковой и
-        оперативной памяти, а что бы распарсить архив нужно немало памяти.
+        <b><router-link :to="{ name: 'convert' }">конвертацию тренировок</router-link></b
+        >.
       </li>
-      <li>Конвертер сгенерирует архив, который можно загружать в мобильное приложение.</li>
+      <li>Сгенерируется архив, который можно загружать в мобильное приложение.</li>
     </ol>
   </main>
 </template>
