@@ -10,6 +10,13 @@ export class ApiList<T> {
   }
 }
 
+export type Settings = {
+  convert: {
+    storeSeconds: number
+    maxFileSize: number | null
+  }
+}
+
 export class CommonApi {
   private apiRequest: ApiRequest
 
@@ -29,6 +36,17 @@ export class CommonApi {
 
     if (!response.ok) {
       throw new Error(message)
+    }
+  }
+
+  async getSettings(): Promise<Settings> {
+    const response = await this.apiRequest.get("/default/settings")
+
+    return {
+      convert: {
+        storeSeconds: response.convert.storeSeconds,
+        maxFileSize: response.convert.maxFileSize,
+      },
     }
   }
 }

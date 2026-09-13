@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CommonApi } from "@/api/common"
+import { CommonApi, type Settings } from "@/api/common"
 import {
   ExternalActivityApi,
   ExternalService,
@@ -10,9 +10,17 @@ import { HttpError } from "@/exceptions/HttpError"
 import { UserError } from "@/exceptions/UserError"
 import { ValidateError } from "@/exceptions/ValidateError"
 import { delay } from "@/utils/core"
-import { asDateShortTime } from "@/utils/date-time"
 import { getHumanSize } from "@/utils/formatter"
-import { computed, onUnmounted, ref } from "vue"
+import { computed, onUnmounted, ref, useTemplateRef } from "vue"
+import {
+  downloadByLink,
+  getDownloadUrl,
+  type Convertation,
+  type ConvertationData,
+  type ConvertationLink,
+} from "./convert"
+import ConvertList from "./ConvertList.vue"
+import AlertMessage from "@/components/AlertMessage.vue"
 
 type ValidationErrors = {
   service: string
@@ -42,7 +50,15 @@ const wasValidated = ref(false)
 
 const task = ref<Task | null>(null)
 const convertations = ref<Convertation[]>([])
-const removeMap = ref<{ [key: string]: true }>({})
+
+const settings = ref<Settings>({
+  convert: {
+    storeSeconds: 0,
+    maxFileSize: null,
+  },
+})
+
+const formFileRef = useTemplateRef<HTMLInputElement>("formFileRef")
 
 const visibleConvertations = computed(() => {
   return convertations.value.slice().sort((a, b) => b.date.getTime() - a.date.getTime())
@@ -65,45 +81,24 @@ onUnmounted(() => saveState())
 
 if (!import.meta.env.SSR) {
   readState()
+  loadSettings()
 }
 
-function getDownloadUrl(relativeFileUrl: string) {
-  return import.meta.env.VITE_BACKEND_API_URL + relativeFileUrl
-}
-
-function downloadArchive(event: Event, relativeFileUrl: string) {
-  event.preventDefault()
-
-  const link = event.target as HTMLAnchorElement
-
+function loadSettings() {
   commonApi
-    .checkFile(relativeFileUrl)
-    .then(() => {
-      downloadByLink(link.href, link.download)
+    .getSettings()
+    .then((result) => {
+      settings.value = result
     })
-    .catch(() => {
-      alert("Файл не найден или к нему закрыт доступ.")
-
-      removeFromClient({
-        relativeFileUrl,
-        fileName: link.download,
-      })
+    .catch((error) => {
+      console.error(error)
     })
-}
-
-function downloadByLink(downloadUrl: string, fileName: string) {
-  const link = document.createElement("a")
-  link.href = downloadUrl
-  link.download = fileName
-
-  document.body.appendChild(link)
-  link.click()
-
-  document.body.removeChild(link)
 }
 
 function onSubmit() {
   let validFormData: ValidFormData
+
+  errorMessage.value = ""
 
   try {
     validFormData = validate()
@@ -113,7 +108,7 @@ function onSubmit() {
 
   startConvertation(validFormData)
     .then((startResult) => {
-      formData.value.file = null
+      setFile(null)
 
       waitTask(startResult.task)
         .then((result) => {
@@ -162,25 +157,6 @@ async function startConvertation(validFormData: ValidFormData): Promise<StartCon
   return result
 }
 
-type Convertation = {
-  date: Date
-  guid: string
-  taskId: number
-  inputFileId: number
-  inputOriginFileName: string
-  inputFileSize: number
-  relativeFileUrl: string
-  fileSize: number
-  fileName: string
-}
-type ConvertationData = Omit<Convertation, "date"> & {
-  date: string
-}
-type ConvertationLink = {
-  relativeFileUrl: string
-  fileName: string
-}
-
 const STORAGE_COMPONENT_ID = "convert.indexView"
 
 function addConvertation(item: Convertation) {
@@ -190,29 +166,6 @@ function addConvertation(item: Convertation) {
     convertations.value.push(item)
     saveState()
   }
-}
-
-function removeConvertation(item: Convertation) {
-  if (removeMap.value[item.guid]) {
-    return
-  }
-
-  removeMap.value[item.guid] = true
-
-  if (task.value && task.value.id === item.taskId) {
-    task.value = null
-  }
-
-  externalActivityApi
-    .removeConvertation(item.taskId, item.guid)
-    .then(() => {
-      removeFromClient(item)
-    })
-    .catch((error: Error) => {
-      alert(error.message)
-      removeFromClient(item)
-    })
-    .finally(() => delete removeMap.value[item.guid])
 }
 
 function removeFromClient(item: ConvertationLink) {
@@ -282,10 +235,9 @@ function validate(): ValidFormData {
     result = false
   }
 
-  const file = formData.value.file
+  const file = validateFile()
 
-  if (!file) {
-    validationErrors.value.file = "Нужно выбрать архив"
+  if (file === null) {
     result = false
   }
 
@@ -305,12 +257,55 @@ function validate(): ValidFormData {
   }
 }
 
+function validateFile(): File | null {
+  const file = formData.value.file
+
+  validationErrors.value.file = ""
+
+  if (!file) {
+    validationErrors.value.file = "Нужно выбрать архив"
+    return null
+  }
+
+  return file
+}
+
+function setFile(value: File | null) {
+  formData.value.file = value
+
+  if (formFileRef.value && value === null) {
+    formFileRef.value.value = ""
+  }
+}
+
+function onFileClear() {
+  setFile(null)
+  validateFile()
+}
+
 function onFileChange(event: Event) {
   const files = (event.target as HTMLInputElement).files
 
   if (files && files.length > 0) {
     formData.value.file = files[0]
+    validateFile()
   }
+}
+
+function downloadArchive(fileName: string, relativeFileUrl: string) {
+  commonApi
+    .checkFile(relativeFileUrl)
+    .then(() => {
+      downloadByLink(getDownloadUrl(relativeFileUrl), fileName)
+    })
+    .catch(() => {
+      alert("Файл не найден или к нему закрыт доступ.")
+
+      removeFromClient({
+        relativeFileUrl,
+        fileName,
+      })
+    })
 }
 
 function readState() {
@@ -397,6 +392,7 @@ function saveState() {
             <label for="formFile" class="form-label fw-bold">Архив</label>
             <input
               id="formFile"
+              ref="formFileRef"
               class="form-control"
               type="file"
               accept=".zip"
@@ -407,8 +403,36 @@ function saveState() {
               "
               @change="onFileChange"
             />
+            <div
+              v-if="settings.convert.maxFileSize !== null && settings.convert.maxFileSize > 0"
+              class="form-text"
+            >
+              Максимальный размер около {{ getHumanSize(settings.convert.maxFileSize) }}
+            </div>
             <div v-if="validationErrors.file" class="invalid-feedback">
               {{ validationErrors.file }}
+            </div>
+            <div v-if="formData.file" class="mt-2">
+              {{ formData.file.name }} {{ getHumanSize(formData.file.size) }}
+              <button
+                type="button"
+                class="btn-close ms-2"
+                aria-label="Close"
+                @click="onFileClear"
+              ></button>
+
+              <alert-message
+                v-if="
+                  settings.convert.maxFileSize !== null &&
+                  settings.convert.maxFileSize > 0 &&
+                  formData.file.size > settings.convert.maxFileSize
+                "
+                :type="'danger'"
+                class="mt-2"
+              >
+                Слишком большой размер файла, должен быть не более
+                {{ getHumanSize(settings.convert.maxFileSize) }}
+              </alert-message>
             </div>
           </div>
           <div class="row">
@@ -449,11 +473,17 @@ function saveState() {
       </div>
     </div>
 
-    <div v-if="errorMessage" class="alert alert-danger mb-3">
+    <alert-message
+      v-if="errorMessage"
+      :type="'danger'"
+      is-show-close
+      class="mb-3"
+      @hide="errorMessage = ''"
+    >
       {{ errorMessage }}
-    </div>
+    </alert-message>
 
-    <div v-if="task?.status.id === TaskStatusId.Success" class="alert alert-success mb-3">
+    <alert-message v-if="task?.status.id === TaskStatusId.Success" :type="'success'" class="mb-3">
       <p>{{ task.resultText }}</p>
       <div>Готовый архив, который можно загрузить в мобильном приложении</div>
       <div class="text-center mt-4">
@@ -461,50 +491,30 @@ function saveState() {
           ><a
             :href="getDownloadUrl(task.status.relativeFileUrl)"
             :download="task.status.fileName"
-            @click="downloadArchive($event, task.status.relativeFileUrl)"
+            @click.prevent="downloadArchive(task.status.fileName, task.status.relativeFileUrl)"
             >Скачать</a
           >
           {{ getHumanSize(task.status.fileSize, 2) }}</b
         >
       </div>
-    </div>
+    </alert-message>
 
-    <div v-if="visibleConvertations.length > 0">
-      <h4>Список конвертаций</h4>
-
-      <div
-        v-for="item in visibleConvertations"
-        :key="item.relativeFileUrl"
-        class="d-flex align-items-center border rounded p-3 mb-3"
-      >
-        <div class="flex-fill">
-          <div class="mb-2">
-            <span class="fst-italic me-3">{{ asDateShortTime(item.date) }}</span>
-            {{ item.inputOriginFileName }}
-            {{ getHumanSize(item.inputFileSize) }}
-          </div>
-          <div>
-            <b class="me-3"
-              ><a
-                :href="getDownloadUrl(item.relativeFileUrl)"
-                :download="item.fileName"
-                @click="downloadArchive($event, item.relativeFileUrl)"
-                >Скачать</a
-              >
-            </b>
-            {{ item.fileName }}
-            <b>{{ getHumanSize(item.fileSize) }}</b>
-          </div>
-        </div>
-        <button
-          type="button"
-          :disabled="removeMap[item.guid]"
-          class="btn btn-outline-danger mx-2"
-          @click="removeConvertation(item)"
-        >
-          X
-        </button>
+    <alert-message :type="'warning'">
+      <div v-if="settings.convert.storeSeconds > 0">
+        Сконвертированные файлы хранятся не более
+        {{ Math.floor(settings.convert.storeSeconds / 3600) }} ч.
       </div>
-    </div>
+      <div v-else>
+        Сконвертированные файлы хранятся ограниченное время, например, не более 12 ч.
+      </div>
+    </alert-message>
+
+    <convert-list
+      v-if="visibleConvertations.length > 0"
+      v-model:task="task"
+      :convertations="visibleConvertations"
+      @remove-from-client="removeFromClient"
+      @download-archive="downloadArchive"
+    />
   </div>
 </template>
